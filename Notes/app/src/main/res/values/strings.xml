@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="search">Search...</string>
+    <string name="menuOption">Menu</string>
+    <string name="note_title">Title</string>
+    <string name="note_content">Take your note....</string>
+    <string name="delete_note">Delete</string>
+    <string name="save_note">Save</string>
+    <string name="add_note">Add Note</string>
+    <string name="empty_erro">Title or Content not allowed to be empty</string>
+    <string name="title_delete">Delete Note</string>
+    <string name="ask_delete">Are you want to delete this note</string>
+    <string name="ok">Delete</string>
+    <string name="cancle">Cancle</string>
+    <string name="edit">Update</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_20sdp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/title_add_note"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:hint="@string/note_title"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:autofillHints="@string/note_title"
+        android:background="@drawable/backgrount_butt"></EditText>
+
+    <EditText
+        android:id="@+id/content_add_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/note_content"
+        android:textAlignment="textStart"
+        android:paddingLeft="@dimen/_20sdp"
+        android:paddingRight="@dimen/_20sdp"
+        android:inputType="textMultiLine"
+        android:autofillHints="@string/note_title"
+        android:background="@drawable/backgrount_butt"></EditText>
+
+    <Button
+        android:id="@+id/save_note"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_note"
+        android:backgroundTint="#FF9800"
+        ></Button>
+
+
+</LinearLayout>
