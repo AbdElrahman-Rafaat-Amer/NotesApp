@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addnote.view.AddNoteActivity">
+
+    <ImageView
+        android:id="@+id/goBack_imageView"
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="25sp"
+        android:background="@drawable/ic_image_background"
+        android:contentDescription="@string/go_back"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/save_ImageView"
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_marginTop="25sp"
+        android:layout_marginEnd="10sp"
+        android:background="@drawable/ic_image_background"
+        android:contentDescription="@string/save_note"
+        android:scaleType="center"
+        android:src="@drawable/ic_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/noteTitle_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15sp"
+        android:autofillHints="@string/title"
+        android:background="@android:color/transparent"
+        android:hint="@string/title"
+        android:inputType="textMultiLine|text"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/goBack_imageView" />
+
+    <EditText
+        android:id="@+id/noteBody_editText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="15sp"
+        android:autofillHints="@string/body"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/body"
+        android:inputType="textMultiLine|text"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

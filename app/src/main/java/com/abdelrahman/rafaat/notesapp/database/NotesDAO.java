@@ -1,0 +1,33 @@
+package com.abdelrahman.rafaat.notesapp.database;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.lifecycle.LiveData;
+import androidx.room.Update;
+
+import com.abdelrahman.rafaat.notesapp.model.Note;
+
+import java.util.List;
+
+@Dao
+public interface NotesDAO {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertNote(Note note);
+
+    @Query("SELECT * FROM notes ORDER BY id DESC")
+    LiveData<List<Note>> getAllNotes();
+
+    @Query("UPDATE notes SET title = :title, body = :body WHERE id = :id")
+    void updateNote(int id, String title, String body);
+
+    @Update
+    void updateNote(Note note);
+
+    @Query("DELETE FROM notes where id = :id")
+    void deleteNote(int id);
+
+}

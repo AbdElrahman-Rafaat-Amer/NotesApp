@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Notes App</string>
+    <string name="add_note">Add Note</string>
+    <string name="pinned_note">Pinned Note</string>
+    <string name="pin_note">Pin/Unpin</string>
+    <string name="go_back">Go back</string>
+    <string name="save_note">Save Note</string>
+    <string name="title">Title</string>
+    <string name="body">Enter your note.....</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ask_cancel_changes">Are you sure to cancel changes you made ??</string>
+    <string name="cancel_changes">Cancel Changes</string>
+    <string name="title_error">note title can\'t be empty</string>
+    <string name="body_error">note body can\'t be empty</string>
+
+
+    <string name="dummy_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+        It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+        and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="dummy_title">What is Lorem Ipsum?</string>
+    <string name="dummy_date">19/06/2015 17:35:50, Utc</string>
+    <string name="search_note">Enter note title.....</string>
+    <string name="delete_note">Delete</string>
+
+</resources>
