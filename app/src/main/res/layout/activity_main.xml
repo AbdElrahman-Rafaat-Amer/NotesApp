@@ -6,14 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".home.view.MainActivity">
 
+    <include
+        android:id="@+id/no_search_layout"
+        layout="@layout/no_files_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/no_notes_layout"
+        layout="@layout/no_notes_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <SearchView
         android:id="@+id/note_searchView"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:layout_margin="7sp"
         android:background="@drawable/ic_search_view_background"
-        android:queryHint="@string/search_note"
         android:iconifiedByDefault="false"
-        android:layout_height="?attr/actionBarSize"
+        android:queryHint="@string/search_note"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

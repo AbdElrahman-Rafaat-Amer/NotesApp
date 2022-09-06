@@ -10,12 +10,17 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_button_4.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_chevron_left.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_image_background.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_rafiki.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_save.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_search_view_background.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/sv.xml" value="0.137" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_add_note.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_main.xml" value="0.2604166666666667" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/custom_row_favorite.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/custom_row_note.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_files_view.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_notes_view.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/popup_menu.xml" value="0.6604010025062657" />
       </map>
     </option>
