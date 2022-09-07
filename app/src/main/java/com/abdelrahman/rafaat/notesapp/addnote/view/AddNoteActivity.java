@@ -4,12 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.addnote.viewmodel.AddNoteViewModel;
@@ -33,6 +46,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private boolean isUpdate = false;
     private Note note;
+    private int color;
 
     @Override
 
@@ -53,10 +67,15 @@ public class AddNoteActivity extends AppCompatActivity {
 
 
         initViewModel();
-
+        choseColor();
         binding.goBackImageView.setOnClickListener(v -> {
-            if (isTextChanged)
-                showDialog();
+            if (isTextChanged) {
+                if (isUpdate)
+                    addDialogNote(getString(R.string.save_changes));
+                else
+                    addDialogNote(getString(R.string.discard_note));
+            } else
+                finish();
         });
 
         binding.saveImageView.setOnClickListener(v -> {
@@ -67,6 +86,14 @@ public class AddNoteActivity extends AppCompatActivity {
                     saveNote();
             }
         });
+
+        binding.colorImageView.setOnClickListener(v -> {
+            if (binding.colorRootView.getVisibility() == View.GONE)
+                binding.colorRootView.setVisibility(View.VISIBLE);
+            else
+                binding.colorRootView.setVisibility(View.GONE);
+        });
+
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -117,24 +144,68 @@ public class AddNoteActivity extends AppCompatActivity {
         ).get(AddNoteViewModel.class);
     }
 
+    private void choseColor() {
+        binding.color1.setOnClickListener(v -> color = R.color.color1);
+
+        binding.color2.setOnClickListener(v -> color = R.color.color2);
+
+        binding.color3.setOnClickListener(v -> color = R.color.color3);
+
+        binding.color4.setOnClickListener(v -> color = R.color.color4);
+
+        binding.color5.setOnClickListener(v -> color = R.color.color5);
+
+        binding.color6.setOnClickListener(v -> color = R.color.color6);
+
+        binding.color7.setOnClickListener(v -> color = R.color.color7);
+
+        binding.color8.setOnClickListener(v -> color = R.color.color8);
+    }
+
     @Override
     public void onBackPressed() {
-        if (isTextChanged)
-            showDialog();
-        else
+        if (isTextChanged) {
+            if (isUpdate)
+                addDialogNote(getString(R.string.save_changes));
+            else
+                addDialogNote(getString(R.string.discard_note));
+        } else
             super.onBackPressed();
     }
 
-    private void showDialog() {
+    private void addDialogNote(String message) {
+        View view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        TextView dialogMessage = view.findViewById(R.id.dialog_message_textView);
+        Button saveButton = view.findViewById(R.id.save_button);
+        Button discardButton = view.findViewById(R.id.discard_button);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.cancel_changes)
-                .setMessage(R.string.ask_cancel_changes)
-                .setPositiveButton(R.string.yes, (dialog, which) -> finish())
-                .setNegativeButton(R.string.no, (dialog, which) -> alertDialog.dismiss());
 
-        alertDialog = builder.create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setView(view);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
+
+        Rect displayRectangle = new Rect();
+        Window window = getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+        alertDialog.getWindow().setLayout(
+                (int) (displayRectangle.width() * 0.82f),
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogMessage.setText(message);
+
+        saveButton.setOnClickListener(v -> {
+            if (isUpdate)
+                updateNote();
+            else
+                saveNote();
+        });
+
+        discardButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            finish();
+        });
+
     }
 
     private boolean checkTitle() {
@@ -163,22 +234,19 @@ public class AddNoteActivity extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a");
         Note note = new Note(binding.noteTitleEditText.getText().toString(),
                 binding.noteBodyEditText.getText().toString(),
-                formatter.format(new Date()));
+                formatter.format(new Date()),
+                color);
 
         noteViewModel.saveNote(note);
         finish();
     }
-
 
     private void updateNote() {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a");
         note.setTitle(binding.noteTitleEditText.getText().toString());
         note.setBody(binding.noteBodyEditText.getText().toString());
         note.setDate(formatter.format(new Date()));
-        /*note = new Note(binding.noteTitleEditText.getText().toString(),
-                binding.noteBodyEditText.getText().toString(),
-                formatter.format(new Date()));*/
-        Log.i(TAG, "updateNote: id------------->" + note.getId());
+        note.setColor(color);
         noteViewModel.updateNote(note);
         finish();
     }

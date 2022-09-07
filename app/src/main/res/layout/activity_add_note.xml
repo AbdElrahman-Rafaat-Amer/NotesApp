@@ -19,6 +19,87 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/color_ImageView"
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_marginTop="25sp"
+        android:layout_marginEnd="10sp"
+        android:background="@drawable/ic_image_background"
+        android:contentDescription="@string/choose_color"
+        android:scaleType="center"
+        android:src="@drawable/ic_visibility"
+        app:layout_constraintEnd_toStartOf="@id/save_ImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/color_rootView"
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:layout_margin="10sp"
+        android:background="#EFC5C5"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/noteTitle_editText"
+        app:layout_constraintTop_toBottomOf="@id/color_ImageView">
+
+        <View
+            android:id="@+id/color1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color1" />
+
+        <View
+            android:id="@+id/color2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color2" />
+
+        <View
+            android:id="@+id/color3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color3" />
+
+        <View
+            android:id="@+id/color4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color4" />
+
+        <View
+            android:id="@+id/color5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color5" />
+
+        <View
+            android:id="@+id/color6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color6" />
+
+        <View
+            android:id="@+id/color7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color7" />
+
+        <View
+            android:id="@+id/color8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:background="@color/color8" />
+    </LinearLayout>
+
+    <ImageView
         android:id="@+id/save_ImageView"
         android:layout_width="35sp"
         android:layout_height="35sp"
@@ -43,7 +124,7 @@
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/goBack_imageView" />
+        app:layout_constraintTop_toBottomOf="@id/color_rootView" />
 
     <EditText
         android:id="@+id/noteBody_editText"

@@ -16,6 +16,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
+            android:noHistory="true"
             android:theme="@style/Theme.NotesApp.AddNoteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

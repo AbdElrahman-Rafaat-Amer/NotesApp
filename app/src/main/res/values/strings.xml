@@ -14,6 +14,13 @@
     <string name="title_error">note title can\'t be empty</string>
     <string name="body_error">note body can\'t be empty</string>
     <string name="no_notes">Create your first note !</string>
+    <string name="search_note">Enter note title.....</string>
+    <string name="delete_note">Delete</string>
+    <string name="empty_search">File not found. Try searching again.</string>
+    <string name="empty_notes">Create your first note !</string>
+    <string name="welcome">Welcome</string>
+    <string name="discard">Discard</string>
+
 
     <string name="dummy_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
@@ -23,11 +30,11 @@
         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="dummy_title">What is Lorem Ipsum?</string>
     <string name="dummy_date">19/06/2015 17:35:50, Utc</string>
-    <string name="search_note">Enter note title.....</string>
-    <string name="delete_note">Delete</string>
-    <string name="empty_search">File not found. Try searching again.</string>
-    <string name="empty_notes">Create your first note !</string>
-    <string name="welcome">Welcome</string>
-    <string name="save_notes">Save your notes</string>
+    <string name="save">Save</string>
+    <string name="keep">Keep</string>
+    <string name="discard_note">Are your sure you want discard your changes ?</string>
+    <string name="warning">Warning</string>
+    <string name="save_changes">Save changes ?</string>
+    <string name="choose_color">Choose color</string>
 
 </resources>

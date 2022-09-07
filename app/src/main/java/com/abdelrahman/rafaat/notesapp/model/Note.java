@@ -13,12 +13,14 @@ public class Note implements Serializable {
     private String title;
     private String body;
     private String date;
+    private int color;
     private boolean isPinned;
-
-    public Note(String title, String body, String date) {
+    
+    public Note(String title, String body, String date, int color) {
         this.title = title;
         this.body = body;
         this.date = date;
+        this.color = color;
     }
 
     public int getId() {
@@ -51,6 +53,14 @@ public class Note implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public boolean isPinned() {

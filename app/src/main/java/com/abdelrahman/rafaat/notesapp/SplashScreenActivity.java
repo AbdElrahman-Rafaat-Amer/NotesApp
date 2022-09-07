@@ -33,7 +33,5 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void initUI() {
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);
         binding.titleTextView.setAnimation(bottomAnimation);
-
-
     }
 }

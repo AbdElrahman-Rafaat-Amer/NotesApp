@@ -47,9 +47,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         else
             holder.pinnedImage.setVisibility(View.GONE);
 
-        int color = getRandomColor();
-        Log.i(TAG, "onBindViewHolder: color-------------------> " + color);
-        holder.rootView.setCardBackgroundColor(holder.itemView.getResources().getColor(color, null));
+
+        holder.rootView.setCardBackgroundColor(holder.itemView.getResources().getColor(currentNote.getColor(), null));
 
         holder.rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
 
@@ -62,29 +61,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return notes.size();
-    }
-
-    private int getRandomColor() {
-
-        List<Integer> colors = new ArrayList<>();
-        colors.add(R.color.color1);
-        colors.add(R.color.color2);
-        colors.add(R.color.color3);
-        colors.add(R.color.color4);
-        colors.add(R.color.color5);
-        colors.add(R.color.color6);
-        colors.add(R.color.color7);
-        colors.add(R.color.color8);
-        colors.add(R.color.color9);
-        colors.add(R.color.color10);
-        colors.add(R.color.color11);
-
-
-        Random random = new Random();
-        int colorPosition = random.nextInt(colors.size());
-        Log.i(TAG, "getRandomColor: colorPosition--------------> " + colorPosition);
-        Log.i(TAG, "getRandomColor: color----------------------> " + colors.get(colorPosition));
-        return colors.get(colorPosition);
     }
 
     public void setList(List<Note> notes) {
