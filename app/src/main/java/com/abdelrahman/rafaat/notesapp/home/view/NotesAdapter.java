@@ -48,7 +48,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             holder.pinnedImage.setVisibility(View.GONE);
 
 
-        holder.rootView.setCardBackgroundColor(holder.itemView.getResources().getColor(currentNote.getColor(), null));
+        holder.rootView.setCardBackgroundColor(currentNote.getColor());
 
         holder.rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
 

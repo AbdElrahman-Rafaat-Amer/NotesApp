@@ -1,38 +1,52 @@
 package com.abdelrahman.rafaat.notesapp.home.view;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import com.abdelrahman.rafaat.notesapp.home.view.OnNotesClickListener;
+import com.abdelrahman.rafaat.notesapp.home.viewmodel.NotesViewModelFactory;
+
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 
-import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.addnote.view.AddNoteActivity;
-import com.abdelrahman.rafaat.notesapp.database.LocalSource;
-import com.abdelrahman.rafaat.notesapp.databinding.ActivityMainBinding;
-import com.abdelrahman.rafaat.notesapp.model.Note;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
+import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
+import com.abdelrahman.rafaat.notesapp.home.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.home.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.home.viewmodel.NotesViewModelFactory;
+import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnNotesClickListener, PopupMenu.OnMenuItemClickListener {
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
+
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+
+import com.abdelrahman.rafaat.notesapp.R;
+
+import com.abdelrahman.rafaat.notesapp.database.LocalSource;
+import com.abdelrahman.rafaat.notesapp.model.Repository;
+
+
+public class HomeFragment extends Fragment implements OnNotesClickListener, PopupMenu.OnMenuItemClickListener {
 
     private String TAG = "MainActivity";
-    private ActivityMainBinding binding;
+    private FragmentHomeBinding binding;
     private NotesAdapter adapter;
     private NoteViewModel noteViewModel;
     private NotesViewModelFactory viewModelFactory;
@@ -40,12 +54,21 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
     private Note selectedNote;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentHomeBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
 
-        binding.addNoteFloatingActionButton.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AddNoteActivity.class)));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.addNoteFloatingActionButton.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_home_to_addNote)
+
+        );
 
         search();
         initRecyclerView();
@@ -53,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
         observeViewModel();
     }
 
-    private void search(){
+    private void search() {
         binding.noteSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -67,20 +90,21 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
             }
         });
     }
+
     private void initRecyclerView() {
         adapter = new NotesAdapter(this);
         binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
         binding.notesRecyclerview.setAdapter(adapter);
         int resId = R.anim.lat;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         binding.notesRecyclerview.setLayoutAnimation(animation);
     }
 
     private void initViewModel() {
         viewModelFactory = new NotesViewModelFactory(
                 Repository.getInstance(
-                        LocalSource.getInstance(this), this.getApplication()
-                ), this.getApplication()
+                        LocalSource.getInstance(getContext()), getActivity().getApplication()
+                ), getActivity().getApplication()
         );
 
         noteViewModel = new ViewModelProvider(
@@ -92,28 +116,26 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
     }
 
     private void observeViewModel() {
-        noteViewModel.notes.observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                Log.i(TAG, "onChanged: " + notes.size());
-                if (notes.isEmpty())
-                    binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
-                else
-                    binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
+        noteViewModel.notes.observe(this, notes -> {
+            Log.i(TAG, "onChanged: " + notes.size());
+            if (notes.isEmpty())
+                binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
+            else
+                binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
 
-                binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-                adapter.setList(notes);
-                noteList = notes;
+            binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
+            adapter.setList(notes);
+            noteList = notes;
 
-            }
         });
     }
 
     @Override
     public void onClickListener(Note note) {
-        Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
-        intent.putExtra("NOTE", note);
-        startActivity(intent);
+        // Navigation.findNavController(getView()).navigate(R.id.show_note_fragment);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("NOTE", note);
+        Navigation.findNavController(getView()).navigate(R.id.show_note_fragment, bundle);
     }
 
     @Override
@@ -140,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
     }
 
     private void showPopupMenu(CardView cardView) {
-        PopupMenu popupMenu = new PopupMenu(this, cardView);
+        PopupMenu popupMenu = new PopupMenu(getContext(), cardView);
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.popup_menu);
         popupMenu.show();
@@ -156,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements OnNotesClickListe
                     selectedNote.setPinned(true);
                 }
                 noteViewModel.updateNote(selectedNote);
-                //    adapter.notifyDataSetChanged();
                 break;
             case R.id.delete_note:
                 noteViewModel.deleteNote(selectedNote.getId());

@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    id 'androidx.navigation.safeargs'
+
 }
 
 android {
@@ -33,7 +35,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -52,6 +54,10 @@ dependencies {
     implementation "com.airbnb.android:lottie:5.0.2"
 
     //Navigation Graph
-    implementation "androidx.navigation:navigation-fragment:2.5.1"
-    implementation "androidx.navigation:navigation-ui:2.5.1"
+    implementation "androidx.navigation:navigation-fragment:2.5.2"
+    implementation "androidx.navigation:navigation-ui:2.5.2"
+
+    implementation "com.github.skydoves:colorpickerview:2.2.4"
+
+  //  implementation 'io.github.eltos:simpledialogfragments:3.6.3'
 }

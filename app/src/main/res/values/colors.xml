@@ -12,12 +12,26 @@
     <color name="color1">#FF5722</color>
     <color name="color2">#DDD101</color>
     <color name="color3">#06E624</color>
-    <color name="color4">#063970</color>
+    <color name="color4">#A6D1FF</color>
     <color name="color5">#03FFFD</color>
     <color name="color6">#8CCDFF</color>
     <color name="color7">#da8b5f</color>
     <color name="color8">#6C7A89</color>
 
-
+    <array name="colors">
+        <item>#FF5722</item>
+        <item>#DDD101</item>
+        <item>#06E624</item>
+        <item>#A6D1FF</item>
+        <item>#03FFFD</item>
+        <item>#8CCDFF</item>
+        <item>#da8b5f</item>
+        <item>#6C7A89</item>
+        <item>#66bb6a</item>
+        <item>#ffee58</item>
+        <item>#ffa726</item>
+        <item>#ff7043</item>
+        <item>@color/white</item>
+    </array>
 
 </resources>

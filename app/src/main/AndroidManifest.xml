@@ -24,11 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".addnote.view.AddNoteActivity"
-            android:exported="false"
-            android:theme="@style/Theme.NotesApp.AddNoteActivity" />
-        <activity
-            android:name=".home.view.MainActivity"
+            android:name=".MainActivity"
             android:exported="true" />
 
     </application>
