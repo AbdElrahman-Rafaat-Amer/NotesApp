@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +31,13 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
-import com.skydoves.colorpickerview.ColorEnvelope;
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
-import com.skydoves.colorpickerview.listeners.ColorListener;
+
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class AddNoteFragment extends Fragment {
 
@@ -44,7 +46,7 @@ public class AddNoteFragment extends Fragment {
     private AddNoteViewModel noteViewModel;
     private boolean isTextChanged = false;
     private Note note;
-    private int noteColor = R.color.white;
+    private int noteColor;
     private boolean isUpdate = false;
 
     @Override
@@ -58,11 +60,11 @@ public class AddNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        noteColor = getResources().getColor(R.color.white, null);
         checkIsEdit();
         checkRTL();
         initViewModel();
         watchText();
-
         onBackPressed();
 
         binding.goBackImageView.setOnClickListener(v -> {
@@ -84,7 +86,7 @@ public class AddNoteFragment extends Fragment {
             }
         });
 
-        binding.colorImageView.setOnClickListener(v -> {
+        binding.choseColorImageView.setOnClickListener(v -> {
             if (binding.colorPickerView.getVisibility() == View.GONE) {
                 binding.colorPickerView.setVisibility(View.VISIBLE);
                 chooseColor();
@@ -102,6 +104,12 @@ public class AddNoteFragment extends Fragment {
             binding.noteBodyEditText.setText(note.getBody());
             noteColor = note.getColor();
             isUpdate = true;
+            int[] colors = getResources().getIntArray(R.array.colors);
+            int colorIndex = Arrays.stream(colors).boxed()
+                    .collect(Collectors.toList())
+                    .indexOf(noteColor);
+            RadioButton radioButton = (RadioButton) binding.colorPickerView.findViewWithTag(colorIndex + "");
+            radioButton.setChecked(true);
         } catch (Exception exception) {
             Log.i(TAG, "onViewCreated: exception-----------------> " + exception.getMessage());
         }
@@ -128,35 +136,15 @@ public class AddNoteFragment extends Fragment {
         ).get(AddNoteViewModel.class);
     }
 
-/*    private void choseColor() {
-        binding.color1.setOnClickListener(v -> noteColor = R.color.color1);
-
-        binding.color2.setOnClickListener(v -> noteColor = R.color.color2);
-
-        binding.color3.setOnClickListener(v -> noteColor = R.color.color3);
-
-        binding.color4.setOnClickListener(v -> noteColor = R.color.color4);
-
-        binding.color5.setOnClickListener(v -> noteColor = R.color.color5);
-
-        binding.color6.setOnClickListener(v -> noteColor = R.color.color6);
-
-        binding.color7.setOnClickListener(v -> noteColor = R.color.color7);
-
-        binding.color8.setOnClickListener(v -> noteColor = R.color.color8);
-    }*/
 
     private void chooseColor() {
-      /*  binding.colorPickerView.setColorListener(new ColorEnvelopeListener() {
-            @Override
-            public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                Log.i(TAG, "onColorSelected: noteColor before--------------- > " + noteColor);
-                noteColor = envelope.getColor();
-                Log.i(TAG, "onColorSelected: noteColor after--------------- > " + noteColor);
-                binding.noteTitleEditText.setText("#" + envelope.getHexCode());
-                binding.noteTitleEditText.setBackgroundColor(noteColor);
-            }
-        });*/
+        binding.colorPickerView.setOnCheckedChangeListener((group, checkedId) -> {
+            int selectedOption = binding.colorPickerView.getCheckedRadioButtonId();
+            RadioButton radioButton = getView().findViewById(selectedOption);
+            int color = Integer.parseInt(radioButton.getTag().toString());
+            int[] colors = getResources().getIntArray(R.array.colors);
+            noteColor = colors[color];
+        });
     }
 
     private void watchText() {
@@ -210,17 +198,6 @@ public class AddNoteFragment extends Fragment {
             }
         });
     }
-
-/*    @Override
-    public void onBackPressed() {
-        if (isTextChanged) {
-            if (isUpdate)
-                addDialogNote(getString(R.string.save_changes));
-            else
-                addDialogNote(getString(R.string.discard_note));
-        } else
-            super.onBackPressed();
-    }*/
 
     private void addDialogNote(String message) {
         View view = getLayoutInflater().inflate(R.layout.dialog_layout, null);

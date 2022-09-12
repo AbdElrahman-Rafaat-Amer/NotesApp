@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Notes App</string>
     <string name="add_note">Add Note</string>
-    <string name="pinned_note">Pinned Note</string>
+    <string name="pinned_note">Pinned</string>
     <string name="pin_note">Pin/Unpin</string>
     <string name="go_back">Go back</string>
     <string name="save_note">Save Note</string>
@@ -13,13 +13,14 @@
     <string name="cancel_changes">Cancel Changes</string>
     <string name="title_error">note title can\'t be empty</string>
     <string name="body_error">note body can\'t be empty</string>
-    <string name="no_notes">Create your first note !</string>
+    <string name="add_first_note">Create your first note !</string>
     <string name="search_note">Enter note title.....</string>
     <string name="delete_note">Delete</string>
     <string name="empty_search">File not found. Try searching again.</string>
     <string name="empty_notes">Create your first note !</string>
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
+    <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
 
 
     <string name="dummy_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -71,5 +72,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_note">Edite note</string>
+    <string name="list_note">List/Grid</string>
+    <string name="splash_desc">Write what you want.....</string>
+    <string name="no_notes">There is no note exist</string>
 
 </resources>

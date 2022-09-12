@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.home.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,13 +18,28 @@ public class NoteViewModel extends ViewModel {
     private final MutableLiveData<List<Note>> _notes = new MutableLiveData<>();
     public LiveData<List<Note>> notes = _notes;
 
+    private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
+    public LiveData<Boolean> isList = _isList;
+
     public NoteViewModel(RepositoryInterface repositoryInterface, Application application) {
         this.repositoryInterface = repositoryInterface;
         this.application = application;
     }
 
+    public void getLayoutMangerStyle() {
+        boolean isList = repositoryInterface.getLayoutMangerStyle();
+        Log.i("HomeFragment", "getLayoutMangerStyle View: isList---------------------> " + isList);
+        _isList.postValue(isList);
+    }
+
+    public void setLayoutMangerStyle(boolean isList) {
+        repositoryInterface.setLayoutMangerStyle(isList);
+    }
+
     public void getAllNotes() {
+        Log.i("HomeFragment", "getAllNotes: ---------------------> ");
         notes = repositoryInterface.getAllNotes();
+        Log.i("HomeFragment", "getAllNotes: size---------------------> " + notes);
     }
 
     public void updateNote(Note note) {

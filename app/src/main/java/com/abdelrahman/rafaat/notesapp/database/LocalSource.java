@@ -37,6 +37,7 @@ public class LocalSource implements LocalSourceInterface {
         return notes;
     }
 
+
     @Override
     public void updateNote(int id, String title, String body) {
         new Thread(() -> dao.updateNote(id, title, body)).start();

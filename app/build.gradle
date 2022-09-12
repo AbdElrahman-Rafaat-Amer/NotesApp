@@ -57,7 +57,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.5.2"
     implementation "androidx.navigation:navigation-ui:2.5.2"
 
-    implementation "com.github.skydoves:colorpickerview:2.2.4"
+    //Passcode
 
-  //  implementation 'io.github.eltos:simpledialogfragments:3.6.3'
 }

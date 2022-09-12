@@ -1,9 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.model;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
 
 import java.util.List;
 
@@ -18,4 +15,8 @@ public interface RepositoryInterface {
     void updateNote(Note note);
 
     void deleteNote(int id);
+
+    boolean getLayoutMangerStyle();
+
+    void setLayoutMangerStyle(boolean isList);
 }

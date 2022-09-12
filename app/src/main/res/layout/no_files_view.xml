@@ -28,7 +28,7 @@
         android:padding="16dp"
         android:text="@string/empty_search"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/color_dark_primary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

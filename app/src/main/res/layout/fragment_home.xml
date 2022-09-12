@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/root_View"
     android:layout_height="match_parent"
     tools:context=".home.view.HomeFragment">
 
@@ -30,7 +31,8 @@
         android:id="@+id/note_searchView"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_margin="7sp"
+        android:layout_marginHorizontal="7sp"
+        android:layout_marginTop="2sp"
         android:background="@drawable/ic_search_view_background"
         android:iconifiedByDefault="false"
         android:queryHint="@string/search_note"
@@ -44,6 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/note_searchView"
         tools:listitem="@layout/custom_row_note" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNote_floatingActionButton"
