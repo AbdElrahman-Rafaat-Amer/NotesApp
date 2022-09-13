@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/mainColor</item>
         <!-- Customize your theme here. -->
+        <item name="pinViewStyle">@style/PinWidget.PinView</item>
     </style>
 
 

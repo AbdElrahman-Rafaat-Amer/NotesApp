@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.home.view;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import androidx.cardview.widget.CardView;
 

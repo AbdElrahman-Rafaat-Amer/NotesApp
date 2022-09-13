@@ -23,6 +23,9 @@ public interface NotesDAO {
     @Query("UPDATE notes SET title = :title, body = :body WHERE id = :id")
     void updateNote(int id, String title, String body);
 
+    @Query("UPDATE notes SET password = :password WHERE id = :id")
+    void lockNote(int id, String password);
+
     @Update
     void updateNote(Note note);
 

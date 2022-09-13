@@ -29,7 +29,7 @@
         android:padding="16dp"
         android:text="@string/empty_notes"
         android:textAlignment="center"
-        android:textColor="@color/color_dark_primary"
+        android:textColor="?colorOnSecondary"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

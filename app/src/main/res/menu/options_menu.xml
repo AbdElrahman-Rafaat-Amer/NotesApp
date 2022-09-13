@@ -7,4 +7,8 @@
     <item
         android:id="@+id/delete_note"
         android:title="@string/delete_note" />
+
+    <item
+        android:id="@+id/lock_note"
+        android:title="@string/lock" />
 </menu>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addnote.view.AddNoteFragment">
+    tools:context=".ui.view.AddNoteFragment">
 
     <ImageView
         android:id="@+id/goBack_imageView"
@@ -143,7 +143,7 @@
         android:background="@android:color/transparent"
         android:hint="@string/title"
         android:inputType="textMultiLine|text"
-        android:textColor="@color/color_dark_primary"
+        android:textColor="?colorOnSecondary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/color_picker_view" />
@@ -158,7 +158,7 @@
         android:gravity="top"
         android:hint="@string/body"
         android:inputType="textMultiLine|text"
-        android:textColor="@color/color_dark_primary"
+        android:textColor="?colorOnSecondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
 
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splash_animation"
         android:layout_width="match_parent"
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome"
         android:textAlignment="center"
-        android:textColor="@color/color_dark_primary"
+        android:textColor="?colorOnSecondary"
         android:textSize="80sp"
         android:textStyle="bold"
         android:transitionName="logo_text"
@@ -43,12 +44,11 @@
         android:layout_marginBottom="32dp"
         android:text="@string/splash_desc"
         android:textAlignment="center"
-        android:textColor="@color/color_dark_primary"
+        android:textColor="?colorOnSecondary"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_textView" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

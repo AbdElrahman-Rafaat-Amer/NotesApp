@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.home.viewmodel;
+package com.abdelrahman.rafaat.notesapp.ui.viewmodel;
 
 import android.app.Application;
 

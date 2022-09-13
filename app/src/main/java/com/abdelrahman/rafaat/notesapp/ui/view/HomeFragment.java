@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.home.view;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.abdelrahman.rafaat.notesapp.home.viewmodel.NotesViewModelFactory;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +26,7 @@ import android.widget.PopupMenu;
 import android.widget.SearchView;
 
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
-import com.abdelrahman.rafaat.notesapp.home.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
@@ -188,19 +188,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener, Popu
         });
     }
 
-    @Override
-    public void onClickListener(Note note) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("NOTE", note);
-        Navigation.findNavController(getView()).navigate(R.id.show_note_fragment, bundle);
-    }
-
-    @Override
-    public void onLongClick(Note note, CardView cardView) {
-        selectedNote = note;
-        showPopupMenu(cardView);
-    }
-
     private void filter(String title) {
         List<Note> filteredList = new ArrayList<>();
 
@@ -236,10 +223,27 @@ public class HomeFragment extends Fragment implements OnNotesClickListener, Popu
         adapter.setList(pinnedNotes);
     }
 
+    @Override
+    public void onClickListener(Note note) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("NOTE", note);
+        if (note.getPassword().isEmpty())
+            Navigation.findNavController(getView()).navigate(R.id.show_note_fragment, bundle);
+        else
+            Navigation.findNavController(getView()).navigate(R.id.password_fragment, bundle);
+    }
+
+    @Override
+    public void onLongClick(Note note, CardView cardView) {
+        selectedNote = note;
+        showPopupMenu(cardView);
+    }
+
+
     private void showPopupMenu(CardView cardView) {
         PopupMenu popupMenu = new PopupMenu(getContext(), cardView);
         popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.inflate(R.menu.popup_menu);
+        popupMenu.inflate(R.menu.options_menu);
         popupMenu.show();
     }
 
@@ -253,14 +257,21 @@ public class HomeFragment extends Fragment implements OnNotesClickListener, Popu
             case R.id.delete_note:
                 noteViewModel.deleteNote(selectedNote.getId());
                 break;
+            case R.id.lock_note:
+                if (selectedNote.getPassword().isEmpty()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("NOTE", selectedNote);
+                    Navigation.findNavController(getView()).navigate(R.id.password_fragment, bundle);
 
-
+                } else
+                    noteViewModel.lockNote(selectedNote.getId(), "");
+                break;
         }
         return false;
     }
 
     private void showSnackBar() {
-        Snackbar snackBar = Snackbar.make(binding.rootView,
+        Snackbar snackBar = Snackbar.make(binding.getRoot(),
                 getString(R.string.no_notes),
                 Snackbar.LENGTH_SHORT
         ).setActionTextColor(Color.WHITE);

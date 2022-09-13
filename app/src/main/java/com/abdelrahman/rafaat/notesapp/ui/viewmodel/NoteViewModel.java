@@ -1,7 +1,6 @@
-package com.abdelrahman.rafaat.notesapp.home.viewmodel;
+package com.abdelrahman.rafaat.notesapp.ui.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,8 +14,7 @@ import java.util.List;
 public class NoteViewModel extends ViewModel {
     RepositoryInterface repositoryInterface;
     Application application;
-    private final MutableLiveData<List<Note>> _notes = new MutableLiveData<>();
-    public LiveData<List<Note>> notes = _notes;
+    public LiveData<List<Note>> notes;
 
     private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
     public LiveData<Boolean> isList = _isList;
@@ -28,7 +26,6 @@ public class NoteViewModel extends ViewModel {
 
     public void getLayoutMangerStyle() {
         boolean isList = repositoryInterface.getLayoutMangerStyle();
-        Log.i("HomeFragment", "getLayoutMangerStyle View: isList---------------------> " + isList);
         _isList.postValue(isList);
     }
 
@@ -37,9 +34,11 @@ public class NoteViewModel extends ViewModel {
     }
 
     public void getAllNotes() {
-        Log.i("HomeFragment", "getAllNotes: ---------------------> ");
         notes = repositoryInterface.getAllNotes();
-        Log.i("HomeFragment", "getAllNotes: size---------------------> " + notes);
+    }
+
+    public void saveNote(Note note) {
+        repositoryInterface.insertNote(note);
     }
 
     public void updateNote(Note note) {
@@ -48,5 +47,9 @@ public class NoteViewModel extends ViewModel {
 
     public void deleteNote(int noteID) {
         repositoryInterface.deleteNote(noteID);
+    }
+
+    public void lockNote(int noteID, String password) {
+        repositoryInterface.lockNote(noteID, password);
     }
 }

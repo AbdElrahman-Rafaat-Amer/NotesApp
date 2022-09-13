@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.addnote.view;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.app.AlertDialog;
 import android.graphics.Rect;
@@ -20,15 +20,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.addnote.viewmodel.AddNoteViewModel;
-import com.abdelrahman.rafaat.notesapp.addnote.viewmodel.AddNotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 
@@ -43,7 +42,7 @@ public class AddNoteFragment extends Fragment {
 
     private static final String TAG = "AddNoteFragment";
     private FragmentAddNoteBinding binding;
-    private AddNoteViewModel noteViewModel;
+    private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
     private Note note;
     private int noteColor;
@@ -124,7 +123,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void initViewModel() {
-        AddNotesViewModelFactory viewModelFactory = new AddNotesViewModelFactory(
+        NotesViewModelFactory viewModelFactory = new NotesViewModelFactory(
                 Repository.getInstance(
                         LocalSource.getInstance(getContext()), getActivity().getApplication()
                 ), getActivity().getApplication()
@@ -133,7 +132,7 @@ public class AddNoteFragment extends Fragment {
         noteViewModel = new ViewModelProvider(
                 this,
                 viewModelFactory
-        ).get(AddNoteViewModel.class);
+        ).get(NoteViewModel.class);
     }
 
 
@@ -230,7 +229,7 @@ public class AddNoteFragment extends Fragment {
 
         discardButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            Navigation.findNavController(view).popBackStack();
+            Navigation.findNavController(getView()).popBackStack();
         });
 
     }

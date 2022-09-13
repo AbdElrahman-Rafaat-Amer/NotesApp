@@ -61,6 +61,11 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public void lockNote(int noteID, String password) {
+        localSource.lockNote(noteID, password);
+    }
+
+    @Override
     public boolean getLayoutMangerStyle() {
         boolean isList = sharedPrefs.getBoolean("IS_LIST", false);
         Log.i("HomeFragment", "getLayoutMangerStyle Repo: isList------------------> " + isList);

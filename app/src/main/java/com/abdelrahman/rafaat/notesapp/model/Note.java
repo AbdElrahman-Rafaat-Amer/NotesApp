@@ -15,12 +15,15 @@ public class Note implements Serializable {
     private String date;
     private int color;
     private boolean isPinned;
-    
+    private String password;
+
     public Note(String title, String body, String date, int color) {
         this.title = title;
         this.body = body;
         this.date = date;
         this.color = color;
+        this.password = "";
+        this.isPinned = false;
     }
 
     public int getId() {
@@ -71,4 +74,11 @@ public class Note implements Serializable {
         isPinned = pinned;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/root_View"
     android:layout_height="match_parent"
-    tools:context=".home.view.HomeFragment">
+    tools:context=".ui.view.HomeFragment">
 
     <include
         android:id="@+id/no_search_layout"

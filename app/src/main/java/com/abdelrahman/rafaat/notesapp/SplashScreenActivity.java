@@ -3,20 +3,12 @@ package com.abdelrahman.rafaat.notesapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.abdelrahman.rafaat.notesapp.ui.view.MainActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
@@ -39,6 +31,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void initUI() {
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);
-        binding.titleTextView.setAnimation(bottomAnimation);
+        binding.descriptionTextView.setAnimation(bottomAnimation);
+
+        Animation topAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_top_animation);
+        binding.titleTextView.setAnimation(topAnimation);
     }
 }

@@ -17,4 +17,6 @@ public interface LocalSourceInterface {
     void updateNote(Note note);
 
     void deleteNote(int id);
+
+    void lockNote(int noteID, String password);
 }

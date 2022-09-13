@@ -16,6 +16,8 @@ public interface RepositoryInterface {
 
     void deleteNote(int id);
 
+    void lockNote(int noteID, String password);
+
     boolean getLayoutMangerStyle();
 
     void setLayoutMangerStyle(boolean isList);

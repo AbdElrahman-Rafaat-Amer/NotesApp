@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;

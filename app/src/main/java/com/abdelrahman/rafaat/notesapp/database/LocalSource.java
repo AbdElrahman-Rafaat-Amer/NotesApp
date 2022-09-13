@@ -57,4 +57,14 @@ public class LocalSource implements LocalSourceInterface {
             }
         }).start();
     }
+
+    @Override
+    public void lockNote(int noteID, String password) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dao.lockNote(noteID, password);
+            }
+        }).start();
+    }
 }

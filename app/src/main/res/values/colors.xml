@@ -5,10 +5,10 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mainColor">#01AC18</color>
-    <color name="color_dark_primary">#000000</color>
     <color name="searchView_color">#535252</color>
     <color name="refresh_Color">#465BCF</color>
 
@@ -30,5 +30,6 @@
         <item>@color/color6</item>
         <item>@color/color7</item>
     </integer-array>
+
 
 </resources>

@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.shownotes;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.os.Bundle;
 
@@ -10,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.databinding.FragmentEditNoteBinding;
+import com.abdelrahman.rafaat.notesapp.databinding.FragmentSearchBinding;
 
+public class SearchFragment extends Fragment {
 
-public class EditNoteFragment extends Fragment {
-
-    private FragmentEditNoteBinding binding;
+    private FragmentSearchBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentEditNoteBinding.inflate(getLayoutInflater());
+        binding = FragmentSearchBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 

@@ -36,6 +36,9 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_image_background.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_info_icon.xml" value="0.137" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.137" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock1.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock2.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_palette_white.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_rafiki.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_save.xml" value="0.1795" />
@@ -56,9 +59,12 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_add_note.xml" value="0.2604166666666667" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_edit_note.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_home.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_password.xml" value="0.21376656690893545" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/fragment_show.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_files_view.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_notes_view.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/note_password.xml" value="0.264" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/popup_menu.xml" value="0.27025641025641023" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/setting_menu.xml" value="0.27447916666666666" />
       </map>

@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.home.view;
+package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +16,9 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
-    private String TAG = "NotesAdapter";
+    private static final String TAG = "NotesAdapter";
     private List<Note> notes = new ArrayList<>();
     private OnNotesClickListener onClickListener;
 
@@ -38,10 +37,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder holder, int position) {
         Note currentNote = notes.get(position);
-        holder.noteTitle.setText(currentNote.getTitle());
-        holder.noteBody.setText(currentNote.getBody());
-        holder.noteDate.setText(currentNote.getDate());
-        holder.noteDate.setSelected(true);
+        Log.i(TAG, "onBindViewHolder: position-----------------> " + position);
+        Log.i(TAG, "onBindViewHolder: password----------------------> " + currentNote.getPassword());
+
+        holder.bind(currentNote);
+
+       /* if (currentNote.getPassword().isEmpty()) {
+            holder.noteTitle.setText(currentNote.getTitle());
+            holder.noteBody.setText(currentNote.getBody());
+            holder.noteDate.setText(currentNote.getDate());
+            holder.noteDate.setSelected(true);
+            Log.i(TAG, "onBindViewHolder: in if postion------------------> " + position);
+        } else {
+            holder.lockedNote.setVisibility(View.VISIBLE);
+         *//*   holder.noteTitle.setVisibility(View.GONE);
+            holder.noteBody.setVisibility(View.GONE);
+            holder.noteDate.setVisibility(View.GONE);*//*
+            Log.i(TAG, "onBindViewHolder: in else postion------------------> " + position);
+        }
         if (currentNote.isPinned())
             holder.pinnedImage.setVisibility(View.VISIBLE);
         else
@@ -55,7 +68,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.rootView.setOnLongClickListener(view -> {
             onClickListener.onLongClick(currentNote, holder.rootView);
             return true;
-        });
+        });*/
     }
 
     @Override
@@ -70,20 +83,60 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView pinnedImage;
+        private ImageView lockedNote;
         private TextView noteTitle;
         private TextView noteBody;
         private TextView noteDate;
         private CardView rootView;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             pinnedImage = itemView.findViewById(R.id.pinnedNote_imageView);
+            lockedNote = itemView.findViewById(R.id.locked_note_ImageView);
             noteTitle = itemView.findViewById(R.id.noteTitle_textView);
             noteBody = itemView.findViewById(R.id.noteBody_textView);
             noteDate = itemView.findViewById(R.id.noteDate_textView);
             rootView = itemView.findViewById(R.id.root_View);
         }
+
+        void bind(Note currentNote) {
+            if (currentNote.getPassword().isEmpty()) {
+                noteTitle.setText(currentNote.getTitle());
+                noteBody.setText(currentNote.getBody());
+                noteDate.setText(currentNote.getDate());
+                noteDate.setSelected(true);
+                lockedNote.setVisibility(View.GONE);
+                setViewVisibility(View.VISIBLE);
+            } else {
+                lockedNote.setVisibility(View.VISIBLE);
+                setViewVisibility(View.GONE);
+            }
+            if (currentNote.isPinned())
+                pinnedImage.setVisibility(View.VISIBLE);
+            else
+                pinnedImage.setVisibility(View.GONE);
+
+
+            rootView.setCardBackgroundColor(currentNote.getColor());
+
+            rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
+
+            rootView.setOnLongClickListener(view -> {
+                onClickListener.onLongClick(currentNote, rootView);
+                return true;
+            });
+
+        }
+
+        private void setViewVisibility(int visibility) {
+            noteTitle.setVisibility(visibility);
+            noteBody.setVisibility(visibility);
+            noteDate.setVisibility(visibility);
+        }
     }
+
+
 }
 
