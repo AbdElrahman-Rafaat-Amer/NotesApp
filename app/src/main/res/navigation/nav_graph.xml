@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_addNote"
-            app:destination="@id/add_note_fragment" />
+            app:destination="@id/add_note_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -31,15 +32,10 @@
             app:destination="@id/add_note_fragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/search_fragment"
-        android:name="com.abdelrahman.rafaat.notesapp.ui.view.SearchFragment"
-        android:label="edit note fragment"
-        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/password_fragment"
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.PasswordFragment"
         android:label="edit note fragment"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_password" />
 </navigation>

@@ -13,11 +13,21 @@
         <item name="android:statusBarColor">@color/mainColor</item>
         <!-- Customize your theme here. -->
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
+        <item name="alertDialogTheme">@style/CustomAlertDialog</item>
     </style>
 
 
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="android:colorAccent">#f3f3f3</item>
+        <item name="android:textColorPrimary">#f3f3f3</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+
     </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/mainColor</item>
+    </style>
+
 
 </resources>

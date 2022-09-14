@@ -21,7 +21,7 @@
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
-    <string name="lock">Lock/UnLock</string>
+    <string name="lock">Lock</string>
     <string name="dummy_title">What is Lorem Ipsum?</string>
     <string name="dummy_date">19/06/2015 17:35:50, Utc</string>
     <string name="save">Save</string>
@@ -38,6 +38,11 @@
     <string name="password_hint">****</string>
     <string name="wrong_password">wrong password</string>
     <string name="enter_password">Enter password for your note…</string>
+    <string name="cancel">Cancel</string>
+    <string name="remove">Remove</string>
+    <string name="remove_password">Are yu sure to remove password ??</string>
+    <string name="remove_note">Are yu sure to remove this note ??</string>
+    <string name="note_locked">This note already locked</string>
 
     <string name="dummy_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
@@ -76,6 +81,7 @@
         uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
         sometimes on purpose (injected humour and the like).
     </string>
+
 
 
 </resources>

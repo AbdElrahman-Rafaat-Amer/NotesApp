@@ -15,6 +15,7 @@ import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
@@ -37,38 +38,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull NotesAdapter.ViewHolder holder, int position) {
         Note currentNote = notes.get(position);
-        Log.i(TAG, "onBindViewHolder: position-----------------> " + position);
-        Log.i(TAG, "onBindViewHolder: password----------------------> " + currentNote.getPassword());
-
         holder.bind(currentNote);
-
-       /* if (currentNote.getPassword().isEmpty()) {
-            holder.noteTitle.setText(currentNote.getTitle());
-            holder.noteBody.setText(currentNote.getBody());
-            holder.noteDate.setText(currentNote.getDate());
-            holder.noteDate.setSelected(true);
-            Log.i(TAG, "onBindViewHolder: in if postion------------------> " + position);
-        } else {
-            holder.lockedNote.setVisibility(View.VISIBLE);
-         *//*   holder.noteTitle.setVisibility(View.GONE);
-            holder.noteBody.setVisibility(View.GONE);
-            holder.noteDate.setVisibility(View.GONE);*//*
-            Log.i(TAG, "onBindViewHolder: in else postion------------------> " + position);
-        }
-        if (currentNote.isPinned())
-            holder.pinnedImage.setVisibility(View.VISIBLE);
-        else
-            holder.pinnedImage.setVisibility(View.GONE);
-
-
-        holder.rootView.setCardBackgroundColor(currentNote.getColor());
-
-        holder.rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
-
-        holder.rootView.setOnLongClickListener(view -> {
-            onClickListener.onLongClick(currentNote, holder.rootView);
-            return true;
-        });*/
     }
 
     @Override
@@ -113,20 +83,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 lockedNote.setVisibility(View.VISIBLE);
                 setViewVisibility(View.GONE);
             }
-            if (currentNote.isPinned())
+            if (currentNote.isPinned()) {
                 pinnedImage.setVisibility(View.VISIBLE);
-            else
+              //  Collections.swap(notes, getAdapterPosition(), 0);
+            } else
                 pinnedImage.setVisibility(View.GONE);
-
 
             rootView.setCardBackgroundColor(currentNote.getColor());
 
             rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
-
-            rootView.setOnLongClickListener(view -> {
-                onClickListener.onLongClick(currentNote, rootView);
-                return true;
-            });
 
         }
 

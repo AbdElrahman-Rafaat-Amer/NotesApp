@@ -60,7 +60,4 @@ dependencies {
     //Passcode
     implementation 'io.github.chaosleung:pinview:1.4.4'
 
-    //library for circle Image
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-
 }

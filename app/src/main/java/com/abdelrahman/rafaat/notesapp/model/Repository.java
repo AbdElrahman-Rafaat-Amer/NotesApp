@@ -68,17 +68,14 @@ public class Repository implements RepositoryInterface {
     @Override
     public boolean getLayoutMangerStyle() {
         boolean isList = sharedPrefs.getBoolean("IS_LIST", false);
-        Log.i("HomeFragment", "getLayoutMangerStyle Repo: isList------------------> " + isList);
         return isList;
     }
 
     @Override
     public void setLayoutMangerStyle(boolean isList) {
-        Log.i("HomeFragment", "setLayoutMangerStyle Repo before: isList-----------------> " + isList);
         editor.putBoolean("IS_LIST", isList);
         editor.apply();
-
         boolean ss = sharedPrefs.getBoolean("IS_LIST", false);
-        Log.i("HomeFragment", "setLayoutMangerStyle Repo after: ss------------------> " + ss);
+
     }
 }
