@@ -46,11 +46,6 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void updateNote(int id, String title, String body) {
-        localSource.updateNote(id, title, body);
-    }
-
-    @Override
     public void updateNote(Note note) {
         localSource.updateNote(note);
     }

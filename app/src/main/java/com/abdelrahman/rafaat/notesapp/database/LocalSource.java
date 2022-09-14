@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -12,7 +13,6 @@ public class LocalSource implements LocalSourceInterface {
     private static LocalSource localSource = null;
     private NotesDAO dao;
     private LiveData<List<Note>> notes;
-
     public LocalSource(Context context) {
         AppDatabase db = AppDatabase.getInstance(context.getApplicationContext());
         dao = db.notesDAO();
@@ -34,14 +34,16 @@ public class LocalSource implements LocalSourceInterface {
 
     @Override
     public LiveData<List<Note>> getAllNotes() {
+        //      Log.i("LocalSource", "getAllNotes: notes--------------------------> " + notes.getValue().size());
+        //      Log.i("LocalSource", "getAllNotes: before pinnedNotes------------------> " + pinnedNotes.getValue().size());
+        //      Log.i("LocalSource", "getAllNotes: before nonPinnedNotes------------------> " + nonPinnedNotes.getValue().size());
+        //        boolean isAdded = pinnedNotes.getValue().addAll(nonPinnedNotes.getValue());
+        //      Log.i("LocalSource", "getAllNotes: isAdded----------------------------> " + isAdded);
+        //       Log.i("LocalSource", "getAllNotes: after pinnedNotes------------------> " + pinnedNotes.getValue().size());
+        //       Log.i("LocalSource", "getAllNotes: after nonPinnedNotes------------------> " + nonPinnedNotes.getValue().size());
         return notes;
     }
 
-
-    @Override
-    public void updateNote(int id, String title, String body) {
-        new Thread(() -> dao.updateNote(id, title, body)).start();
-    }
 
     @Override
     public void updateNote(Note note) {
