@@ -12,13 +12,14 @@ Colorized note app that you can write what you want in simple way.
 -Lock Notes: lock the notes with a pincode
 
 # Tools & Libraries
--Android studio.
--MVVM Architecture design pattern.
--Java
--Room
--View Binding
--Navigation Graph
--lottie Animation
+- Android studio.
+- Java.
+- MVVM Architecture design pattern
+- Room.
+- View Binding.
+- Navigation Graph.
+- Lottie Animation.
+
 
 # Screenshots
 ![photo_2022-09-18_20-23-13](https://user-images.githubusercontent.com/55184522/190922600-1e9713b0-4568-4002-8083-9844ba526998.jpg)
@@ -34,3 +35,6 @@ Colorized note app that you can write what you want in simple way.
 ![photo_2022-09-18_20-23-07](https://user-images.githubusercontent.com/55184522/190922618-ffe56ad5-484b-4a9e-9e4b-efe8dd7681ca.jpg)
 ![photo_2022-09-18_20-23-09](https://user-images.githubusercontent.com/55184522/190922619-9268a490-0af7-4595-9c10-ce1124b59f82.jpg)
 ![photo_2022-09-18_20-23-11](https://user-images.githubusercontent.com/55184522/190922621-acfada4f-b806-4b4f-9b84-7bbc8a16932b.jpg)
+
+# App APK
+https://drive.google.com/file/d/1Ajhm04aKK_NoMzx_yGr3gBVSfdpOQwhY/view?usp=sharing
