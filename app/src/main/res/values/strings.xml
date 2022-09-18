@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">Notes App</string>
+    <string name="app_name">Notes</string>
     <string name="add_note">Add Note</string>
     <string name="pinned_note">Pinned</string>
-    <string name="pin_note">Pin/Unpin</string>
     <string name="go_back">Go back</string>
     <string name="save_note">Save Note</string>
     <string name="title">Title</string>
@@ -15,15 +14,11 @@
     <string name="body_error">note body can\'t be empty</string>
     <string name="add_first_note">Create your first note !</string>
     <string name="search_note">Enter note title.....</string>
-    <string name="delete_note">Delete</string>
     <string name="empty_search">File not found. Try searching again.</string>
     <string name="empty_notes">Create your first note !</string>
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
-    <string name="lock">Lock</string>
-    <string name="dummy_title">What is Lorem Ipsum?</string>
-    <string name="dummy_date">19/06/2015 17:35:50, Utc</string>
     <string name="save">Save</string>
     <string name="keep">Keep</string>
     <string name="discard_note">Are your sure you want discard your changes ?</string>
@@ -44,7 +39,9 @@
     <string name="remove_note">Are yu sure to remove this note ??</string>
     <string name="note_locked">This note already locked</string>
 
-    <string name="dummy_body">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
+    <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
+    <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
         when an unknown printer took a galley of type and scrambled it to make a type specimen book.
         It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
@@ -81,7 +78,5 @@
         uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
         sometimes on purpose (injected humour and the like).
     </string>
-
-
 
 </resources>

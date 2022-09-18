@@ -1,9 +1,9 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,13 +11,11 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +23,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,7 +31,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.SearchView;
 
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
@@ -40,14 +38,11 @@ import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-
-import android.util.Log;
 
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -83,16 +78,15 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         binding.addNoteFloatingActionButton.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_home_to_addNote)
         );
 
+        search();
         initRecyclerView();
         initViewModel();
         observeViewModel();
         initMenu();
-        search();
         onBackPressed();
 
     }
@@ -106,13 +100,14 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (noteList.isEmpty())
-                    showSnackBar(getString(R.string.no_notes));
-                else {
-                    isSearching = true;
-                    filter(newText);
-                }
 
+                if (!newText.trim().isEmpty())
+                    if (noteList.isEmpty())
+                        showSnackBar(getString(R.string.no_notes));
+                    else {
+                        isSearching = true;
+                        filter(newText);
+                    }
                 return true;
             }
         });
@@ -122,16 +117,15 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         List<Note> filteredList = new ArrayList<>();
 
         for (Note note : noteList) {
-            if (note.getTitle().toLowerCase().contains(title.toLowerCase())) {
+            if (note.getTitle().toLowerCase().contains(title.toLowerCase()))
                 filteredList.add(note);
-            }
         }
         if (filteredList.isEmpty()) {
             binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             binding.noSearchLayout.noFilesView.setVisibility(View.VISIBLE);
-        } else {
+        } else
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-        }
+
         adapter.setList(filteredList);
     }
 
@@ -142,7 +136,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         binding.notesRecyclerview.setLayoutAnimation(animation);
-        itemsAnimation();
+        swipeRecyclerView();
     }
 
     private void setupLayoutManger() {
@@ -197,9 +191,9 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_note:
-                        if (noteList.isEmpty())
+                        if (noteList.isEmpty()) {
                             showSnackBar(getString(R.string.no_notes));
-                        else {
+                        } else {
                             isList = !isList;
                             setupLayoutManger();
                             adapter.notifyDataSetChanged();
@@ -207,9 +201,9 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                         }
                         break;
                     case R.id.pinned_note:
-                        if (noteList.isEmpty())
+                        if (noteList.isEmpty()) {
                             showSnackBar(getString(R.string.no_notes));
-                        else
+                        } else
                             showPinnedNotes();
                         break;
                 }
@@ -276,18 +270,12 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             Navigation.findNavController(getView()).navigate(R.id.password_fragment, bundle);
     }
 
-    private void itemsAnimation() {
+    private void swipeRecyclerView() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                   @NonNull RecyclerView.ViewHolder target) {
-/*
-                int fromPosition = viewHolder.getAdapterPosition();
-                int targetPosition = target.getAdapterPosition();
-                Collections.swap(noteList, fromPosition, targetPosition);
-                recyclerView.getAdapter().notifyItemMoved(fromPosition, targetPosition);
-                Log.i(TAG, "onMove: ---------------------->");*/
                 return false;
             }
 
@@ -314,10 +302,8 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     canvas.clipRect(viewHolder.itemView.getRight() + (int) dX, viewHolder.itemView.getTop(),
                             viewHolder.itemView.getRight(), viewHolder.itemView.getBottom());
 
-                    final ColorDrawable background = new ColorDrawable(getResources().getColor(R.color.red, null));
-                    background.setBounds(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(),
-                            viewHolder.itemView.getRight(), viewHolder.itemView.getBottom());
-                    background.draw(canvas);
+                    drawBackGround(R.color.red, viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(), viewHolder.itemView.getRight(), viewHolder.itemView.getBottom(), canvas);
+
 
                     Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.ic_delete);
                     int halfIcon = icon.getIntrinsicHeight() / 2;
@@ -325,20 +311,18 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     int imgLeft = viewHolder.itemView.getRight() - halfIcon * 2;
                     icon.setBounds(imgLeft, top, viewHolder.itemView.getRight(), top + icon.getIntrinsicHeight());
                     icon.draw(canvas);
+
                 } else if (dX > 0) {
                     //swapRight
                     canvas.clipRect(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(),
                             viewHolder.itemView.getLeft() + (int) dX, viewHolder.itemView.getBottom());
-                    final ColorDrawable background = new ColorDrawable(getResources().getColor(R.color.mainColor, null));
-                    background.setBounds(viewHolder.itemView.getRight(), viewHolder.itemView.getTop(),
-                            viewHolder.itemView.getLeft(), viewHolder.itemView.getBottom());
-                    background.draw(canvas);
 
-                    int x = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, recyclerView.getContext().getResources().getDisplayMetrics());
-                    Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.pin);
-                    int halfIcon = 82;
+                    drawBackGround(R.color.mainColor, viewHolder.itemView.getRight(), viewHolder.itemView.getTop(), viewHolder.itemView.getLeft(), viewHolder.itemView.getBottom(), canvas);
+
+                    Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.ic_pin);
+                    int halfIcon = 90;
                     int top = viewHolder.itemView.getTop() + ((viewHolder.itemView.getBottom() - viewHolder.itemView.getTop()) / 2 - halfIcon);
-                    icon.setBounds(viewHolder.itemView.getLeft() + x, top, viewHolder.itemView.getLeft() + x + halfIcon * 2, top + halfIcon * 2);
+                    icon.setBounds(viewHolder.itemView.getLeft(), top, viewHolder.itemView.getLeft() + halfIcon * 2, top + halfIcon * 2);
                     icon.draw(canvas);
                 }
 
@@ -349,8 +333,13 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         itemTouchHelper.attachToRecyclerView(binding.notesRecyclerview);
     }
 
-    private void showAlertDialog() {
+    private void drawBackGround(int color, int left, int top, int right, int bottom, Canvas canvas) {
+        final ColorDrawable background = new ColorDrawable(getResources().getColor(color, null));
+        background.setBounds(left, top, right, bottom);
+        background.draw(canvas);
+    }
 
+    private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
 
         builder.setMessage(getString(R.string.remove_note))
@@ -366,4 +355,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
+
+
 }

@@ -85,7 +85,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
             if (currentNote.isPinned()) {
                 pinnedImage.setVisibility(View.VISIBLE);
-              //  Collections.swap(notes, getAdapterPosition(), 0);
             } else
                 pinnedImage.setVisibility(View.GONE);
 

@@ -20,7 +20,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="7sp"
             android:contentDescription="@string/pinned_note"
-            android:src="@drawable/pin"
+            android:src="@drawable/ic_pin"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
