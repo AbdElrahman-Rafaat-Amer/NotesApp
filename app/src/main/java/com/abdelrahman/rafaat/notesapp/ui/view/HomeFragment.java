@@ -1,7 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,11 +19,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
-
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -101,13 +97,12 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if (!newText.trim().isEmpty())
-                    if (noteList.isEmpty())
-                        showSnackBar(getString(R.string.no_notes));
-                    else {
-                        isSearching = true;
-                        filter(newText);
-                    }
+                if (noteList.isEmpty() && !newText.trim().isEmpty()) {
+                    showSnackBar(getString(R.string.no_notes));
+                } else {
+                    isSearching = true;
+                    filter(newText);
+                }
                 return true;
             }
         });
