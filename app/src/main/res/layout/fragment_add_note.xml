@@ -6,161 +6,351 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.AddNoteFragment">
 
-    <ImageView
-        android:id="@+id/goBack_imageView"
-        android:layout_width="35sp"
-        android:layout_height="35sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="25sp"
-        android:background="@drawable/ic_search_view_background"
-        android:contentDescription="@string/go_back"
-        android:src="@drawable/ic_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/choseColor_imageView"
-        android:layout_width="35sp"
-        android:layout_height="35sp"
-        android:layout_marginTop="25sp"
-        android:layout_marginEnd="10sp"
-        android:background="@drawable/ic_search_view_background"
-        android:contentDescription="@string/choose_color"
-        android:padding="2sp"
-        android:src="@drawable/ic_palette_white"
-        app:layout_constraintEnd_toStartOf="@id/save_ImageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <RadioGroup
-        android:id="@+id/color_picker_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="7sp"
-        android:layout_marginTop="7dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/noteTitle_editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choseColor_imageView">
-
-        <RadioButton
-            android:id="@+id/color1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_color1"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="14sp"
-            android:tag="0" />
-
-        <RadioButton
-            android:id="@+id/color2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="4sp"
-            android:background="@drawable/ic_color2"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="1" />
-
-        <RadioButton
-            android:id="@+id/color3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_color3"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="2" />
-
-        <RadioButton
-            android:id="@+id/color4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="4sp"
-            android:background="@drawable/ic_color4"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="3" />
-
-        <RadioButton
-            android:id="@+id/color5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_color5"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="4" />
-
-        <RadioButton
-            android:id="@+id/color6"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="4sp"
-            android:background="@drawable/ic_color6"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="5" />
-
-        <RadioButton
-            android:id="@+id/color7"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_color7"
-            android:button="@android:color/transparent"
-            android:drawableTop="@drawable/gender_background_selector"
-            android:paddingTop="16sp"
-            android:tag="6" />
-
-    </RadioGroup>
-
-    <ImageView
-        android:id="@+id/save_ImageView"
-        android:layout_width="35sp"
-        android:layout_height="35sp"
-        android:layout_marginTop="25sp"
-        android:layout_marginEnd="10sp"
-        android:background="@drawable/ic_search_view_background"
-        android:contentDescription="@string/save_note"
-        android:scaleType="center"
-        android:src="@drawable/ic_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/noteTitle_editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15sp"
-        android:autofillHints="@string/title"
-        android:background="@android:color/transparent"
-        android:hint="@string/title"
-        android:inputType="textMultiLine|text"
-        android:textColor="?colorOnSecondary"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/color_picker_view" />
-
-    <EditText
-        android:id="@+id/noteBody_editText"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="15sp"
-        android:autofillHints="@string/body"
-        android:background="@android:color/transparent"
-        android:gravity="top"
-        android:hint="@string/body"
-        android:inputType="textMultiLine|text"
-        android:textColor="?colorOnSecondary"
-        android:textSize="20sp"
+        android:layout_marginBottom="5sp"
+        app:layout_constraintBottom_toTopOf="@+id/helper_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/goBack_imageView"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="25sp"
+                android:background="@drawable/ic_search_view_background"
+                android:contentDescription="@string/go_back"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/save_ImageView"
+                android:layout_width="35sp"
+                android:layout_height="35sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/ic_search_view_background"
+                android:contentDescription="@string/save_note"
+                android:scaleType="center"
+                android:src="@drawable/ic_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/noteTitle_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15sp"
+                android:autofillHints="@string/title"
+                android:background="@android:color/transparent"
+                android:hint="@string/title"
+                android:inputType="textMultiLine|text"
+                android:textColor="?colorOnSecondary"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/save_ImageView" />
+
+            <EditText
+                android:id="@+id/noteBody_editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15sp"
+                android:autofillHints="@string/body"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/body"
+                android:inputType="textMultiLine|text"
+                android:paddingBottom="15sp"
+                android:textColor="?colorOnSecondary"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/helper_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54sp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textOptions_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="T"
+            android:textColor="?colorOnSecondary"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/choseColor_imageView"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:contentDescription="@string/choose_color"
+            android:padding="2sp"
+            android:src="@drawable/ic_palette_white" />
+
+        <ImageView
+            android:id="@+id/choseImage_imageView"
+            android:layout_width="35sp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:contentDescription="@string/choose_color"
+            android:padding="2sp"
+            android:src="@drawable/ic_image" />
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/colors_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorOnPrimary"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/close_color_picker_view"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_marginStart="10sp"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <View
+                android:layout_width="30sp"
+                android:layout_height="50sp"
+                android:background="@drawable/ic_line"
+                android:contentDescription="@string/close"
+                android:rotation="90" />
+
+            <RadioGroup
+                android:id="@+id/color_picker_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1sp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="7sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view">
+
+                <RadioButton
+                    android:id="@+id/color1"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/ic_color1"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="0" />
+
+                <RadioButton
+                    android:id="@+id/color2"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:background="@drawable/ic_color2"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="1" />
+
+                <RadioButton
+                    android:id="@+id/color3"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/ic_color3"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="2" />
+
+                <RadioButton
+                    android:id="@+id/color4"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:background="@drawable/ic_color4"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="3" />
+
+                <RadioButton
+                    android:id="@+id/color5"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/ic_color5"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="4" />
+
+                <RadioButton
+                    android:id="@+id/color6"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:background="@drawable/ic_color6"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="5" />
+
+                <RadioButton
+                    android:id="@+id/color7"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:background="@drawable/ic_color7"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="6" />
+
+                <RadioButton
+                    android:id="@+id/color8"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:background="@drawable/ic_color8"
+                    android:button="@android:color/transparent"
+                    android:drawableTop="@drawable/gender_background_selector"
+                    android:paddingTop="9sp"
+                    android:tag="7" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/text_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorOnPrimary"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/close_text_picker_view"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:layout_marginStart="10sp"
+                android:contentDescription="@string/close"
+                android:src="@drawable/ic_close" />
+
+            <View
+                android:layout_width="30sp"
+                android:layout_height="50sp"
+                android:background="@drawable/ic_line"
+                android:contentDescription="@string/close"
+                android:rotation="90" />
+
+            <TextView
+                android:id="@+id/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:text="B"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/italic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I"
+                android:textSize="40sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:text="N"
+                android:textSize="40sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C"
+                android:textAlignment="center"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/viewStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:text="S"
+                android:textAlignment="viewStart"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/viewEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N"
+                android:textAlignment="viewEnd"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/ltr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:text="L"
+                android:textDirection="ltr"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/rtl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R"
+                android:textDirection="rtl"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

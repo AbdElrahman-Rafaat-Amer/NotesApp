@@ -14,11 +14,12 @@
 
     <color name="color1">#FF5722</color>
     <color name="color2">#DDD101</color>
-    <color name="color3">#F40000</color>
+    <color name="color3">#F45E5E</color>
     <color name="color4">#E88B02</color>
     <color name="color5">#03FFFD</color>
     <color name="color6">#8CCDFF</color>
     <color name="color7">#da8b5f</color>
+    <color name="color8">#D5ABFF</color>
 
 
     <integer-array name="colors">
@@ -29,6 +30,7 @@
         <item>@color/color5</item>
         <item>@color/color6</item>
         <item>@color/color7</item>
+        <item>@color/color8</item>
     </integer-array>
 
 

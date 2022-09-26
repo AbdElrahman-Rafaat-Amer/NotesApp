@@ -7,11 +7,14 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_background_button.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_background_discard_button.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_background_save_button.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_color8.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_delete.xml" value="0.137" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.137" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_line.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable-v24/ic_serach_view_background.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/a.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/b.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/dialog_background.xml" value="0.137" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/gender_background_selector.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/gender_checked_background.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/gender_unchecked_background.xml" value="0.1795" />
@@ -24,6 +27,8 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_back_arrow_icon.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_button_4.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_chevron_left.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_close.xml" value="0.18" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color1.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color2.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color3.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color4.xml" value="0.1795" />
@@ -31,12 +36,15 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color6.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color7.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_color_back.xml" value="0.1795" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_delete.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_done.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_edit.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_icons8_info_128.xml" value="0.137" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_image.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_image_background.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_info_icon.xml" value="0.137" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.137" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_line.xml" value="0.18" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock1.xml" value="0.1795" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/drawable/ic_lock2.xml" value="0.1795" />
