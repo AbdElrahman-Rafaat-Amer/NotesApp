@@ -77,7 +77,7 @@ public class ShowNoteFragment extends Fragment {
         if (note.getImagePaths().isEmpty()) {
             binding.showNoteBodyTextView.setText(note.getBody());
         } else {
-            for (int i = 0; i < note.getImagePaths().size(); i++) {
+            for (int i = 0; i < note.getImageIndices().size(); i++) {
                 Utils.insertImageToTextView(BitmapFactory.decodeFile(note.getImagePaths().get(i)), binding.showNoteBodyTextView, Integer.parseInt(note.getImageIndices().get(i)));
             }
         }

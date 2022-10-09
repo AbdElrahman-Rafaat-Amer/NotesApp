@@ -11,24 +11,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class Utils {
-
-    public static String UtilsTAG = "Utils";
+    private static final String TAG = "AddNoteFragment";
 
     public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText) {
 
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
-        editText.getText().insert(selectionCursor, "\n\n\n.");
+        editText.getText().insert(selectionCursor, "\n\n\n.~");
         selectionCursor = editText.getSelectionStart();
         setUpBuilder(editText, drawable, selectionCursor);
         editText.setSelection(selectionCursor);
         editText.append("\n\n");
     }
 
-    public static void insertImageToTextView(Bitmap bitmap, TextView textView, int selectionCursor) {
+    public static boolean insertImageToTextView(Bitmap bitmap, TextView textView, int selectionCursor) {
+        boolean isSuccess = false;
         BitmapDrawable drawable = setUpImage(bitmap);
-        textView.setText(textView.getText());
-        setUpBuilder(textView, drawable, selectionCursor);
+        if (drawable.getBitmap() != null) {
+            textView.setText(textView.getText());
+            setUpBuilder(textView, drawable, selectionCursor);
+            isSuccess = true;
+        }
+
+        return isSuccess;
     }
 
     private static BitmapDrawable setUpImage(Bitmap bitmap) {
@@ -39,7 +44,7 @@ public class Utils {
 
     private static void setUpBuilder(TextView textView, BitmapDrawable drawable, int selectionCursor) {
         SpannableStringBuilder builder = new SpannableStringBuilder(textView.getText());
-        builder.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_CENTER), selectionCursor - 1, selectionCursor,
+        builder.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_CENTER), selectionCursor - 2, selectionCursor,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.setText(builder);
     }

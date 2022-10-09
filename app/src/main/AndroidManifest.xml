@@ -3,16 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.abdelrahman.rafaat.notesapp">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_note"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/ic_note"
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
@@ -29,9 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.view.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            />
 
     </application>
 

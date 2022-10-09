@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
-import com.abdelrahman.rafaat.notesapp.ui.view.MainActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;

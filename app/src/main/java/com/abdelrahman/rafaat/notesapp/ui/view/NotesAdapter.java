@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.Utils;
+import com.abdelrahman.rafaat.notesapp.databinding.CustomRowNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -36,8 +37,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public NotesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_note, parent, false);
-        return new ViewHolder(view);
+        CustomRowNoteBinding binding =
+                CustomRowNoteBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new ViewHolder(binding);
     }
 
 
@@ -58,65 +60,51 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView pinnedImage;
-        private ImageView lockedNote;
-        private ImageView noteImage;
-        private TextView noteTitle;
-        private TextView noteBody;
-        private TextView noteDate;
-        private CardView rootView;
+        private CustomRowNoteBinding binding;
 
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            pinnedImage = itemView.findViewById(R.id.pinnedNote_imageView);
-            lockedNote = itemView.findViewById(R.id.locked_note_ImageView);
-            noteImage = itemView.findViewById(R.id.note_imageView);
-            noteTitle = itemView.findViewById(R.id.noteTitle_textView);
-            noteBody = itemView.findViewById(R.id.noteBody_textView);
-            noteDate = itemView.findViewById(R.id.noteDate_textView);
-            rootView = itemView.findViewById(R.id.root_View);
+        public ViewHolder(@NonNull CustomRowNoteBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         void bind(Note currentNote) {
             if (currentNote.getPassword().isEmpty()) {
-                noteTitle.setText(currentNote.getTitle());
-                noteBody.setText(currentNote.getBody());
-                noteDate.setText(currentNote.getDate());
-                noteDate.setSelected(true);
-                lockedNote.setVisibility(View.GONE);
+                binding.noteTitleTextView.setText(currentNote.getTitle());
+                binding.noteBodyTextView.setText(currentNote.getBody());
+                binding.noteDateTextView.setText(currentNote.getDate());
+                binding.noteDateTextView.setSelected(true);
+                binding.lockedNoteImageView.setVisibility(View.GONE);
                 setViewVisibility(View.VISIBLE);
             } else {
-                lockedNote.setVisibility(View.VISIBLE);
+                binding.lockedNoteImageView.setVisibility(View.VISIBLE);
                 setViewVisibility(View.GONE);
             }
             if (currentNote.isPinned()) {
-                pinnedImage.setVisibility(View.VISIBLE);
+                binding.pinnedNoteImageView.setVisibility(View.VISIBLE);
             } else
-                pinnedImage.setVisibility(View.GONE);
+                binding.pinnedNoteImageView.setVisibility(View.GONE);
 
             if (currentNote.getImagePaths().isEmpty()) {
-                noteImage.setVisibility(View.GONE);
+                binding.noteImageView.setVisibility(View.GONE);
             } else {
-                noteImage.setImageBitmap(BitmapFactory.decodeFile(currentNote.getImagePaths().get(0)));
+                binding.noteImageView.setImageBitmap(BitmapFactory.decodeFile(currentNote.getImagePaths().get(0)));
             }
 
             if (currentNote.getColor() != -1)
-                rootView.setCardBackgroundColor(currentNote.getColor());
+                binding.getRoot().setCardBackgroundColor(currentNote.getColor());
             else {
                 int color = context.getResources().getColor(R.color.defaultBackGround, null);
-                rootView.setCardBackgroundColor(color);
+                binding.getRoot().setCardBackgroundColor(color);
             }
 
-            rootView.setOnClickListener(view -> onClickListener.onClickListener(currentNote));
+            binding.getRoot().setOnClickListener(view -> onClickListener.onClickListener(currentNote));
 
         }
 
         private void setViewVisibility(int visibility) {
-            noteTitle.setVisibility(visibility);
-            noteBody.setVisibility(visibility);
-            noteDate.setVisibility(visibility);
+            binding.noteTitleTextView.setVisibility(visibility);
+            binding.noteBodyTextView.setVisibility(visibility);
+            binding.noteDateTextView.setVisibility(visibility);
         }
     }
 

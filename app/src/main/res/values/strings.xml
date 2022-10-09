@@ -41,7 +41,8 @@
     <string name="close">Close</string>
     <string name="note_image">image Note</string>
     <string name="max_images">You can select only three images</string>
-
+    <string name="saved_success">Image Saved Success</string>
+    <string name="error_in_save">Error in save image to gallery</string>
 
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
