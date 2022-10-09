@@ -39,5 +39,8 @@
     <string name="remove_password"> هل أنت متأكد من إزالة كلمة المرور ؟؟ </string>
     <string name="remove_note"> هل أنت متأكد من إزالة هذه الملاحظة؟ </string>
     <string name="note_locked"> هذه الملاحظة مقفلة بالفعل </string>
+    <string name="close">إغلاق</string>
+    <string name="note_image">صور الملاحظة</string>
+    <string name="max_images">يمكنك اختيار ثلاث صور فقط</string>
 
 </resources>

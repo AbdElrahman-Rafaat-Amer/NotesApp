@@ -1,7 +1,11 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,24 +14,32 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.Utils;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
+import com.bumptech.glide.Glide;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 
 public class ShowNoteFragment extends Fragment {
+    private static final String TAG = "ShowNoteFragment";
     private FragmentShowBinding binding;
     private NoteViewModel noteViewModel;
     private Note note;
@@ -45,12 +57,12 @@ public class ShowNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.showNoteBodyTextView.setMovementMethod(new ScrollingMovementMethod());
+
         checkRTL();
         initUi();
         showNoteDetails();
 
-
+        binding.showNoteBodyTextView.setMovementMethod(new ScrollingMovementMethod());
         binding.unlockNoteImageView.setOnClickListener(v -> {
             initViewModel();
             updatePassword();
@@ -61,7 +73,21 @@ public class ShowNoteFragment extends Fragment {
         note = (Note) getArguments().getSerializable("NOTE");
         binding.showNoteTitleTextView.setText(note.getTitle());
         binding.showNoteBodyTextView.setText(note.getBody());
-        binding.showNoteRootView.setBackgroundColor(note.getColor());
+
+        if (note.getImagePaths().isEmpty()) {
+            binding.showNoteBodyTextView.setText(note.getBody());
+        } else {
+            for (int i = 0; i < note.getImagePaths().size(); i++) {
+                Utils.insertImageToTextView(BitmapFactory.decodeFile(note.getImagePaths().get(i)), binding.showNoteBodyTextView, Integer.parseInt(note.getImageIndices().get(i)));
+            }
+        }
+
+        if (note.getColor() != -1)
+            binding.showNoteRootView.setBackgroundColor(note.getColor());
+        else {
+            int color = getResources().getColor(R.color.defaultBackGround, null);
+            binding.showNoteRootView.setBackgroundColor(color);
+        }
         if (note.getPassword().isEmpty()) {
             binding.unlockNoteImageView.setImageResource(R.drawable.ic_lock);
             isUnLock = false;

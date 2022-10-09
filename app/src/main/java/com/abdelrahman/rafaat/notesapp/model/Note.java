@@ -1,9 +1,12 @@
 package com.abdelrahman.rafaat.notesapp.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Entity(tableName = "notes")
 public class Note implements Serializable {
@@ -16,14 +19,23 @@ public class Note implements Serializable {
     private int color;
     private boolean isPinned;
     private String password;
+    @TypeConverters(DataConverters.class)
+    @ColumnInfo(name = "images_path")
+    private ArrayList<String> imagePaths;
 
-    public Note(String title, String body, String date, int color) {
+    @TypeConverters(DataConverters.class)
+    @ColumnInfo(name = "images_indices")
+    private ArrayList<String> imageIndices;
+
+    public Note(String title, String body, String date, int color, ArrayList<String> imagePaths, ArrayList<String> imageIndices) {
         this.title = title;
         this.body = body;
         this.date = date;
         this.color = color;
         this.password = "";
         this.isPinned = false;
+        this.imagePaths = imagePaths;
+        this.imageIndices = imageIndices;
     }
 
     public int getId() {
@@ -80,5 +92,21 @@ public class Note implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ArrayList<String> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(ArrayList<String> imagePaths) {
+        this.imagePaths = imagePaths;
+    }
+
+    public ArrayList<String> getImageIndices() {
+        return imageIndices;
+    }
+
+    public void setImageIndices(ArrayList<String> imageIndices) {
+        this.imageIndices = imageIndices;
     }
 }

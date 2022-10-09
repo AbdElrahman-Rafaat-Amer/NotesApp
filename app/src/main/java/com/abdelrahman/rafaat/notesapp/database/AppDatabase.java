@@ -2,13 +2,15 @@ package com.abdelrahman.rafaat.notesapp.database;
 
 import android.content.Context;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
-@Database(entities = Note.class, version = 3, exportSchema = false)
+@Database(entities = Note.class, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDatabase;
     private final static String databaseName = "NOTES_DATABASE";

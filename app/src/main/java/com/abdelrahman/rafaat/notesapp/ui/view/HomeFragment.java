@@ -19,7 +19,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     private FragmentHomeBinding binding;
     private NotesAdapter adapter;
     private NoteViewModel noteViewModel;
-    private List<Note> noteList;
+    private List<Note> noteList = new ArrayList();
     private Note selectedNote;
     private boolean isList = false;
     private boolean isSearching = false;
@@ -291,14 +293,12 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             public void onChildDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView,
                                     @NonNull RecyclerView.ViewHolder viewHolder,
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
                 if (dX < 0) {
                     //swapLeft
                     canvas.clipRect(viewHolder.itemView.getRight() + (int) dX, viewHolder.itemView.getTop(),
                             viewHolder.itemView.getRight(), viewHolder.itemView.getBottom());
 
                     drawBackGround(R.color.red, viewHolder.itemView.getLeft(), viewHolder.itemView.getTop(), viewHolder.itemView.getRight(), viewHolder.itemView.getBottom(), canvas);
-
 
                     Drawable icon = ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.ic_delete);
                     int halfIcon = icon.getIntrinsicHeight() / 2;

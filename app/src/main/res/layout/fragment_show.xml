@@ -52,7 +52,7 @@
         android:layout_margin="15sp"
         android:background="@android:color/transparent"
         android:text="@string/dummy_title"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSecondary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/goBack_imageView" />
@@ -65,8 +65,7 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:scrollbars="vertical"
-        android:text="@string/dummy_body"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSecondary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/show_noteTitle_textView" />

@@ -21,7 +21,7 @@
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
     <string name="save">Save</string>
     <string name="keep">Keep</string>
-    <string name="discard_note">Are your sure you want discard your changes ?</string>
+    <string name="discard_note">Are you sure you want discard your changes ?</string>
     <string name="warning">Warning</string>
     <string name="save_changes">Save changes ?</string>
     <string name="choose_color">Choose color</string>
@@ -38,6 +38,10 @@
     <string name="remove_password">Are yu sure to remove password ??</string>
     <string name="remove_note">Are yu sure to remove this note ??</string>
     <string name="note_locked">This note already locked</string>
+    <string name="close">Close</string>
+    <string name="note_image">image Note</string>
+    <string name="max_images">You can select only three images</string>
+
 
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
@@ -78,6 +82,8 @@
         uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
         sometimes on purpose (injected humour and the like).
     </string>
-    <string name="close">Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

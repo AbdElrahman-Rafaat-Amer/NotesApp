@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_View"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,14 +16,26 @@
         <ImageView
             android:id="@+id/pinnedNote_imageView"
             android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_alignParentEnd="true"
+            android:layout_height="30sp"
             android:layout_margin="7sp"
             android:contentDescription="@string/pinned_note"
             android:src="@drawable/ic_pin"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/note_imageView"
+            android:layout_width="0dp"
+            android:layout_height="170sp"
+            android:layout_marginHorizontal="7sp"
+            android:layout_marginTop="17sp"
+            android:contentDescription="@string/note_image"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toStartOf="@+id/pinnedNote_imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/noteTitle_textView"
@@ -33,7 +46,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/pinnedNote_imageView" />
+            app:layout_constraintTop_toBottomOf="@id/note_imageView" />
 
         <TextView
             android:id="@+id/noteBody_textView"

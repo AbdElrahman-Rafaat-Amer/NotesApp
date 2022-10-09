@@ -12,6 +12,8 @@
     <color name="searchView_color">#535252</color>
     <color name="refresh_Color">#465BCF</color>
 
+    <color name="defaultBackGround">#FFFFFFFF</color>
+
     <color name="color1">#FF5722</color>
     <color name="color2">#DDD101</color>
     <color name="color3">#F45E5E</color>

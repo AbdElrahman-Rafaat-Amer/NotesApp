@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
         <item name="alertDialogTheme">@style/CustomAlertDialog</item>
+
     </style>
 
 
@@ -22,7 +23,6 @@
         <item name="android:colorAccent">#f3f3f3</item>
         <item name="android:textColorPrimary">#f3f3f3</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">

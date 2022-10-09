@@ -2,9 +2,10 @@ package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -27,28 +28,28 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.abdelrahman.rafaat.notesapp.EditTextViewExtended;
 import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.Utils;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
+import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.model.Note;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
 
-
-import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.stream.Collectors;
+
 
 public class AddNoteFragment extends Fragment {
 
@@ -58,9 +59,13 @@ public class AddNoteFragment extends Fragment {
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
     private Note note;
-    private int noteColor;
+    private int noteColor = -1;
     private boolean isUpdate = false;
-    private boolean isColorsVisiable = false;
+    private boolean isKeyboardVisible = false;
+    private boolean isBodyHasFocus = false;
+    private int imageNumber = 0;
+    private ArrayList<String> imageIndices = new ArrayList<>();
+    private ArrayList<String> imagePaths = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,26 +78,17 @@ public class AddNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        noteColor = getResources().getColor(R.color.white, null);
+        initUI();
         checkIsEdit();
         checkRTL();
         initViewModel();
         watchText();
+        watchKeyboard();
         onBackPressed();
 
-        binding.goBackImageView.setOnClickListener(v -> {
-            if (isTextChanged) {
-                if (isUpdate)
-                    addDialogNote(getString(R.string.save_changes));
-                else
-                    addDialogNote(getString(R.string.discard_note));
-            } else
-                Navigation.findNavController(view).popBackStack();
+    }
 
-        });
-
-
+    private void initUI() {
         binding.saveImageView.setOnClickListener(v -> {
             if (checkTitle() & checkBody()) {
                 if (isUpdate)
@@ -102,42 +98,48 @@ public class AddNoteFragment extends Fragment {
             }
         });
 
-        binding.textOptionsTextView.setOnClickListener(v -> {
-            showTextOptions();
-        });
+        binding.textOptionsTextView.setOnClickListener(v -> showTextOptions());
 
-        binding.choseImageImageView.setOnClickListener(v -> {
-            openGallery();
-        });
+        binding.choseImageImageView.setOnClickListener(v -> openGallery());
 
         binding.choseColorImageView.setOnClickListener(v -> {
             if (binding.colorsBar.getVisibility() == View.GONE) {
                 binding.colorsBar.setVisibility(View.VISIBLE);
-                // binding.colorPickerView.setVisibility(View.VISIBLE);
-                //   binding.closeColorPickerView.setVisibility(View.VISIBLE);
-                isColorsVisiable = true;
                 binding.helperBar.setVisibility(View.INVISIBLE);
                 chooseColor();
             } else {
-                //      binding.colorPickerView.setVisibility(View.GONE);
-                //  binding.closeColorPickerView.setVisibility(View.GONE);
                 binding.colorsBar.setVisibility(View.GONE);
             }
 
         });
 
-        binding.closeColorPickerView.setOnClickListener(v -> {
-            binding.colorsBar.setVisibility(View.GONE);
-            isColorsVisiable = false;
+        binding.closeColorPickerView.setOnClickListener(v -> binding.colorsBar.setVisibility(View.GONE));
+
+        binding.closeTextPickerView.setOnClickListener(v -> binding.textBar.setVisibility(View.GONE));
+
+        binding.goBackImageView.setOnClickListener(v -> {
+            if (isTextChanged) {
+                if (isUpdate)
+                    addDialogNote(getString(R.string.save_changes));
+                else
+                    addDialogNote(getString(R.string.discard_note));
+            } else
+                Navigation.findNavController(getView()).popBackStack();
+
         });
 
-        binding.closeTextPickerView.setOnClickListener(v -> {
-            binding.textBar.setVisibility(View.GONE);
-            isColorsVisiable = false;
+        binding.noteBodyEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            isBodyHasFocus = hasFocus;
+            if (!hasFocus) {
+                hideHelperBar();
+            } else if (isKeyboardVisible) {
+                binding.helperBar.setVisibility(View.VISIBLE);
+            }
         });
+    }
 
+    private void watchKeyboard() {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         binding.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
             Rect r = new Rect();
@@ -146,48 +148,55 @@ public class AddNoteFragment extends Fragment {
             int keypadHeight = screenHeight - r.bottom;
 
             if (keypadHeight > screenHeight * 0.15) {
-                if (!isColorsVisiable)
+                isKeyboardVisible = true;
+                if (isBodyHasFocus) {
                     binding.helperBar.setVisibility(View.VISIBLE);
-            } else
-                binding.helperBar.setVisibility(View.GONE);
+                }
+            } else {
+                isKeyboardVisible = false;
+                hideHelperBar();
+            }
 
         });
+    }
 
+    private void hideHelperBar() {
+        binding.helperBar.setVisibility(View.GONE);
+        binding.colorsBar.setVisibility(View.GONE);
+        binding.textBar.setVisibility(View.GONE);
     }
 
     private void showTextOptions() {
         binding.textBar.setVisibility(View.VISIBLE);
-        binding.bold.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTypeface(null, Typeface.BOLD);
-        });
+        binding.bold.setOnClickListener(v ->
+                binding.noteBodyEditText.setTypeface(null, Typeface.BOLD)
+        );
 
-        binding.normal.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTypeface(null, Typeface.NORMAL);
-        });
+        binding.normal.setOnClickListener(v ->
+                binding.noteBodyEditText.setTypeface(null, Typeface.NORMAL)
+        );
 
-        binding.italic.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTypeface(null, Typeface.ITALIC);
-        });
+        binding.italic.setOnClickListener(v ->
+                binding.noteBodyEditText.setTypeface(null, Typeface.ITALIC)
+        );
 
-        binding.viewStart.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-        });
+        binding.viewStart.setOnClickListener(v ->
+                binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START)
+        );
 
-        binding.center.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        });
+        binding.center.setOnClickListener(v ->
+                binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER)
+        );
 
-        binding.viewEnd.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        });
+        binding.viewEnd.setOnClickListener(v ->
+                binding.noteBodyEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END)
+        );
 
-        binding.ltr.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTextDirection(View.TEXT_DIRECTION_LTR);
-        });
+        binding.ltr.setOnClickListener(v ->
+                binding.noteBodyEditText.setTextDirection(View.TEXT_DIRECTION_LTR)
+        );
 
-        binding.rtl.setOnClickListener(v -> {
-            binding.noteBodyEditText.setTextDirection(View.TEXT_DIRECTION_RTL);
-        });
+        binding.rtl.setOnClickListener(v -> binding.noteBodyEditText.setTextDirection(View.TEXT_DIRECTION_RTL));
     }
 
     private void checkIsEdit() {
@@ -196,15 +205,32 @@ public class AddNoteFragment extends Fragment {
             binding.noteTitleEditText.setText(note.getTitle());
             binding.noteBodyEditText.setText(note.getBody());
             noteColor = note.getColor();
+            imagePaths = note.getImagePaths();
+            imageIndices = note.getImageIndices();
+            imageNumber = imagePaths.size();
             isUpdate = true;
-            int[] colors = getResources().getIntArray(R.array.colors);
-            int colorIndex = Arrays.stream(colors).boxed()
-                    .collect(Collectors.toList())
-                    .indexOf(noteColor);
-            RadioButton radioButton = (RadioButton) binding.colorPickerView.findViewWithTag(colorIndex + "");
-            radioButton.setChecked(true);
+
+            if (note.getImagePaths().isEmpty()) {
+                binding.noteBodyEditText.setText(note.getBody());
+            } else {
+                for (int i = 0; i < note.getImagePaths().size(); i++) {
+                    Utils.insertImageToTextView(BitmapFactory.decodeFile(imagePaths.get(i)), binding.noteBodyEditText, Integer.parseInt(imageIndices.get(i)));
+                }
+            }
+
+            if (noteColor != -1) {
+                binding.getRoot().setBackgroundColor(noteColor);
+                int[] colors = getResources().getIntArray(R.array.colors);
+                int colorIndex = Arrays.stream(colors).boxed()
+                        .collect(Collectors.toList())
+                        .indexOf(noteColor);
+                RadioButton radioButton = binding.colorPickerView.findViewWithTag(colorIndex + "");
+                radioButton.setChecked(true);
+            }
+
+
         } catch (Exception exception) {
-            Log.i(TAG, "onViewCreated: exception-----------------> " + exception.getMessage());
+            Log.i(TAG, "checkIsEdit: exception-----------------> " + exception.getMessage());
         }
     }
 
@@ -219,7 +245,7 @@ public class AddNoteFragment extends Fragment {
     private void initViewModel() {
         NotesViewModelFactory viewModelFactory = new NotesViewModelFactory(
                 Repository.getInstance(
-                        LocalSource.getInstance(getContext()), getActivity().getApplication()
+                        LocalSource.getInstance(getContext()), getActivity().getApplicationContext()
                 ), getActivity().getApplication()
         );
 
@@ -228,7 +254,6 @@ public class AddNoteFragment extends Fragment {
                 viewModelFactory
         ).get(NoteViewModel.class);
     }
-
 
     private void chooseColor() {
         binding.colorPickerView.setOnCheckedChangeListener((group, checkedId) -> {
@@ -242,7 +267,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void watchText() {
-        binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
+        binding.noteTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -259,7 +284,7 @@ public class AddNoteFragment extends Fragment {
             }
         });
 
-        binding.noteTitleEditText.addTextChangedListener(new TextWatcher() {
+        binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -278,10 +303,9 @@ public class AddNoteFragment extends Fragment {
     }
 
     public void onBackPressed() {
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Log.i(TAG, "handleOnBackPressed: ------------------------");
                 if (isTextChanged) {
                     if (isUpdate)
                         addDialogNote(getString(R.string.save_changes));
@@ -303,7 +327,6 @@ public class AddNoteFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         Rect displayRectangle = new Rect();
@@ -315,11 +338,14 @@ public class AddNoteFragment extends Fragment {
         dialogMessage.setText(message);
 
         saveButton.setOnClickListener(v -> {
-            if (isUpdate)
-                updateNote(getView());
-            else
-                saveNote(getView());
-            alertDialog.dismiss();
+            if (checkTitle() & checkBody()) {
+                if (isUpdate)
+                    updateNote(v);
+                else
+                    saveNote(v);
+            } else {
+                alertDialog.dismiss();
+            }
         });
 
         discardButton.setOnClickListener(v -> {
@@ -350,62 +376,79 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void saveNote(View view) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
+
         Note note = new Note(binding.noteTitleEditText.getText().toString(),
                 binding.noteBodyEditText.getText().toString(),
                 formatter.format(new Date()),
-                noteColor);
+                noteColor, imagePaths, imageIndices);
 
         noteViewModel.saveNote(note);
         Navigation.findNavController(view).popBackStack();
     }
 
     private void updateNote(View view) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a");
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
         note.setTitle(binding.noteTitleEditText.getText().toString());
         note.setBody(binding.noteBodyEditText.getText().toString());
         note.setDate(formatter.format(new Date()));
         note.setColor(noteColor);
+        note.setImagePaths(imagePaths);
+        note.setImageIndices(imageIndices);
         noteViewModel.updateNote(note);
         Navigation.findNavController(view).popBackStack();
     }
 
     private void openGallery() {
-        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType("image/*");
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-        startActivityForResult(chooserIntent, PICK_IMAGE);
+        if (imageNumber <= 2) {
+            Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(getIntent, PICK_IMAGE);
+        } else
+            Toast.makeText(requireContext(), getString(R.string.max_images), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("OnActivityResult");
-
-        if (requestCode == PICK_IMAGE) {
-            if (data == null) {
-                Log.i(TAG, "onActivityResult: error in getting image from gallery");
-            } else {
-                setImageToImageView(data);
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            if (data.getData() != null) {
+                Uri imageUri = data.getData();
+                try {
+                    imageNumber++;
+                    InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    int imageIndex = binding.noteBodyEditText.getSelectionStart() + 4;
+                    imageIndices.add(String.valueOf(imageIndex));
+                    Log.i(Utils.UtilsTAG, "onActivityResult if else: imageIndex---------------------->" + imageIndex);
+                    Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText);
+                    getPathFromURI(imageUri);
+                } catch (Exception exception) {
+                    Log.i(TAG, "onActivityResult: exception.message----------------------->" + exception.getMessage());
+                }
             }
         }
     }
 
-    private void setImageToImageView(Intent data) {
-        Log.i(TAG, "onActivityResult:load image success");
-        Log.i(TAG, "onActivityResult: " + data.getData());
-
-        try {
-            Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), data.getData());
-            Log.i(TAG, "onActivityResult: bitmapImage " + bitmapImage);
-            EditTextViewExtended.insertImageToCurrentSelection(bitmapImage, binding.noteBodyEditText);
-        } catch (IOException e) {
-            Log.i(TAG, "onActivityResult: IOException " + e.getMessage());
+    private void getPathFromURI(Uri uri) {
+        Cursor cursor = requireActivity().getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            imagePaths.add(uri.getPath());
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex("_data");
+            imagePaths.add(cursor.getString(index));
+            cursor.close();
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
 
+            }
+        });
+    }
 }
