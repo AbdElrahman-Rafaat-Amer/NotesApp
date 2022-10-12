@@ -13,11 +13,13 @@ import android.widget.TextView;
 public class Utils {
     private static final String TAG = "AddNoteFragment";
 
-    public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText) {
+    public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, int imageNumber) {
 
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
-        editText.getText().insert(selectionCursor, "\n\n\n.~");
+        String text = "\n\n\n~" + imageNumber;
+       // Log.i(TAG, "insertImageToCurrentSelection:text ----------------------------->" + text);
+        editText.getText().insert(selectionCursor, text);
         selectionCursor = editText.getSelectionStart();
         setUpBuilder(editText, drawable, selectionCursor);
         editText.setSelection(selectionCursor);

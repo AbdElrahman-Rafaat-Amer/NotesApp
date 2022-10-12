@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,31 +26,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.model.Note;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-
 import com.abdelrahman.rafaat.notesapp.R;
-
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.google.android.material.snackbar.Snackbar;
 
 
 public class HomeFragment extends Fragment implements OnNotesClickListener {
-
-    private static final String TAG = "HomeFragment";
     private FragmentHomeBinding binding;
     private NotesAdapter adapter;
     private NoteViewModel noteViewModel;
@@ -98,14 +85,13 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 if (noteList.isEmpty() && !newText.trim().isEmpty()) {
                     showSnackBar(getString(R.string.no_notes));
-                } else {
+                } else{
                     isSearching = true;
                     filter(newText);
                 }
-                return true;
+                return false;
             }
         });
     }
@@ -117,13 +103,14 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             if (note.getTitle().toLowerCase().contains(title.toLowerCase()))
                 filteredList.add(note);
         }
+
         if (filteredList.isEmpty()) {
             binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             binding.noSearchLayout.noFilesView.setVisibility(View.VISIBLE);
         } else
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-
         adapter.setList(filteredList);
+
     }
 
     private void initRecyclerView() {
@@ -284,8 +271,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                 } else if (direction == ItemTouchHelper.RIGHT) {
                     selectedNote.setPinned(!selectedNote.isPinned());
                     noteViewModel.updateNote(selectedNote);
-                    adapter.notifyDataSetChanged();
-
                 }
             }
 
