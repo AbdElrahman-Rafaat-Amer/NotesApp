@@ -18,7 +18,6 @@ public class Utils {
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
         String text = "\n\n\n~" + imageNumber;
-       // Log.i(TAG, "insertImageToCurrentSelection:text ----------------------------->" + text);
         editText.getText().insert(selectionCursor, text);
         selectionCursor = editText.getSelectionStart();
         setUpBuilder(editText, drawable, selectionCursor);

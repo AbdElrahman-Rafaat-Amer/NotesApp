@@ -42,5 +42,17 @@
     <string name="close">إغلاق</string>
     <string name="note_image">صور الملاحظة</string>
     <string name="max_images">يمكنك اختيار ثلاث صور فقط</string>
-
+    <string name="error_in_save">خطأ في حفظ الصورة</string>
+    <string name="tips">كيفية الاستخدام</string>
+    <string name="delete_note">مسح الملاحظة</string>
+    <string name="swipe_left">يمكنك التمرير إلى اليسار لحذف الملاحظة</string>
+    <string name="pin_note">تثبيت الملاحظة</string>
+    <string name="swipe_right">يمكنك التمرير لليمين لتثبيت الملاحظة</string>
+    <string name="show_details">اظهار التفاصيل</string>
+    <string name="click_on_note">يمكنك النقر فوق الملاحظة لإظهار التفاصيل</string>
+    <string name="tooltip_search">يمكنك كتابة أي كلمة للبحث عنها</string>
+    <string name="new_note">ملاحظة جديدة</string>
+    <string name="tooltip_add_note">يمكنك الضغط على هذا الزر لإنشاء ملاحظة جديدة</string>
+    <string name="never_show_again">لا تظهر مرة أخرى</string>
+    <string name="continue_button">متابعة</string>
 </resources>

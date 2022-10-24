@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".tooltip.ToolTipActivity"
+            android:exported="true" >
+        </activity>
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
@@ -26,9 +29,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            />
-
+            android:exported="true" />
     </application>
 
 </manifest>

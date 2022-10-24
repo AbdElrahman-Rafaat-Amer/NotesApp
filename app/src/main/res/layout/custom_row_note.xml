@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7sp"
-            android:maxLines="5"
+            android:maxLines="6"
             android:text="@string/dummy_body"
             android:textColor="@color/black"
             android:textSize="20sp"

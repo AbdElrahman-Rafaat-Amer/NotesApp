@@ -433,7 +433,7 @@ public class AddNoteFragment extends Fragment {
                 binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~1", "~0"));
                 binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~2", "~1"));
             }
-        } else {
+        } else if (removedIndices.size() == 2) {
             if (removedIndices.get(0) == 2 && removedIndices.get(1) == 0) {
                 binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~1", "~0"));
             } else {

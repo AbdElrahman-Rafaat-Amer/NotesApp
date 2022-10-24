@@ -2,30 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_View"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.HomeFragment">
-
-    <include
-        android:id="@+id/no_search_layout"
-        layout="@layout/no_files_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/no_notes_layout"
-        layout="@layout/no_notes_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".tooltip.ToolTipActivity">
 
     <SearchView
         android:id="@+id/note_searchView"
@@ -35,6 +14,7 @@
         android:layout_marginTop="3sp"
         android:background="@drawable/ic_search_view_background"
         android:iconifiedByDefault="false"
+        android:inputType="none"
         android:queryHint="@string/search_note"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,10 +24,33 @@
         android:layout_height="0dp"
         android:layout_margin="7sp"
         android:tooltipText="@string/add_note"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/checkbox"
         app:layout_constraintTop_toBottomOf="@id/note_searchView"
         tools:listitem="@layout/custom_row_note" />
 
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15sp"
+        android:text="@string/never_show_again"
+        app:layout_constraintBottom_toBottomOf="@+id/continueButton"
+        app:layout_constraintEnd_toStartOf="@+id/continueButton"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/continueButton" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/continueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:text="@string/continue_button"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNote_floatingActionButton"
@@ -61,5 +64,4 @@
         app:fabCustomSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

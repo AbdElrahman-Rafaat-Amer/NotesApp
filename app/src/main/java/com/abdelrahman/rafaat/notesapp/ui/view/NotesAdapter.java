@@ -49,7 +49,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final CustomRowNoteBinding binding;
+        public final CustomRowNoteBinding binding;
 
         public ViewHolder(@NonNull CustomRowNoteBinding binding) {
             super(binding.getRoot());

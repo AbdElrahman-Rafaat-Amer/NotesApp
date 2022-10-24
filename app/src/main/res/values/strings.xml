@@ -41,50 +41,29 @@
     <string name="close">Close</string>
     <string name="note_image">image Note</string>
     <string name="max_images">You can select only three images</string>
-    <string name="saved_success">Image Saved Success</string>
-    <string name="error_in_save">Error in save image to gallery</string>
+    <string name="error_in_save">Error in save image</string>
+    <string name="tips">Tips</string>
+    <string name="delete_note">Delete note</string>
+    <string name="swipe_left">you can swipe left to delete note</string>
+    <string name="pin_note">Pin note</string>
+    <string name="swipe_right">you can swipe right to pin note</string>
+    <string name="show_details">show details</string>
+    <string name="click_on_note">you can click on note to show details</string>
+    <string name="tooltip_search">you can write any word to search about it</string>
+    <string name="new_note">New note</string>
+    <string name="tooltip_add_note">you press this button to create new note</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="continue_button">continue</string>
 
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
     <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-        It was popularised in the 1960s with the release of Least sheets containing Lorem Ipsum passages,
-        and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking
-        at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-        as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing
-        packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will
-        uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
-        sometimes on purpose (injected humour and the like).
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-        It was popularised in the 1960s with the release of Least sheets containing Lorem Ipsum passages,
-        and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking
-        at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-        as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing
-        packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will
-        uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
-        sometimes on purpose (injected humour and the like).
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-        It was popularised in the 1960s with the release of Least sheets containing Lorem Ipsum passages,
-        and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking
-        at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
-        as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing
-        packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will
-        uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
-        sometimes on purpose (injected humour and the like).
-    </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+        Lorem Ipsum has been the industry\'s. It is a long established fact that a reader will be distracted
+        by the content of a page when lookingat its layout.Contrary to popular belief, Lorem Ipsum is not simply random text.
+            It has roots in a piece of classical Latin literature.
+        </string>
+
+
 
 
 </resources>

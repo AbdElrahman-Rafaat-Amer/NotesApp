@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.tooltip.ToolTipActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
@@ -18,12 +22,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        boolean showToolTip = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("IsFirstTime", true);
+        Log.i("SplashScreenActivity", "onCreate: isFirstTime-------------->" + showToolTip);
         initUI();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
+            if (showToolTip)
+                startActivity(new Intent(SplashScreenActivity.this, ToolTipActivity.class));
+            else
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-            }
         }, 2000);
 
     }

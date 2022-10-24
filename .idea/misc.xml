@@ -68,6 +68,8 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_add_note.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_main.xml" value="0.2604166666666667" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_tool_tip.xml" value="0.22530996152201796" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/activity_tool_tips.xml" value="0.22530996152201796" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/custom_row_favorite.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/custom_row_note.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/dialog_layout.xml" value="0.27447916666666666" />
@@ -80,6 +82,7 @@
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_files_view.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/no_notes_view.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/layout/note_password.xml" value="0.264" />
+        <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/main_activity_actions.xml" value="0.22530996152201796" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/options_menu.xml" value="0.22530996152201796" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/popup_menu.xml" value="0.27025641025641023" />
         <entry key="..\:/Android/projects/MyProjects/NotesApp/app/src/main/res/menu/setting_menu.xml" value="0.27447916666666666" />
