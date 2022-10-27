@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.AddNoteFragment">
+    tools:context=".ui.view.fragments.AddNoteFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -65,12 +65,11 @@
                 android:layout_margin="15sp"
                 android:autofillHints="@string/body"
                 android:background="@android:color/transparent"
-                android:gravity="top"
                 android:hint="@string/body"
                 android:inputType="textMultiLine|text"
                 android:paddingBottom="15sp"
                 android:textColor="?colorOnSecondary"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
@@ -159,7 +158,7 @@
                 android:layout_marginBottom="1sp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingStart="7sp"
+                android:paddingHorizontal="7sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view">
@@ -256,6 +255,7 @@
         android:id="@+id/text_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="7sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -283,73 +283,74 @@
                 android:contentDescription="@string/close"
                 android:rotation="90" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20sp"
-                android:text="B"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:layout_marginHorizontal="15sp"
+                android:contentDescription="@string/bold_text"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_bold" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/italic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="I"
-                android:textSize="40sp"
-                android:textStyle="italic" />
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:contentDescription="@string/italic_text"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_italic" />
 
-            <TextView
-                android:id="@+id/normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20sp"
-                android:text="N"
-                android:textSize="40sp"
-                android:textStyle="normal" />
+            <ImageView
+                android:id="@+id/underline"
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:layout_marginHorizontal="15sp"
+                android:contentDescription="@string/underline_text"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_underline" />
 
-            <TextView
+            <ImageView
+                android:id="@+id/left"
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:contentDescription="@string/align_left"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_left" />
+
+            <ImageView
                 android:id="@+id/center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="C"
-                android:textAlignment="center"
-                android:textSize="40sp" />
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:layout_marginHorizontal="15sp"
+                android:contentDescription="@string/align_center"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_center" />
 
-            <TextView
-                android:id="@+id/viewStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20sp"
-                android:text="S"
-                android:textAlignment="viewStart"
-                android:textSize="40sp" />
 
-            <TextView
-                android:id="@+id/viewEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="N"
-                android:textAlignment="viewEnd"
-                android:textSize="40sp" />
+            <ImageView
+                android:id="@+id/right"
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:contentDescription="@string/align_right"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_right" />
 
-            <TextView
-                android:id="@+id/ltr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20sp"
-                android:text="L"
-                android:textDirection="ltr"
-                android:textSize="40sp" />
+            <ImageView
+                android:id="@+id/bigFont"
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:layout_marginHorizontal="15sp"
+                android:contentDescription="@string/increase_font_size"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_font_increase" />
 
-            <TextView
-                android:id="@+id/rtl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="R"
-                android:textDirection="rtl"
-                android:textSize="40sp" />
+            <ImageView
+                android:id="@+id/smallFont"
+                android:layout_width="40sp"
+                android:layout_height="50sp"
+                android:contentDescription="@string/decrease_font_size"
+                android:paddingHorizontal="9sp"
+                android:src="@drawable/ic_text_font_decrease" />
 
         </LinearLayout>
     </HorizontalScrollView>

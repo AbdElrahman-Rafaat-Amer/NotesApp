@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp;
+package com.abdelrahman.rafaat.notesapp.utils;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -6,15 +6,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.abdelrahman.rafaat.notesapp.model.Note;
+
 public class Utils {
-    private static final String TAG = "AddNoteFragment";
+
+    public static Note note;
 
     public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, int imageNumber) {
-
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
         String text = "\n\n\n~" + imageNumber;
@@ -22,7 +23,7 @@ public class Utils {
         selectionCursor = editText.getSelectionStart();
         setUpBuilder(editText, drawable, selectionCursor);
         editText.setSelection(selectionCursor);
-        editText.append("\n\n");
+        editText.getText().insert(selectionCursor, "\n\n");
     }
 
     public static boolean insertImageToTextView(Bitmap bitmap, TextView textView, int selectionCursor) {

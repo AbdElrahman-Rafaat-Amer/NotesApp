@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.ui.view;
+package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.os.Bundle;
 
@@ -95,7 +95,7 @@ public class PasswordFragment extends Fragment {
     private void checkPassword() {
         if (binding.notePinView.getText().toString().equals(note.getPassword())) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("NOTE", note);
+         //   bundle.putSerializable("NOTE", note);
             Navigation.findNavController(getView()).popBackStack();
             Navigation.findNavController(getView()).navigate(R.id.show_note_fragment, bundle);
         } else

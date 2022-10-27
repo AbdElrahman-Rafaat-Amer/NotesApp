@@ -14,11 +14,11 @@
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
         <activity
-            android:name=".tooltip.ToolTipActivity"
+            android:name=".ui.view.activities.ToolTipActivity"
             android:exported="true" >
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.view.activities.SplashScreenActivity"
             android:exported="true"
             android:noHistory="true">
             <intent-filter>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.view.activities.MainActivity"
             android:exported="true" />
     </application>
 

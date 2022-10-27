@@ -5,7 +5,7 @@
     android:id="@+id/show_note_rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.ShowNoteFragment">
+    tools:context=".ui.view.fragments.ShowNoteFragment">
 
     <ImageView
         android:id="@+id/goBack_imageView"

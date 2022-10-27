@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.ui.view;
+package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.app.AlertDialog;
 import android.graphics.Canvas;
@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
+import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 
 import android.view.LayoutInflater;
@@ -46,6 +48,7 @@ import android.view.animation.LayoutAnimationController;
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HomeFragment extends Fragment implements OnNotesClickListener {
@@ -61,7 +64,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     private AlertDialog alertDialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         return binding.getRoot();
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         binding.addNoteFloatingActionButton.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_home_to_addNote)
         );
@@ -253,16 +257,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         });
     }
 
-    @Override
-    public void onClickListener(Note note) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("NOTE", note);
-        if (note.getPassword().isEmpty())
-            Navigation.findNavController(getView()).navigate(R.id.show_note_fragment, bundle);
-        else
-            Navigation.findNavController(getView()).navigate(R.id.password_fragment, bundle);
-    }
-
     private void swipeRecyclerView() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -332,9 +326,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
 
         builder.setMessage(getString(R.string.remove_note))
-                .setPositiveButton(R.string.remove, (dialog, which) -> {
-                    noteViewModel.deleteNote(selectedNote.getId());
-                })
+                .setPositiveButton(R.string.remove, (dialog, which) -> noteViewModel.deleteNote(selectedNote.getId()))
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     alertDialog.dismiss();
                     adapter.notifyDataSetChanged();
@@ -345,5 +337,15 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         alertDialog.show();
     }
 
+    @Override
+    public void onClickListener(Note note) {
+        Bundle bundle = new Bundle();
+        // bundle.putSerializable("NOTE", note);
+        Utils.note = note;
+        if (note.getPassword().isEmpty())
+            Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment, bundle);
+        else
+            Navigation.findNavController(requireView()).navigate(R.id.password_fragment, bundle);
+    }
 
 }

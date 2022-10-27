@@ -16,9 +16,6 @@
         <item name="alertDialogTheme">@style/CustomAlertDialog</item>
     </style>
 
-    <style name="ToolTip" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
-
-    </style>
 
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_background</item>

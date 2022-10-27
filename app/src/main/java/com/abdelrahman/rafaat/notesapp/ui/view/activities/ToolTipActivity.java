@@ -1,18 +1,16 @@
-package com.abdelrahman.rafaat.notesapp.tooltip;
+package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.CompoundButton;
 
-import com.abdelrahman.rafaat.notesapp.MainActivity;
+import com.abdelrahman.rafaat.notesapp.model.TextFormat;
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityToolTipBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
@@ -70,9 +68,11 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
 
     private List<Note> setList() {
         List<Note> notes = new ArrayList<>();
-        notes.add(new Note(getString(R.string.dummy_title), getString(R.string.dummy_body), getString(R.string.dummy_date), getColor(R.color.color1), new ArrayList<>(), new ArrayList<>()));
-        notes.add(new Note(getString(R.string.dummy_title), getString(R.string.dummy_body), getString(R.string.dummy_date), getColor(R.color.color2), new ArrayList<>(), new ArrayList<>()));
-        notes.add(new Note(getString(R.string.dummy_title), getString(R.string.dummy_body), getString(R.string.dummy_date), getColor(R.color.color3), new ArrayList<>(), new ArrayList<>()));
+        // SpannableString noteBody = new SpannableString(getString(R.string.dummy_body));
+        String noteBody = getString(R.string.dummy_body);
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color1), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color2), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color3), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
         return notes;
     }
 
@@ -91,7 +91,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
             case 2:
                 CardView card = (CardView) linerLayoutManager.findViewByPosition(0);
                 if (card != null) {
-                    NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card);
+                 //   NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card);
                     Rect rect1 = new Rect();
                     card.getGlobalVisibleRect(rect1);
                     int top1 = (rect1.top + rect1.bottom) / 2;
@@ -106,7 +106,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
             case 3:
                 CardView card1 = (CardView) linerLayoutManager.findViewByPosition(1);
                 if (card1 != null) {
-                    NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card1);
+              //      NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card1);
                     Rect rect2 = new Rect();
                     card1.getGlobalVisibleRect(rect2);
                     int top2 = (rect2.top + rect2.bottom) / 2;

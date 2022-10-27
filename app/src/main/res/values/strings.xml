@@ -62,8 +62,14 @@
         by the content of a page when lookingat its layout.Contrary to popular belief, Lorem Ipsum is not simply random text.
             It has roots in a piece of classical Latin literature.
         </string>
-
-
+    <string name="increase_font_size">increase font size</string>
+    <string name="decrease_font_size">decrease font size</string>
+    <string name="align_right">align right</string>
+    <string name="align_center">align center</string>
+    <string name="align_left">align left</string>
+    <string name="underline_text">underline text</string>
+    <string name="italic_text">italic text</string>
+    <string name="bold_text">bold text</string>
 
 
 </resources>

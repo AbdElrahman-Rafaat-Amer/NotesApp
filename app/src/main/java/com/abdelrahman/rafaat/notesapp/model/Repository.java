@@ -62,8 +62,7 @@ public class Repository implements RepositoryInterface {
 
     @Override
     public boolean getLayoutMangerStyle() {
-        boolean isList = sharedPrefs.getBoolean("IS_LIST", false);
-        return isList;
+        return sharedPrefs.getBoolean("IS_LIST", false);
     }
 
     @Override

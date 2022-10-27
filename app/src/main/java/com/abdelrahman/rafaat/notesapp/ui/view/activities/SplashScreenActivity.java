@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp;
+package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
-import com.abdelrahman.rafaat.notesapp.tooltip.ToolTipActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;

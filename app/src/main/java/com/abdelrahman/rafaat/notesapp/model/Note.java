@@ -1,15 +1,21 @@
 package com.abdelrahman.rafaat.notesapp.model;
 
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity(tableName = "notes")
-public class Note implements Serializable {
+public class Note {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -27,7 +33,10 @@ public class Note implements Serializable {
     @ColumnInfo(name = "images_indices")
     private ArrayList<String> imageIndices;
 
-    public Note(String title, String body, String date, int color, ArrayList<String> imagePaths, ArrayList<String> imageIndices) {
+    @TypeConverters(DataConverters.class)
+    private TextFormat textFormat;
+
+    public Note(String title, String body, String date, int color, ArrayList<String> imagePaths, ArrayList<String> imageIndices, TextFormat textFormat) {
         this.title = title;
         this.body = body;
         this.date = date;
@@ -36,6 +45,7 @@ public class Note implements Serializable {
         this.isPinned = false;
         this.imagePaths = imagePaths;
         this.imageIndices = imageIndices;
+        this.textFormat = textFormat;
     }
 
     public int getId() {
@@ -109,4 +119,13 @@ public class Note implements Serializable {
     public void setImageIndices(ArrayList<String> imageIndices) {
         this.imageIndices = imageIndices;
     }
+
+    public TextFormat getTextFormat() {
+        return textFormat;
+    }
+
+    public void setTextFormat(TextFormat textFormat) {
+        this.textFormat = textFormat;
+    }
+
 }

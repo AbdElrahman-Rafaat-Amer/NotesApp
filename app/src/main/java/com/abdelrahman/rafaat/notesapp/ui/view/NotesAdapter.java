@@ -2,14 +2,18 @@ package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +63,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         void bind(Note currentNote) {
             if (currentNote.getPassword().isEmpty()) {
                 binding.noteTitleTextView.setText(currentNote.getTitle());
-                binding.noteBodyTextView.setText(currentNote.getBody());
+                binding.noteBodyTextView.setText(Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
                 binding.noteDateTextView.setText(currentNote.getDate());
                 binding.noteDateTextView.setSelected(true);
                 binding.lockedNoteImageView.setVisibility(View.GONE);
