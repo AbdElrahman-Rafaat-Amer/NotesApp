@@ -26,25 +26,15 @@ public class Note {
     private boolean isPinned;
     private String password;
     @TypeConverters(DataConverters.class)
-    @ColumnInfo(name = "images_path")
-    private ArrayList<String> imagePaths;
-
-    @TypeConverters(DataConverters.class)
-    @ColumnInfo(name = "images_indices")
-    private ArrayList<String> imageIndices;
-
-    @TypeConverters(DataConverters.class)
     private TextFormat textFormat;
 
-    public Note(String title, String body, String date, int color, ArrayList<String> imagePaths, ArrayList<String> imageIndices, TextFormat textFormat) {
+    public Note(String title, String body, String date, int color, TextFormat textFormat) {
         this.title = title;
         this.body = body;
         this.date = date;
         this.color = color;
         this.password = "";
         this.isPinned = false;
-        this.imagePaths = imagePaths;
-        this.imageIndices = imageIndices;
         this.textFormat = textFormat;
     }
 
@@ -102,22 +92,6 @@ public class Note {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public ArrayList<String> getImagePaths() {
-        return imagePaths;
-    }
-
-    public void setImagePaths(ArrayList<String> imagePaths) {
-        this.imagePaths = imagePaths;
-    }
-
-    public ArrayList<String> getImageIndices() {
-        return imageIndices;
-    }
-
-    public void setImageIndices(ArrayList<String> imageIndices) {
-        this.imageIndices = imageIndices;
     }
 
     public TextFormat getTextFormat() {

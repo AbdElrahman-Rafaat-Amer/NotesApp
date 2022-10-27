@@ -10,7 +10,7 @@ import androidx.room.migration.Migration;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
-@Database(entities = Note.class, version = 2)
+@Database(entities = Note.class, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDatabase;
     private final static String databaseName = "NOTES_DATABASE";

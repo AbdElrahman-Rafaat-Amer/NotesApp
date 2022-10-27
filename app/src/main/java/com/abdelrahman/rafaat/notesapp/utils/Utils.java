@@ -3,6 +3,7 @@ package com.abdelrahman.rafaat.notesapp.utils;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
@@ -15,27 +16,15 @@ public class Utils {
 
     public static Note note;
 
-    public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, int imageNumber) {
+    public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, String source) {
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
-        String text = "\n\n\n~" + imageNumber;
+        String text = "\n\n\n.";
         editText.getText().insert(selectionCursor, text);
         selectionCursor = editText.getSelectionStart();
-        setUpBuilder(editText, drawable, selectionCursor);
+        editText.getText().setSpan(new ImageSpan(drawable, source, ImageSpan.ALIGN_CENTER), selectionCursor - 1, selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         editText.setSelection(selectionCursor);
         editText.getText().insert(selectionCursor, "\n\n");
-    }
-
-    public static boolean insertImageToTextView(Bitmap bitmap, TextView textView, int selectionCursor) {
-        boolean isSuccess = false;
-        BitmapDrawable drawable = setUpImage(bitmap);
-        if (drawable.getBitmap() != null) {
-            textView.setText(textView.getText());
-            setUpBuilder(textView, drawable, selectionCursor);
-            isSuccess = true;
-        }
-
-        return isSuccess;
     }
 
     private static BitmapDrawable setUpImage(Bitmap bitmap) {
@@ -44,10 +33,4 @@ public class Utils {
         return drawable;
     }
 
-    private static void setUpBuilder(TextView textView, BitmapDrawable drawable, int selectionCursor) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(textView.getText());
-        builder.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_CENTER), selectionCursor - 2, selectionCursor,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(builder);
-    }
 }

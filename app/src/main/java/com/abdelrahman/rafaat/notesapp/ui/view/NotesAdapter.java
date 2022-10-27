@@ -1,8 +1,13 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +68,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         void bind(Note currentNote) {
             if (currentNote.getPassword().isEmpty()) {
                 binding.noteTitleTextView.setText(currentNote.getTitle());
+                Log.i("TagHandler", "bind: body--------------->" + currentNote.getBody());
+                Log.i("TagHandler", "bind: html--------------->" + Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
                 binding.noteBodyTextView.setText(Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
                 binding.noteDateTextView.setText(currentNote.getDate());
                 binding.noteDateTextView.setSelected(true);
                 binding.lockedNoteImageView.setVisibility(View.GONE);
                 setViewVisibility(View.VISIBLE);
+
             } else {
                 binding.lockedNoteImageView.setVisibility(View.VISIBLE);
                 setViewVisibility(View.GONE);
@@ -77,12 +85,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             } else
                 binding.pinnedNoteImageView.setVisibility(View.GONE);
 
-            if (currentNote.getImagePaths().isEmpty()) {
+           /*if (currentNote.getImagePaths().isEmpty()) {
                 binding.noteImageView.setVisibility(View.GONE);
             } else {
                 binding.noteImageView.setVisibility(View.VISIBLE);
                 binding.noteImageView.setImageBitmap(BitmapFactory.decodeFile(currentNote.getImagePaths().get(0)));
-            }
+            }*/
 
             if (currentNote.getColor() != -1)
                 binding.getRoot().setCardBackgroundColor(currentNote.getColor());

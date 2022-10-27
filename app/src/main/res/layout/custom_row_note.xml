@@ -31,10 +31,10 @@
             android:layout_marginTop="17sp"
             android:contentDescription="@string/note_image"
             android:scaleType="fitCenter"
+            android:src="@drawable/ic_text_bold"
             app:layout_constraintEnd_toStartOf="@+id/pinnedNote_imageView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pinnedNote_imageView"
-            tools:src="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/pinnedNote_imageView" />
 
         <TextView
             android:id="@+id/noteTitle_textView"

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
@@ -40,7 +41,6 @@ public class ShowNoteFragment extends Fragment {
     private Note currentNote;
     private AlertDialog alertDialog;
     private boolean isUnLock = true;
-    private int size;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -52,30 +52,27 @@ public class ShowNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        size = 0;
         checkRTL();
         initUi();
         showNoteDetails();
-
         binding.showNoteBodyTextView.setMovementMethod(new ScrollingMovementMethod());
-
     }
 
     private void showNoteDetails() {
-        //currentNote = (Note) getArguments().getSerializable("NOTE");
         currentNote = Utils.note;
         binding.showNoteTitleTextView.setText(currentNote.getTitle());
         int textSize = currentNote.getTextFormat().getTextSize();
         int textAlignment = currentNote.getTextFormat().getTextAlignment();
         binding.showNoteBodyTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         binding.showNoteBodyTextView.setGravity(textAlignment);
+
         Html.ImageGetter getter = source -> {
-            Bitmap bitmap = BitmapFactory.decodeFile(currentNote.getImagePaths().get(size));
+            Bitmap bitmap = BitmapFactory.decodeFile(source);
             BitmapDrawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            size++;
             return drawable;
         };
+
         Spanned noteBody = Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY, getter, null);
         binding.showNoteBodyTextView.setText(noteBody);
         if (currentNote.getColor() != -1)
@@ -92,11 +89,7 @@ public class ShowNoteFragment extends Fragment {
     }
 
     private void initUi() {
-        binding.editNoteImageView.setOnClickListener(v -> {
-                    Bundle bundle = new Bundle();
-                    //   bundle.putSerializable("NOTE", currentNote);
-                    Navigation.findNavController(getView()).navigate(R.id.action_showNote_to_editNote, bundle);
-                }
+        binding.editNoteImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_showNote_to_editNote)
         );
 
         binding.unlockNoteImageView.setOnClickListener(v -> {
@@ -104,7 +97,7 @@ public class ShowNoteFragment extends Fragment {
             updatePassword();
         });
 
-        binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
     }
 
     private void checkRTL() {
@@ -132,9 +125,7 @@ public class ShowNoteFragment extends Fragment {
         if (isUnLock)
             updateNote();
         else {
-            Bundle bundle = new Bundle();
-            //   bundle.putSerializable("NOTE", currentNote);
-            Navigation.findNavController(getView()).navigate(R.id.password_fragment, bundle);
+            Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
         }
 
     }

@@ -68,11 +68,10 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
 
     private List<Note> setList() {
         List<Note> notes = new ArrayList<>();
-        // SpannableString noteBody = new SpannableString(getString(R.string.dummy_body));
         String noteBody = getString(R.string.dummy_body);
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color1), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color2), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color3), new ArrayList<>(), new ArrayList<>(), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color1), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color2), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color3), new TextFormat()));
         return notes;
     }
 

@@ -54,7 +54,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -75,9 +74,7 @@ public class AddNoteFragment extends Fragment {
     private boolean isUpdate = false;
     private boolean isKeyboardVisible = false;
     private boolean isBodyHasFocus = false;
-    private int imageNumber = 0;
-    private ArrayList<String> imageIndices = new ArrayList<>();
-    private ArrayList<String> imagePaths = new ArrayList<>();
+    private String imagePath;
     private static final String FILENAME = "images";
     private Bitmap bitmap;
     private int textSize = 18;
@@ -85,7 +82,6 @@ public class AddNoteFragment extends Fragment {
     private boolean isBold = false;
     private boolean isItalic = false;
     private boolean isUnderLine = false;
-    int size = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -195,25 +191,25 @@ public class AddNoteFragment extends Fragment {
         binding.bold.setOnClickListener(v -> {
             isBold = !isBold;
             if (isBold)
-                binding.bold.setBackgroundColor(getContext().getColor(R.color.mainColor));
+                binding.bold.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
             else
-                binding.bold.setBackgroundColor(getContext().getColor(R.color.transparent));
+                binding.bold.setBackgroundColor(getResources().getColor(R.color.transparent, null));
         });
 
         binding.italic.setOnClickListener(v -> {
             isItalic = !isItalic;
             if (isItalic)
-                binding.italic.setBackgroundColor(getContext().getColor(R.color.mainColor));
+                binding.italic.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
             else
-                binding.italic.setBackgroundColor(getContext().getColor(R.color.transparent));
+                binding.italic.setBackgroundColor(getResources().getColor(R.color.transparent, null));
         });
 
         binding.underline.setOnClickListener(v -> {
             isUnderLine = !isUnderLine;
             if (isUnderLine)
-                binding.underline.setBackgroundColor(getContext().getColor(R.color.mainColor));
+                binding.underline.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
             else
-                binding.underline.setBackgroundColor(getContext().getColor(R.color.transparent));
+                binding.underline.setBackgroundColor(getResources().getColor(R.color.transparent, null));
         });
 
         binding.left.setOnClickListener(v -> setTextAlignment("left"));
@@ -274,53 +270,22 @@ public class AddNoteFragment extends Fragment {
 
     private void checkIsEdit() {
         try {
-            // note = (Note) getArguments().getSerializable("NOTE");
             note = Utils.note;
             binding.noteTitleEditText.setText(note.getTitle());
             Html.ImageGetter getter = source -> {
-                Log.i("Image", "getter: getter--------------->" + size);
-                Bitmap bitmap = BitmapFactory.decodeFile(note.getImagePaths().get(size));
+                Bitmap bitmap = BitmapFactory.decodeFile(source);
                 BitmapDrawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
                 drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                size++;
                 return drawable;
             };
             Spanned noteBody = Html.fromHtml(note.getBody(), Html.FROM_HTML_MODE_LEGACY, getter, null);
-            //   Spanned body = Html.fromHtml(note.getBody(), Html.FROM_HTML_MODE_LEGACY);
             binding.noteBodyEditText.setText(noteBody);
             noteColor = note.getColor();
-            imageIndices = note.getImageIndices();
-            imagePaths = note.getImagePaths();
-            Log.i("Image", "checkIsEdit: imagePaths--------------->" + imagePaths.size());
-            Log.i("Image", "checkIsEdit: imagePaths--------------->" + imagePaths);
-            Log.i("Image", "checkIsEdit: size--------------->" + size);
-            while (size < imagePaths.size()) {
-                imagePaths.remove(size);
-                size++;
-            }
-            Log.i("Image", "checkIsEdit: -----------------------------------------------------");
-            Log.i("Image", "checkIsEdit: imagePaths--------------->" + imagePaths.size());
-            Log.i("Image", "checkIsEdit: imagePaths--------------->" + imagePaths);
-            Log.i("Image", "checkIsEdit: size--------------->" + size);
-            imageNumber = imageIndices.size();
             textSize = note.getTextFormat().getTextSize();
             textAlignment = note.getTextFormat().getTextAlignment();
             binding.noteBodyEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
             binding.noteBodyEditText.setGravity(textAlignment);
             isUpdate = true;
-
-/*            if (note.getImageIndices().isEmpty()) {
-                binding.noteBodyEditText.setText(body);
-            } else {
-                int size = imageIndices.size() - 1;
-                for (int i = 0; i < imageIndices.size(); i++) {
-                    imagePaths.add(i, note.getImagePaths().get(i));
-                    boolean isSuccess = Utils.insertImageToTextView(BitmapFactory.decodeFile(imagePaths.get(i)), binding.noteBodyEditText, Integer.parseInt(imageIndices.get(size - i)));
-                    if (!isSuccess) {
-                        imageNumber--;
-                    }
-                }
-            }*/
 
             if (noteColor != -1) {
                 binding.getRoot().setBackgroundColor(noteColor);
@@ -385,7 +350,6 @@ public class AddNoteFragment extends Fragment {
                 isTextChanged = true;
             }
         });
-
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -486,11 +450,9 @@ public class AddNoteFragment extends Fragment {
 
     private void saveNote() {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
-        getNewIndices();
         Note note = new Note(binding.noteTitleEditText.getText().toString(),
                 Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY),
-                formatter.format(new Date()),
-                noteColor, imagePaths, imageIndices,
+                formatter.format(new Date()), noteColor,
                 new TextFormat(textSize, textAlignment));
 
         noteViewModel.saveNote(note);
@@ -498,65 +460,19 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void updateNote() {
-        //   getNewIndices();
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
         note.setTitle(binding.noteTitleEditText.getText().toString());
         note.setBody(Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY));
         note.setDate(formatter.format(new Date()));
         note.setColor(noteColor);
-        Log.i("Image", "updateNote: imagePaths------------------>" + imagePaths.size());
-        note.setImagePaths(imagePaths);
-        note.setImageIndices(imageIndices);
         note.setTextFormat(new TextFormat(textSize, textAlignment));
         noteViewModel.updateNote(note);
         Navigation.findNavController(requireView()).popBackStack();
     }
 
-    private void getNewIndices() {
-        ArrayList<String> indices = new ArrayList<>();
-        ArrayList<Integer> removedIndices = new ArrayList<>();
-        int i = imageIndices.size() - 1;
-        String text = "~" + i;
-        int index = binding.noteBodyEditText.getText().toString().indexOf(text);
-
-        while (i >= 0) {
-            if (index > -1) {
-                indices.add(String.valueOf(index + 2));
-            } else {
-                removedIndices.add(i);
-                imagePaths.remove(i);
-            }
-            i--;
-            text = "~" + i;
-            index = binding.noteBodyEditText.getText().toString().indexOf(text);
-        }
-
-        if (removedIndices.size() == 1) {
-            if (removedIndices.get(0) == 1) {
-                binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~2", "~1"));
-            } else if (removedIndices.get(0) == 0) {
-                binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~1", "~0"));
-                binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~2", "~1"));
-            }
-        } else if (removedIndices.size() == 2) {
-            if (removedIndices.get(0) == 2 && removedIndices.get(1) == 0) {
-                binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~1", "~0"));
-            } else {
-                binding.noteBodyEditText.setText(binding.noteBodyEditText.getText().toString().replace("~2", "~0"));
-            }
-        }
-
-
-        imageIndices = indices;
-    }
-
     private void openGallery() {
-        imageNumber = imagePaths.size();
-        if (imageNumber <= 2) {
-            Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(getIntent, PICK_IMAGE);
-        } else
-            Toast.makeText(requireContext(), getString(R.string.max_images), Toast.LENGTH_SHORT).show();
+        Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(getIntent, PICK_IMAGE);
     }
 
     @Override
@@ -568,13 +484,10 @@ public class AddNoteFragment extends Fragment {
                 try {
                     InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
                     bitmap = BitmapFactory.decodeStream(inputStream);
-                    int imageIndex = binding.noteBodyEditText.getSelectionStart() + 5;
-                    imageIndices.add(imageNumber, String.valueOf(imageIndex));
-                    Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imageNumber);
                     if (isExternalStorageAvailable()) {
                         prepareFile();
                     }
-                    imageNumber++;
+                    Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
                 } catch (Exception exception) {
                     Log.i(TAG, "onActivityResult: exception.message----------------------->" + exception.getMessage());
                 }
@@ -609,7 +522,7 @@ public class AddNoteFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         outputStream.flush();
         outputStream.close();
-        imagePaths.add(imageNumber, outFile.getAbsolutePath());
+        imagePath = outFile.getAbsolutePath();
     }
 
     @Override
