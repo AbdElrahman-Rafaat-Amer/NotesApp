@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,9 +45,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.database.LocalSource;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
-import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HomeFragment extends Fragment implements OnNotesClickListener {
@@ -56,7 +52,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     private FragmentHomeBinding binding;
     private NotesAdapter adapter;
     private NoteViewModel noteViewModel;
-    private List<Note> noteList = new ArrayList();
+    private List<Note> noteList = new ArrayList<>();
     private Note selectedNote;
     private boolean isList = false;
     private boolean isSearching = false;
@@ -144,16 +140,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     }
 
     private void initViewModel() {
-        NotesViewModelFactory viewModelFactory = new NotesViewModelFactory(
-                Repository.getInstance(
-                        LocalSource.getInstance(getContext()), getActivity().getApplication()
-                ), getActivity().getApplication()
-        );
-
-        noteViewModel = new ViewModelProvider(
-                this,
-                viewModelFactory
-        ).get(NoteViewModel.class);
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         noteViewModel.getLayoutMangerStyle();
         noteViewModel.getAllNotes();
     }
@@ -339,13 +326,11 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
 
     @Override
     public void onClickListener(Note note) {
-        Bundle bundle = new Bundle();
-        // bundle.putSerializable("NOTE", note);
-        Utils.note = note;
+        noteViewModel.setCurrentNote(note);
         if (note.getPassword().isEmpty())
-            Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment, bundle);
+            Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
         else
-            Navigation.findNavController(requireView()).navigate(R.id.password_fragment, bundle);
+            Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
     }
 
 }

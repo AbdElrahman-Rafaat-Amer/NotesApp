@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.View;
 
-import com.abdelrahman.rafaat.notesapp.model.TextFormat;
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityToolTipBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
@@ -69,9 +69,9 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
     private List<Note> setList() {
         List<Note> notes = new ArrayList<>();
         String noteBody = getString(R.string.dummy_body);
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color1), new TextFormat()));
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color2), new TextFormat()));
-        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color3), new TextFormat()));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color1), 18, Gravity.TOP | Gravity.START));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color2), 18, Gravity.TOP | Gravity.START));
+        notes.add(new Note(getString(R.string.dummy_title), noteBody, getString(R.string.dummy_date), getColor(R.color.color3), 18, Gravity.TOP | Gravity.START));
         return notes;
     }
 
@@ -90,7 +90,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
             case 2:
                 CardView card = (CardView) linerLayoutManager.findViewByPosition(0);
                 if (card != null) {
-                 //   NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card);
+                    //   NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card);
                     Rect rect1 = new Rect();
                     card.getGlobalVisibleRect(rect1);
                     int top1 = (rect1.top + rect1.bottom) / 2;
@@ -105,7 +105,6 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
             case 3:
                 CardView card1 = (CardView) linerLayoutManager.findViewByPosition(1);
                 if (card1 != null) {
-              //      NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card1);
                     Rect rect2 = new Rect();
                     card1.getGlobalVisibleRect(rect2);
                     int top2 = (rect2.top + rect2.bottom) / 2;

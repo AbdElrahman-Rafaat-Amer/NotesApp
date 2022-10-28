@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
@@ -41,13 +42,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.model.TextFormat;
 import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
+//import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -94,14 +94,18 @@ public class AddNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initViewModel();
         initUI();
         checkIsEdit();
         checkRTL();
-        initViewModel();
         watchText();
         watchKeyboard();
         onBackPressed();
 
+    }
+
+    private void initViewModel() {
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
     }
 
     private void initUI() {
@@ -270,7 +274,8 @@ public class AddNoteFragment extends Fragment {
 
     private void checkIsEdit() {
         try {
-            note = Utils.note;
+            note = noteViewModel.getCurrentNote();
+            Log.i("ViewModel", "checkIsEdit: note----------->" + note);
             binding.noteTitleEditText.setText(note.getTitle());
             Html.ImageGetter getter = source -> {
                 Bitmap bitmap = BitmapFactory.decodeFile(source);
@@ -281,8 +286,8 @@ public class AddNoteFragment extends Fragment {
             Spanned noteBody = Html.fromHtml(note.getBody(), Html.FROM_HTML_MODE_LEGACY, getter, null);
             binding.noteBodyEditText.setText(noteBody);
             noteColor = note.getColor();
-            textSize = note.getTextFormat().getTextSize();
-            textAlignment = note.getTextFormat().getTextAlignment();
+            textSize = note.getTextSize();
+            textAlignment = note.getTextAlignment();
             binding.noteBodyEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
             binding.noteBodyEditText.setGravity(textAlignment);
             isUpdate = true;
@@ -309,19 +314,6 @@ public class AddNoteFragment extends Fragment {
         boolean isRTL = directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
         if (isRTL)
             binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
-    }
-
-    private void initViewModel() {
-        NotesViewModelFactory viewModelFactory = new NotesViewModelFactory(
-                Repository.getInstance(
-                        LocalSource.getInstance(getContext()), getActivity().getApplicationContext()
-                ), getActivity().getApplication()
-        );
-
-        noteViewModel = new ViewModelProvider(
-                this,
-                viewModelFactory
-        ).get(NoteViewModel.class);
     }
 
     private void chooseColor() {
@@ -453,7 +445,7 @@ public class AddNoteFragment extends Fragment {
         Note note = new Note(binding.noteTitleEditText.getText().toString(),
                 Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY),
                 formatter.format(new Date()), noteColor,
-                new TextFormat(textSize, textAlignment));
+                textSize, textAlignment);
 
         noteViewModel.saveNote(note);
         Navigation.findNavController(requireView()).popBackStack();
@@ -465,7 +457,8 @@ public class AddNoteFragment extends Fragment {
         note.setBody(Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY));
         note.setDate(formatter.format(new Date()));
         note.setColor(noteColor);
-        note.setTextFormat(new TextFormat(textSize, textAlignment));
+        note.setTextSize(textSize);
+        note.setTextAlignment(textAlignment);
         noteViewModel.updateNote(note);
         Navigation.findNavController(requireView()).popBackStack();
     }

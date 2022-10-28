@@ -13,11 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +27,6 @@ import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.utils.Utils;
 
 import java.util.Locale;
@@ -52,17 +49,23 @@ public class ShowNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initViewModel();
         checkRTL();
         initUi();
         showNoteDetails();
         binding.showNoteBodyTextView.setMovementMethod(new ScrollingMovementMethod());
     }
 
+    private void initViewModel() {
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+    }
+
     private void showNoteDetails() {
-        currentNote = Utils.note;
+        currentNote = noteViewModel.getCurrentNote();
         binding.showNoteTitleTextView.setText(currentNote.getTitle());
-        int textSize = currentNote.getTextFormat().getTextSize();
-        int textAlignment = currentNote.getTextFormat().getTextAlignment();
+        int textSize = currentNote.getTextSize();
+        int textAlignment = currentNote.getTextAlignment();
         binding.showNoteBodyTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         binding.showNoteBodyTextView.setGravity(textAlignment);
 
@@ -89,13 +92,9 @@ public class ShowNoteFragment extends Fragment {
     }
 
     private void initUi() {
-        binding.editNoteImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_showNote_to_editNote)
-        );
+        binding.editNoteImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_showNote_to_editNote));
 
-        binding.unlockNoteImageView.setOnClickListener(v -> {
-            initViewModel();
-            updatePassword();
-        });
+        binding.unlockNoteImageView.setOnClickListener(v -> updatePassword());
 
         binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
     }
@@ -108,18 +107,6 @@ public class ShowNoteFragment extends Fragment {
             binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
 
-    private void initViewModel() {
-        NotesViewModelFactory viewModelFactory = new NotesViewModelFactory(
-                Repository.getInstance(
-                        LocalSource.getInstance(getContext()), getActivity().getApplication()
-                ), getActivity().getApplication()
-        );
-
-        noteViewModel = new ViewModelProvider(
-                this,
-                viewModelFactory
-        ).get(NoteViewModel.class);
-    }
 
     private void updatePassword() {
         if (isUnLock)
@@ -151,6 +138,6 @@ public class ShowNoteFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Utils.note = null;
+        noteViewModel.setCurrentNote(null);
     }
 }

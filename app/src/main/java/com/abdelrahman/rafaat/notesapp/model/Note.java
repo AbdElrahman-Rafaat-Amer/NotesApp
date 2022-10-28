@@ -3,6 +3,7 @@ package com.abdelrahman.rafaat.notesapp.model;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.view.Gravity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -25,17 +26,18 @@ public class Note {
     private int color;
     private boolean isPinned;
     private String password;
-    @TypeConverters(DataConverters.class)
-    private TextFormat textFormat;
+    private int textSize;
+    private int textAlignment;
 
-    public Note(String title, String body, String date, int color, TextFormat textFormat) {
+    public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
         this.title = title;
         this.body = body;
         this.date = date;
         this.color = color;
         this.password = "";
         this.isPinned = false;
-        this.textFormat = textFormat;
+        this.textSize = textSize;
+        this.textAlignment = textAlignment;
     }
 
     public int getId() {
@@ -94,12 +96,19 @@ public class Note {
         this.password = password;
     }
 
-    public TextFormat getTextFormat() {
-        return textFormat;
+    public int getTextSize() {
+        return textSize;
     }
 
-    public void setTextFormat(TextFormat textFormat) {
-        this.textFormat = textFormat;
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 
+    public int getTextAlignment() {
+        return textAlignment;
+    }
+
+    public void setTextAlignment(int textAlignment) {
+        this.textAlignment = textAlignment;
+    }
 }

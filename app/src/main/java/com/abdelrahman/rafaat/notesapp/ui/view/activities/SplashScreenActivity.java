@@ -23,7 +23,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         boolean showToolTip = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("IsFirstTime", true);
-        Log.i("SplashScreenActivity", "onCreate: isFirstTime-------------->" + showToolTip);
         initUI();
         new Handler().postDelayed(() -> {
             if (showToolTip)
