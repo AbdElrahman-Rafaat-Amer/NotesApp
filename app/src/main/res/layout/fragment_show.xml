@@ -56,14 +56,15 @@
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/goBack_imageView" />
-
     <TextView
         android:id="@+id/show_noteBody_textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="15sp"
+        android:autoLink="web|email"
         android:background="@android:color/transparent"
         android:gravity="top"
+        android:linksClickable="true"
         android:scrollbars="vertical"
         android:textColor="?colorOnSecondary"
         android:textSize="20sp"

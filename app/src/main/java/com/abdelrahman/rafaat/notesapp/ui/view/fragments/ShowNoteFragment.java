@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import android.text.Html;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -49,12 +50,11 @@ public class ShowNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initViewModel();
         checkRTL();
         initUi();
         showNoteDetails();
-        binding.showNoteBodyTextView.setMovementMethod(new ScrollingMovementMethod());
+
     }
 
     private void initViewModel() {

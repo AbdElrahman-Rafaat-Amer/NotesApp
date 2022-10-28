@@ -27,6 +27,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.BulletSpan;
+import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.util.TypedValue;
@@ -275,7 +277,6 @@ public class AddNoteFragment extends Fragment {
     private void checkIsEdit() {
         try {
             note = noteViewModel.getCurrentNote();
-            Log.i("ViewModel", "checkIsEdit: note----------->" + note);
             binding.noteTitleEditText.setText(note.getTitle());
             Html.ImageGetter getter = source -> {
                 Bitmap bitmap = BitmapFactory.decodeFile(source);

@@ -5,8 +5,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.sax.Element;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+
+import org.w3c.dom.Document;
+import org.xml.sax.XMLReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,14 +75,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         void bind(Note currentNote) {
             if (currentNote.getPassword().isEmpty()) {
                 binding.noteTitleTextView.setText(currentNote.getTitle());
-                Log.i("TagHandler", "bind: body--------------->" + currentNote.getBody());
-                Log.i("TagHandler", "bind: html--------------->" + Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
                 binding.noteBodyTextView.setText(Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
                 binding.noteDateTextView.setText(currentNote.getDate());
                 binding.noteDateTextView.setSelected(true);
                 binding.lockedNoteImageView.setVisibility(View.GONE);
                 setViewVisibility(View.VISIBLE);
-
+                showNoteImage(currentNote.getBody());
             } else {
                 binding.lockedNoteImageView.setVisibility(View.VISIBLE);
                 setViewVisibility(View.GONE);
@@ -84,13 +89,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 binding.pinnedNoteImageView.setVisibility(View.VISIBLE);
             } else
                 binding.pinnedNoteImageView.setVisibility(View.GONE);
-
-           /*if (currentNote.getImagePaths().isEmpty()) {
-                binding.noteImageView.setVisibility(View.GONE);
-            } else {
-                binding.noteImageView.setVisibility(View.VISIBLE);
-                binding.noteImageView.setImageBitmap(BitmapFactory.decodeFile(currentNote.getImagePaths().get(0)));
-            }*/
 
             if (currentNote.getColor() != -1)
                 binding.getRoot().setCardBackgroundColor(currentNote.getColor());
@@ -107,6 +105,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             binding.noteTitleTextView.setVisibility(visibility);
             binding.noteBodyTextView.setVisibility(visibility);
             binding.noteDateTextView.setVisibility(visibility);
+            binding.noteImageView.setVisibility(visibility);
+        }
+
+        private void showNoteImage(String body) {
+            int start = body.indexOf("src=\"");
+            if (start > 0) {
+                start += "src=\"".length();
+                int end = body.indexOf("\">", start);
+                String url = body.substring(start, end);
+                binding.noteImageView.setImageBitmap(BitmapFactory.decodeFile(url));
+            } else {
+                binding.noteImageView.setVisibility(View.GONE);
+            }
+
         }
     }
 

@@ -55,4 +55,13 @@
     <string name="tooltip_add_note">يمكنك الضغط على هذا الزر لإنشاء ملاحظة جديدة</string>
     <string name="never_show_again">لا تظهر مرة أخرى</string>
     <string name="continue_button">متابعة</string>
+
+    <string name = "boost_font_size"> زيادة حجم الخط </ string>
+    <string name = "انخفاض_font_size"> تقليل حجم الخط </ string>
+    <string name = "align_right"> محاذاة لليمين </ string>
+    <string name = "align_center"> محاذاة المنتصف </ string>
+    <string name = "align_left"> محاذاة لليسار </ string>
+    <string name = "underline_text"> تسطير النص </ string>
+    <string name = "italic_text"> نص مائل </ string>
+    <string name = "bold_text"> نص غامق </ string>
 </resources>
