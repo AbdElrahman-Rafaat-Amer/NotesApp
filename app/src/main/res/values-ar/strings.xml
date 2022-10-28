@@ -56,8 +56,8 @@
     <string name="never_show_again">لا تظهر مرة أخرى</string>
     <string name="continue_button">متابعة</string>
 
-    <string name = "boost_font_size"> زيادة حجم الخط </ string>
-    <string name = "انخفاض_font_size"> تقليل حجم الخط </ string>
+    <string name = "increase_font_size"> زيادة حجم الخط </ string>
+    <string name = "decrease_font_size"> تقليل حجم الخط </ string>
     <string name = "align_right"> محاذاة لليمين </ string>
     <string name = "align_center"> محاذاة المنتصف </ string>
     <string name = "align_left"> محاذاة لليسار </ string>
