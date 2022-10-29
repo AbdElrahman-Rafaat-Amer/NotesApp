@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="7sp"
@@ -42,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7sp"
+            android:fontFamily="@font/carter_one"
             android:text="@string/dummy_title"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -53,10 +53,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7sp"
+            android:fontFamily="@font/poppins"
             android:maxLines="6"
+            android:padding="3sp"
             android:text="@string/dummy_body"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noteTitle_textView" />
 
         <TextView
@@ -71,6 +75,8 @@
             android:text="@string/dummy_date"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/noteBody_textView" />
 
         <ImageView

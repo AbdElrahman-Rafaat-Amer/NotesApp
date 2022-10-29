@@ -1,30 +1,18 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.sax.Element;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
-
-import org.w3c.dom.Document;
-import org.xml.sax.XMLReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +78,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             } else
                 binding.pinnedNoteImageView.setVisibility(View.GONE);
 
-            if (currentNote.getColor() != -1)
+            if (currentNote.getColor() != -1) {
                 binding.getRoot().setCardBackgroundColor(currentNote.getColor());
-            else {
+            } else {
                 int color = context.getResources().getColor(R.color.defaultBackGround, null);
                 binding.getRoot().setCardBackgroundColor(color);
             }
