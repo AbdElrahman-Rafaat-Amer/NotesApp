@@ -424,7 +424,7 @@ public class AddNoteFragment extends Fragment {
     private boolean checkTitle() {
         boolean isTitleTrue = false;
         if (binding.noteTitleEditText.getText().toString().trim().isEmpty())
-            Toast.makeText(getContext(), getText(R.string.title_error), Toast.LENGTH_SHORT).show();
+            binding.noteTitleEditText.setError(getText(R.string.title_error));
         else
             isTitleTrue = true;
 
@@ -434,7 +434,7 @@ public class AddNoteFragment extends Fragment {
     private boolean checkBody() {
         boolean isBodyTrue = false;
         if (binding.noteBodyEditText.getText().toString().trim().isEmpty())
-            Toast.makeText(getContext(), getText(R.string.body_error), Toast.LENGTH_SHORT).show();
+            binding.noteBodyEditText.setError(getText(R.string.body_error));
         else
             isBodyTrue = true;
 

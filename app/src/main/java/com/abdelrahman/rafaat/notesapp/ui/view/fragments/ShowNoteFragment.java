@@ -12,23 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.utils.Utils;
 
 import java.util.Locale;
 
@@ -54,6 +49,7 @@ public class ShowNoteFragment extends Fragment {
         checkRTL();
         initUi();
         showNoteDetails();
+        binding.showNoteBodyTextView.setMovementMethod(new LinkMovementMethod());
 
     }
 
