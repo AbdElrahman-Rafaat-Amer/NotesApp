@@ -1,0 +1,16 @@
+Notes
+Secure notes are end-to-end encrypted using a user-provided passphrase that is required to view the notes on iOS, iPadOS, macOS devices, and the iCloud website. Each iCloud account (including “On my” device accounts) can have a separate passphrase.
+
+When a user secures a note, a 16-byte key is derived from the user’s passphrase using PBKDF2 and SHA256. The note and all of its attachments are encrypted using AES with Galois/Counter Mode (AES-GCM). New records are created in Core Data and CloudKit to store the encrypted note, attachments, tag, and initialization vector. After the new records are created, the original unencrypted data is deleted. Attachments that support encryption include images, sketches, tables, maps, and websites. Notes containing other types of attachments can’t be encrypted, and unsupported attachments can’t be added to secure notes.
+
+To view a secure note, the user must enter their passphrase or authenticate using Face ID or Touch ID. After successfully authenticating the user, whether to view or create a secure note, Notes opens a secure session. While the secure session is open, the user can view or secure other notes without additional authentication. However, the secure session applies only to notes protected with the provided passphrase. The user still needs to authenticate for notes protected by a different passphrase. The secure session is closed when:
+
+The user taps the Lock Now button in Notes
+
+Notes is switched to the background for more than 3 minutes (8 minutes in macOS)
+
+The iOS or iPadOS device locks
+
+To change the passphrase on a secure note, the user must enter the current passphrase, because Face ID and Touch ID aren’t available when changing the passphrase. After choosing a new passphrase, the Notes app rewraps, in the same account, the keys of all existing notes that are encrypted by the previous passphrase.
+
+If a user mistypes the passphrase three times in a row, Notes shows a user-supplied hint if one was provided by the user at setup. If the user still doesn’t remember their passphrase, they can reset it in Notes settings. This feature allows users to create new secure notes with a new passphrase, but it won’t allow them to see previously secured notes. The previously secured notes can still be viewed if the old passphrase is remembered. Resetting the passphrase requires the user’s iCloud account passphrase.
