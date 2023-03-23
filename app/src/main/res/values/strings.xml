@@ -72,6 +72,7 @@
     <string name="italic_text">italic text</string>
     <string name="bold_text">bold text</string>
 
+    <string name="banner_ad_unit" translatable="false">ca-app-pub-3182293027986796/6830760327</string>
 
 
 </resources>
