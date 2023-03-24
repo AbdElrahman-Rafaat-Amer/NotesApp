@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.abdelrahman.rafaat.notesapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,10 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/app_id" />
+
         <activity
             android:name=".ui.view.activities.ToolTipActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
+
         <activity
             android:name=".ui.view.activities.SplashScreenActivity"
             android:exported="true"
@@ -27,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.view.activities.MainActivity"
             android:exported="true" />
