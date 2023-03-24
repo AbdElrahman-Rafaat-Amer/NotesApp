@@ -50,5 +50,5 @@ Colorized note app that you can write what you want in simple way.
 
 
 
-# App APK
-https://drive.google.com/file/d/1fhlW-GuxTjll1ESNB3uMwfOFi36Br_J2/view?usp=share_link
+# App on GooglePlay
+https://play.google.com/store/apps/details?id=com.abdelrahman.rafaat.notesapp
