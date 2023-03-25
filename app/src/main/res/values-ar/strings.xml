@@ -6,7 +6,7 @@
     <string name="go_back">الرجوع</string>
     <string name="save_note">حفظ</string>
     <string name="title">العنوان</string>
-    <string name="body">ادخل النص.....</string>
+    <string name="enter_body">ادخل النص.....</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="ask_cancel_changes">هل أنت متأكد من إلغاء التغييرات التي أجريتها ؟؟</string>
@@ -27,6 +27,7 @@
     <string name="save_changes"> حفظ التغييرات؟ </string>
     <string name="choose_color"> اختر لونًا </string>
     <string name="edit_note"> تحرير الملاحظة </string>
+    <string name="share_note">مشاركة الملاحظة</string>
     <string name="list_note"> قائمة / شبكة </string>
     <string name="splash_desc"> اكتب ما تريد ..... </string>
     <string name="no_notes"> لا توجد أية ملاحظات </string>
@@ -55,6 +56,8 @@
     <string name="tooltip_add_note">يمكنك الضغط على هذا الزر لإنشاء ملاحظة جديدة</string>
     <string name="never_show_again">لا تظهر مرة أخرى</string>
     <string name="continue_button">متابعة</string>
+    <string name="share_using">المشاركة عبر</string>
+    <string name="body">النص</string>
 
     <string name = "increase_font_size"> زيادة حجم الخط </string>
     <string name = "decrease_font_size"> تقليل حجم الخط </string>

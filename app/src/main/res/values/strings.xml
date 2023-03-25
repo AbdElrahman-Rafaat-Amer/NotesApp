@@ -5,7 +5,7 @@
     <string name="go_back">Go back</string>
     <string name="save_note">Save Note</string>
     <string name="title">Title</string>
-    <string name="body">Enter your note.....</string>
+    <string name="enter_body">Enter your note.....</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ask_cancel_changes">Are you sure to cancel changes you made ??</string>
@@ -26,6 +26,7 @@
     <string name="save_changes">Save changes ?</string>
     <string name="choose_color">Choose color</string>
     <string name="edit_note">Edit note</string>
+    <string name="share_note">Share note</string>
     <string name="list_note">List/Grid</string>
     <string name="splash_desc">Write what you want.....</string>
     <string name="no_notes">There is no note exist</string>
@@ -54,12 +55,18 @@
     <string name="tooltip_add_note">you press this button to create new note</string>
     <string name="never_show_again">Never show again</string>
     <string name="continue_button">continue</string>
+    <string name="share_using">Share Using</string>
+    <string name="sharing_note" translatable="false">%1$s: %2$s\n\n\n%3$s: %4$s</string>
+    <string name="body">body</string>
+
+
+
 
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
     <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry\'s. It is a long established fact that a reader will be distracted
-        by the content of a page when lookingat its layout.Contrary to popular belief, Lorem Ipsum is not simply random text.
+        by the content of a page when looking at its layout.Contrary to popular belief, Lorem Ipsum is not simply random text.
             It has roots in a piece of classical Latin literature.
         </string>
 

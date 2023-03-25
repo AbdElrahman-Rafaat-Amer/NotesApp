@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +95,8 @@ public class ShowNoteFragment extends Fragment {
 
         binding.unlockNoteImageView.setOnClickListener(v -> updatePassword());
 
+        binding.shareNote.setOnClickListener(view -> shareNote());
+
         binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
     }
 
@@ -111,6 +116,20 @@ public class ShowNoteFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
         }
 
+    }
+
+    private void shareNote() {
+        Intent myIntent = new Intent(Intent.ACTION_SEND);
+        myIntent.setType("text/plain");
+        String title = currentNote.getTitle();
+        String body = currentNote.getBody();
+        String note = getString(R.string.sharing_note, getString(R.string.title), title, getString(R.string.body), body);
+        myIntent.putExtra(Intent.EXTRA_TEXT, note);
+        Log.i("Sharing Note", "shareNote: title------------->" + title);
+        Log.i("Sharing Note", "shareNote: body-------------->" + body);
+        Log.i("Sharing Note", "shareNote: body-------------->" + body.toString());
+        Log.i("Sharing Note", "shareNote: note=------------->" + note);
+        startActivity(Intent.createChooser(myIntent, getString(R.string.share_using)));
     }
 
     private void updateNote() {

@@ -45,6 +45,19 @@
         app:layout_constraintEnd_toStartOf="@+id/edit_note_ImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/shareNote"
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_marginTop="25sp"
+        android:layout_marginEnd="20sp"
+        android:background="@drawable/ic_search_view_background"
+        android:contentDescription="@string/share_note"
+        android:padding="2sp"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toStartOf="@+id/unlock_note_ImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/show_noteTitle_textView"
         android:layout_width="match_parent"
