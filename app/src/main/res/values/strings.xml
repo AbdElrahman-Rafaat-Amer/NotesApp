@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Notes</string>
+    <string name="app_name">Colorized notes</string>
     <string name="add_note">Add Note</string>
     <string name="pinned_note">Pinned</string>
     <string name="go_back">Go back</string>

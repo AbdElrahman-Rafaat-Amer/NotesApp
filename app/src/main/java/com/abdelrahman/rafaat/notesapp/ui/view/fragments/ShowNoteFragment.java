@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
@@ -15,7 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spanned;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
@@ -28,6 +35,7 @@ import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
+import java.io.FileOutputStream;
 import java.util.Locale;
 
 import com.facebook.ads.*;
@@ -65,8 +73,8 @@ public class ShowNoteFragment extends Fragment {
         AdListener adListener = new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
-                Log.i("MobileAds", "Facebook onError: errorMessage " + adError.getErrorMessage());
-                Log.i("MobileAds", "Facebook onError: errorCode " + adError.getErrorCode());
+                Log.e("MobileAds", "Facebook onError: errorMessage " + adError.getErrorMessage());
+                Log.e("MobileAds", "Facebook onError: errorCode " + adError.getErrorCode());
             }
 
             @Override
@@ -153,13 +161,9 @@ public class ShowNoteFragment extends Fragment {
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
         String title = currentNote.getTitle();
-        String body = currentNote.getBody();
-        String note = getString(R.string.sharing_note, getString(R.string.title), title, getString(R.string.body), body);
+        Spanned noteBody = Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY, null, null);
+        String note = getString(R.string.sharing_note, getString(R.string.title), title, getString(R.string.body), noteBody);
         myIntent.putExtra(Intent.EXTRA_TEXT, note);
-        Log.i("Sharing Note", "shareNote: title------------->" + title);
-        Log.i("Sharing Note", "shareNote: body-------------->" + body);
-        Log.i("Sharing Note", "shareNote: body-------------->" + body.toString());
-        Log.i("Sharing Note", "shareNote: note=------------->" + note);
         startActivity(Intent.createChooser(myIntent, getString(R.string.share_using)));
     }
 
