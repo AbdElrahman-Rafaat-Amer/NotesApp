@@ -30,6 +30,7 @@ import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.Locale;
 
+import com.facebook.ads.*;
 
 public class ShowNoteFragment extends Fragment {
     private FragmentShowBinding binding;
@@ -37,6 +38,7 @@ public class ShowNoteFragment extends Fragment {
     private Note currentNote;
     private AlertDialog alertDialog;
     private boolean isUnLock = true;
+    private AdView adView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -48,12 +50,42 @@ public class ShowNoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initFacebookAds();
         initViewModel();
         checkRTL();
         initUi();
         showNoteDetails();
         binding.showNoteBodyTextView.setMovementMethod(new LinkMovementMethod());
 
+    }
+
+    private void initFacebookAds() {
+        adView = new AdView(requireContext(), getString(R.string.facebook_banner_ad_replacement), AdSize.BANNER_HEIGHT_50);
+        binding.facebookAdsView.addView(adView);
+        AdListener adListener = new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Log.i("MobileAds", "Facebook onError: errorMessage " + adError.getErrorMessage());
+                Log.i("MobileAds", "Facebook onError: errorCode " + adError.getErrorCode());
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                Log.i("MobileAds", "Facebook onAdLoaded: ");
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                Log.i("MobileAds", "Facebook onAdClicked: ");
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                Log.i("MobileAds", "Facebook onLoggingImpression: ");
+            }
+        };
+
+        adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
     }
 
     private void initViewModel() {
@@ -108,7 +140,6 @@ public class ShowNoteFragment extends Fragment {
             binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
 
-
     private void updatePassword() {
         if (isUnLock)
             updateNote();
@@ -148,6 +179,14 @@ public class ShowNoteFragment extends Fragment {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 
     @Override

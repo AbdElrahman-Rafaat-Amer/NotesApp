@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.fragments.ShowNoteFragment">
 
+    <LinearLayout
+        android:id="@+id/facebookAdsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/goBack_imageView"
         android:layout_width="35sp"
@@ -17,7 +24,7 @@
         android:contentDescription="@string/go_back"
         android:src="@drawable/ic_arrow_left"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/facebookAdsView" />
 
     <ImageView
         android:id="@+id/edit_note_ImageView"
@@ -30,7 +37,7 @@
         android:scaleType="center"
         android:src="@drawable/ic_edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/facebookAdsView" />
 
     <ImageView
         android:id="@+id/unlock_note_ImageView"
@@ -43,7 +50,7 @@
         android:padding="2sp"
         android:src="@drawable/ic_unlock"
         app:layout_constraintEnd_toStartOf="@+id/edit_note_ImageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/facebookAdsView" />
 
     <ImageView
         android:id="@+id/shareNote"
@@ -56,7 +63,7 @@
         android:padding="2sp"
         android:src="@drawable/ic_share"
         app:layout_constraintEnd_toStartOf="@+id/unlock_note_ImageView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/facebookAdsView" />
 
     <TextView
         android:id="@+id/show_noteTitle_textView"
