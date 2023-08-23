@@ -38,7 +38,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
+            result -> {
                 // handle callback
+                if (result.getResultCode() == RESULT_CANCELED) {
                     System.exit(0);
                 } else if (result.getResultCode() != RESULT_OK) {
                     Log.i(TAG, "onActivityResult: the update is cancelled or fails you can request to start the update again.");
@@ -92,6 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
 
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+                    boolean isUpdateAvailable = appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
                     if (isUpdateAvailable) {
                         checkUpdateType(appUpdateInfo);
                     }
@@ -101,7 +104,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Log.e(TAG, "onFailure: error.getMessage----------------> " + error.getMessage());
                 })
                 .addOnCanceledListener(() -> Log.w(TAG, "onCanceled: "))
+                .addOnCompleteListener(task -> {
+                    if (!isUpdateAvailable && task.isComplete()) {
                         initUI();
+                    }
 
                 });
     }
