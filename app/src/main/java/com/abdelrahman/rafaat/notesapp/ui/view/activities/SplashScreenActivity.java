@@ -43,9 +43,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_CANCELED) {
                     System.exit(0);
                 } else if (result.getResultCode() != RESULT_OK) {
-                    Log.i(TAG, "onActivityResult: the update is cancelled or fails you can request to start the update again.");
-                    Log.i(TAG, "onActivityResult: result.toString()---->" + result.toString());
-
                     checkForAppUpdate();
                 }
             });
@@ -105,6 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 })
                 .addOnCanceledListener(() -> Log.w(TAG, "onCanceled: "))
                 .addOnCompleteListener(task -> {
+                    boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
                     if (!isUpdateAvailable && task.isComplete()) {
                         initUI();
                     }
