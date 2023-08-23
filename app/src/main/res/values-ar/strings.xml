@@ -67,4 +67,12 @@
     <string name = "underline_text"> تسطير النص </string>
     <string name = "italic_text"> نص مائل </string>
     <string name = "bold_text"> نص غامق </string>
+
+    <string name="immediate_update_message">التحديث مطلوب:\n نعتذر عن الانقطاع، ولكن من الضروري إجراء تحديث مهم لمواصلة استخدام تطبيقنا. يتضمن هذا التحديث تحسينات وإصلاحات مهمة تعمل على تحسين تجربة التطبيق لديك. يُرجى التفكير في التحديث الآن للاستمتاع بأحدث الميزات وضمان الأداء الأمثل.\nشكرًا لك على تفهمك ودعمك!</string>
+
+    <string name="flexible_update_message">التحديث متاح! على الرغم من أنه اختياري، إلا أننا نقترح التحديث للحصول على ميزات وتحسينات جديدة رائعة. تحديثات مثيرة قريبا! قم بالتحديث بسهولة حسب راحتك في قسم "الإعدادات".\n شكرا لاستخدام التطبيق لدينا!</string>
+    <string name="restart">إعادة تشغيل</string>
+    <string name="update">تحديث</string>
+    <string name="exit">اغلاق</string>
+    <string name="update_complete_message">لقد تم تنزيل التحديث. </string>
 </resources>

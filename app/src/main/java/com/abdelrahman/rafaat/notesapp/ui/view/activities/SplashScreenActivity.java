@@ -1,79 +1,59 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import com.abdelrahman.rafaat.notesapp.BuildConfig;
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.appupdate.AppUpdateOptions;
-import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallErrorCode;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
     private AppUpdateManager appUpdateManager;
-    private final String TAG = "UPDATE_MANAGER";
-    private final int APP_UPDATE_REQUEST_CODE = 123456;
+    private final int appUpdateType = AppUpdateType.IMMEDIATE;
 
     private final ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
             result -> {
-                // handle callback
                 if (result.getResultCode() == RESULT_CANCELED) {
-                    System.exit(0);
+                    if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                        addDialogNote(getString(R.string.immediate_update_message));
+                    } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                        addDialogNote(getString(R.string.flexible_update_message));
+                    }
                 } else if (result.getResultCode() != RESULT_OK) {
                     checkForAppUpdate();
                 }
             });
 
-    private final InstallStateUpdatedListener stateUpdatedListener = new InstallStateUpdatedListener() {
-        @Override
-        public void onStateUpdate(@NonNull InstallState installState) {
-            switch (installState.installStatus()) {
-                case InstallStatus.DOWNLOADING:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.DOWNLOADING");
-                    break;
-                case InstallStatus.DOWNLOADED:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.DOWNLOADED");
-                    break;
-                case InstallStatus.INSTALLING:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.INSTALLING");
-                    break;
-                case InstallStatus.INSTALLED:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.INSTALLED");
-                    break;
-                case InstallStatus.PENDING:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.PENDING");
-                    break;
-                case InstallStatus.FAILED:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.FAILED");
-                    Log.i(TAG, "onStateUpdate:  installState.installErrorCode()---> " + installState.installErrorCode());
-                    break;
-                case InstallStatus.CANCELED:
-                    Log.i(TAG, "onStateUpdate:  InstallStatus.CANCELED");
-                    break;
-            }
+    private final InstallStateUpdatedListener stateUpdatedListener = installState -> {
+        if (installState.installStatus() == InstallStatus.DOWNLOADED) {
+            popupSnackbarForCompleteUpdate();
         }
     };
 
@@ -83,6 +63,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (appUpdateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(stateUpdatedListener);
+        }
         checkForAppUpdate();
     }
 
@@ -93,34 +76,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
                     boolean isUpdateAvailable = appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
                     if (isUpdateAvailable) {
-                        checkUpdateType(appUpdateInfo);
+                        startUpdate(appUpdateInfo);
                     }
                 })
-                .addOnFailureListener(error -> {
-                    Log.e(TAG, "onFailure: error.LocalizedMessage----------> " + error.getLocalizedMessage());
-                    Log.e(TAG, "onFailure: error.getMessage----------------> " + error.getMessage());
-                })
-                .addOnCanceledListener(() -> Log.w(TAG, "onCanceled: "))
                 .addOnCompleteListener(task -> {
                     boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
                     if (!isUpdateAvailable && task.isComplete()) {
                         initUI();
                     }
-
                 });
     }
 
-    private void checkUpdateType(AppUpdateInfo appUpdateInfo) {
-        int DAYS_FOR_FLEXIBLE_UPDATE = 2;
-        boolean isFlexibleUpdate = appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE);
-        if (appUpdateInfo.clientVersionStalenessDays() != null && appUpdateInfo.clientVersionStalenessDays() >= DAYS_FOR_FLEXIBLE_UPDATE) {
-        }
-        appUpdateManager.registerListener(stateUpdatedListener);
-        appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE)
+    private void startUpdate(AppUpdateInfo appUpdateInfo) {
+        appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(appUpdateType)
                 .setAllowAssetPackDeletion(true)
                 .build());
-
-
     }
 
     private void initUI() {
@@ -145,11 +115,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo appUpdateInfo) {
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    startUpdate(appUpdateInfo);
+                }
+            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
                 if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    initUI();
+                    popupSnackbarForCompleteUpdate();
                 }
             }
         });
@@ -158,6 +131,50 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        appUpdateManager.unregisterListener(stateUpdatedListener);
+        if (appUpdateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.unregisterListener(stateUpdatedListener);
+        }
+    }
+
+    private void popupSnackbarForCompleteUpdate() {
+        Snackbar snackbar =
+                Snackbar.make(binding.getRoot(),
+                        getString(R.string.update_complete_message),
+                        Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+        snackbar.show();
+    }
+
+    private void addDialogNote(String message) {
+        View view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        TextView dialogMessage = view.findViewById(R.id.dialog_message_textView);
+        Button updateButton = view.findViewById(R.id.save_button);
+        Button exitButton = view.findViewById(R.id.discard_button);
+        updateButton.setText(getString(R.string.update));
+        exitButton.setText(getString(R.string.exit));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+        builder.setView(view);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Rect displayRectangle = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+        alertDialog.getWindow().setLayout(
+                (int) (displayRectangle.width() * 0.82f),
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogMessage.setText(message);
+
+        updateButton.setOnClickListener(v -> {
+            checkForAppUpdate();
+            alertDialog.dismiss();
+        });
+
+        exitButton.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            System.exit(0);
+        });
+
     }
 }

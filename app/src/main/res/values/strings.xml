@@ -60,8 +60,6 @@
     <string name="body">body</string>
 
 
-
-
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
     <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -78,5 +76,18 @@
     <string name="underline_text">underline text</string>
     <string name="italic_text">italic text</string>
     <string name="bold_text">bold text</string>
+
+    <string name="immediate_update_message">Update Required:\n We apologize for the interruption,
+        but an important update is necessary to continue using our app. This update includes critical
+        enhancements and fixes that improve your app experience. Please consider updating now to enjoy the
+        latest features and ensure optimal performance.\nThank you for your understanding and support!</string>
+
+    <string name="flexible_update_message">Update available! Although it\'s optional,
+        we suggest updating for cool new features and improvements. Exciting updates coming soon!
+        Easily update at your convenience in the "Settings" section.\nThanks for using our app!</string>
+    <string name="restart">Restart</string>
+    <string name="update">Update</string>
+    <string name="exit">Exit</string>
+    <string name="update_complete_message">An update has just been downloaded</string>
 
 </resources>
