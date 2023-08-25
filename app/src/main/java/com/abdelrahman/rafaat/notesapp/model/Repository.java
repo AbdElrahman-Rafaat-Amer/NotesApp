@@ -3,7 +3,6 @@ package com.abdelrahman.rafaat.notesapp.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 

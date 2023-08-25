@@ -30,7 +30,6 @@ import android.text.TextWatcher;
 import android.text.style.BulletSpan;
 import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -305,7 +304,7 @@ public class AddNoteFragment extends Fragment {
 
 
         } catch (Exception exception) {
-            Log.i(TAG, "checkIsEdit: exception-----------------> " + exception.getMessage());
+            exception.printStackTrace();
         }
     }
 
@@ -483,7 +482,7 @@ public class AddNoteFragment extends Fragment {
                     }
                     Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
                 } catch (Exception exception) {
-                    Log.i(TAG, "onActivityResult: exception.message----------------------->" + exception.getMessage());
+                    exception.printStackTrace();
                 }
             }
         }
@@ -506,7 +505,6 @@ public class AddNoteFragment extends Fragment {
         try {
             saveImageIntoInternalStorage(outFile, bitmap);
         } catch (IOException e) {
-            Log.i(TAG, "Exception: IOException" + e.getMessage());
             Snackbar.make(binding.getRoot(), getString(R.string.error_in_save), Snackbar.LENGTH_SHORT).show();
         }
     }

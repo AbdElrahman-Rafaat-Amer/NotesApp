@@ -1,7 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -28,7 +27,6 @@ public class NoteViewModel extends AndroidViewModel {
         super(application);
         this.repositoryInterface = Repository.getInstance(
                 LocalSource.getInstance(application.getApplicationContext()), application.getApplicationContext());
-        Log.i("ViewModel", "constructor: ----------------------->");
     }
 
     public void getLayoutMangerStyle() {
@@ -66,11 +64,5 @@ public class NoteViewModel extends AndroidViewModel {
 
     public Note getCurrentNote() {
         return currentNote;
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        Log.i("ViewModel", "onCleared: ----------------------->");
     }
 }

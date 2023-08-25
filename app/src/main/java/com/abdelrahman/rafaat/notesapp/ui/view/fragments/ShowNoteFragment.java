@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,27 +21,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.text.Html;
-import android.text.Layout;
-import android.text.Spanned;
-import android.text.StaticLayout;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 
-import java.io.FileOutputStream;
 import java.util.Locale;
-
-import com.facebook.ads.*;
 
 public class ShowNoteFragment extends Fragment {
     private FragmentShowBinding binding;
@@ -70,30 +60,7 @@ public class ShowNoteFragment extends Fragment {
     private void initFacebookAds() {
         adView = new AdView(requireContext(), getString(R.string.facebook_banner_ad_replacement), AdSize.BANNER_HEIGHT_50);
         binding.facebookAdsView.addView(adView);
-        AdListener adListener = new AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                Log.e("MobileAds", "Facebook onError: errorMessage " + adError.getErrorMessage());
-                Log.e("MobileAds", "Facebook onError: errorCode " + adError.getErrorCode());
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                Log.i("MobileAds", "Facebook onAdLoaded: ");
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                Log.i("MobileAds", "Facebook onAdClicked: ");
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                Log.i("MobileAds", "Facebook onLoggingImpression: ");
-            }
-        };
-
-        adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+        adView.loadAd(adView.buildLoadAdConfig().build());
     }
 
     private void initViewModel() {
