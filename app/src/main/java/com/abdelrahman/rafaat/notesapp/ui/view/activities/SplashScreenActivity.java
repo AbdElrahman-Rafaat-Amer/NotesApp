@@ -1,11 +1,12 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -62,7 +64,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        binding.getRoot().setVisibility(View.INVISIBLE);
         if (appUpdateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.registerListener(stateUpdatedListener);
         }
@@ -94,22 +96,32 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        binding.getRoot().setVisibility(View.VISIBLE);
+        binding.splashAnimation.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(@NonNull Animator animator) {}
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animator) {
+                boolean showToolTip = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("IsFirstTime", true);
+                if (showToolTip)
+                    startActivity(new Intent(SplashScreenActivity.this, ToolTipActivity.class));
+                else
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+            }
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animator) {}
+        });
+        binding.splashAnimation.playAnimation();
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);
         binding.descriptionTextView.setAnimation(bottomAnimation);
 
         Animation topAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_top_animation);
         binding.titleTextView.setAnimation(topAnimation);
-        startAnimation();
-    }
-
-    private void startAnimation() {
-        boolean showToolTip = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("IsFirstTime", true);
-        new Handler().postDelayed(() -> {
-            if (showToolTip)
-                startActivity(new Intent(SplashScreenActivity.this, ToolTipActivity.class));
-            else
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-        }, 2000);
     }
 
     @Override
@@ -164,6 +176,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         alertDialog.getWindow().setLayout(
                 (int) (displayRectangle.width() * 0.82f),
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         dialogMessage.setText(message);
 
         updateButton.setOnClickListener(v -> {
