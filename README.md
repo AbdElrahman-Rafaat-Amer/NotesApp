@@ -10,6 +10,7 @@ Colorized note app that you can write what you want in simple way.
 - Fully Offline: The application doesnot store anything online, no logs, etc.
 - Choice of Grid / List layouts.
 - Lock Notes: lock the notes with a pincode.
+- Will receive notification when there is a new update avilable.
 
 # Tools & Libraries
 - Android studio.
@@ -19,6 +20,8 @@ Colorized note app that you can write what you want in simple way.
 - View Binding.
 - Navigation Graph.
 - Lottie Animation.
+- Google ads.
+- in-app updates.
 
 
 # Screenshots
