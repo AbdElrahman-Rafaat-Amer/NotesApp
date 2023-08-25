@@ -48,7 +48,6 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-//import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,7 +60,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.FileOutputStream;
-
 
 public class AddNoteFragment extends Fragment {
 
@@ -345,8 +343,7 @@ public class AddNoteFragment extends Fragment {
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -523,5 +520,4 @@ public class AddNoteFragment extends Fragment {
         binding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(() -> {
         });
     }
-
 }

@@ -2,11 +2,9 @@ package com.abdelrahman.rafaat.notesapp.database;
 
 import android.content.Context;
 
-import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
 

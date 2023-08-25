@@ -14,13 +14,11 @@ import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 
 import java.util.List;
-
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
     public LiveData<List<Note>> notes;
     private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
     public LiveData<Boolean> isList = _isList;
-
     private Note currentNote;
 
     public NoteViewModel(@NonNull Application application) {
@@ -33,11 +31,9 @@ public class NoteViewModel extends AndroidViewModel {
         boolean isList = repositoryInterface.getLayoutMangerStyle();
         _isList.postValue(isList);
     }
-
     public void setLayoutMangerStyle(boolean isList) {
         repositoryInterface.setLayoutMangerStyle(isList);
     }
-
     public void getAllNotes() {
         notes = repositoryInterface.getAllNotes();
     }
@@ -57,7 +53,6 @@ public class NoteViewModel extends AndroidViewModel {
     public void lockNote(int noteID, String password) {
         repositoryInterface.lockNote(noteID, password);
     }
-
     public void setCurrentNote(Note note) {
         this.currentNote = note;
     }

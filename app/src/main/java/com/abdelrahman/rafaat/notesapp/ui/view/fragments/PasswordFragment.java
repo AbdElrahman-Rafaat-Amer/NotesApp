@@ -20,8 +20,6 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.Locale;
-
-
 public class PasswordFragment extends Fragment {
     private FragmentPasswordBinding binding;
     private Note note;
@@ -45,12 +43,10 @@ public class PasswordFragment extends Fragment {
         checkIsSetPassword();
         checkRTL();
 
-
     }
 
     private void initUI() {
         binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
-
         binding.notePinView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -58,9 +54,7 @@ public class PasswordFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -70,7 +64,6 @@ public class PasswordFragment extends Fragment {
                     else
                         checkPassword();
                 }
-
             }
         });
     }
@@ -101,7 +94,6 @@ public class PasswordFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
         } else
             binding.passwordErrorTextView.setVisibility(View.VISIBLE);
-
     }
 
     private void updateNote() {

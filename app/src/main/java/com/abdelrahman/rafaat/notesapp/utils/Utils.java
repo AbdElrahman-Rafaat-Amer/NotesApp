@@ -19,9 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
-
 public class Utils {
-
     public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, String source) {
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
@@ -39,5 +37,4 @@ public class Utils {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         return drawable;
     }
-
 }
