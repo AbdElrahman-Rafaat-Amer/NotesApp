@@ -2,8 +2,6 @@ package com.abdelrahman.rafaat.notesapp.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -14,14 +12,12 @@ import java.util.List;
 public class Repository implements RepositoryInterface {
 
     private static Repository repository = null;
-    private Context context;
-    private LocalSourceInterface localSource;
-    private SharedPreferences sharedPrefs;
-    private SharedPreferences.Editor editor;
+    private final LocalSourceInterface localSource;
+    private final SharedPreferences sharedPrefs;
+    private final SharedPreferences.Editor editor;
 
 
     private Repository(Context context, LocalSourceInterface localSource) {
-        this.context = context;
         this.localSource = localSource;
         this.sharedPrefs = context.getSharedPreferences("LAYOUT_MANGER", Context.MODE_PRIVATE);
         this.editor = sharedPrefs.edit();
@@ -69,7 +65,6 @@ public class Repository implements RepositoryInterface {
     public void setLayoutMangerStyle(boolean isList) {
         editor.putBoolean("IS_LIST", isList);
         editor.apply();
-        boolean ss = sharedPrefs.getBoolean("IS_LIST", false);
-
+        sharedPrefs.getBoolean("IS_LIST", false);
     }
 }

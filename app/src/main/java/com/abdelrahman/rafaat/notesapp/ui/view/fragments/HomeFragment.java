@@ -64,8 +64,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         return binding.getRoot();
-
-
     }
 
     @Override
@@ -211,7 +209,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
             adapter.setList(pinnedNotes);
         }
-
     }
 
     private void showSnackBar(String message) {
@@ -220,8 +217,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                 .setActionTextColor(Color.WHITE);
         snackBar.getView().setBackgroundColor(Color.RED);
         snackBar.show();
-
-
     }
 
     public void onBackPressed() {

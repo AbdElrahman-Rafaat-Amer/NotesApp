@@ -30,7 +30,6 @@ import android.text.TextWatcher;
 import android.text.style.BulletSpan;
 import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,7 +48,6 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-//import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NotesViewModelFactory;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -62,7 +60,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.FileOutputStream;
-
 
 public class AddNoteFragment extends Fragment {
 
@@ -305,7 +302,7 @@ public class AddNoteFragment extends Fragment {
 
 
         } catch (Exception exception) {
-            Log.i(TAG, "checkIsEdit: exception-----------------> " + exception.getMessage());
+            exception.printStackTrace();
         }
     }
 
@@ -346,8 +343,7 @@ public class AddNoteFragment extends Fragment {
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -483,7 +479,7 @@ public class AddNoteFragment extends Fragment {
                     }
                     Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
                 } catch (Exception exception) {
-                    Log.i(TAG, "onActivityResult: exception.message----------------------->" + exception.getMessage());
+                    exception.printStackTrace();
                 }
             }
         }
@@ -506,7 +502,6 @@ public class AddNoteFragment extends Fragment {
         try {
             saveImageIntoInternalStorage(outFile, bitmap);
         } catch (IOException e) {
-            Log.i(TAG, "Exception: IOException" + e.getMessage());
             Snackbar.make(binding.getRoot(), getString(R.string.error_in_save), Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -525,5 +520,4 @@ public class AddNoteFragment extends Fragment {
         binding.getRoot().getViewTreeObserver().removeOnGlobalLayoutListener(() -> {
         });
     }
-
 }
