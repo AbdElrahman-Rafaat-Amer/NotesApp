@@ -64,10 +64,11 @@ public class PasswordFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
-                    if (isSetPassword)
+                    if (isSetPassword){
                         updateNote();
-                    else
+                    } else{
                         checkPassword();
+                    }
                 }
             }
         });
@@ -115,6 +116,7 @@ public class PasswordFragment extends Fragment {
     private void updateNote() {
         note.setPassword(binding.notePinView.getText().toString());
         noteViewModel.updateNote(note);
+        noteViewModel.setCurrentNote(note);
         Navigation.findNavController(requireView()).popBackStack();
     }
 

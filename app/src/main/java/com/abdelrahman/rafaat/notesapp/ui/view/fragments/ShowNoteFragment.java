@@ -93,6 +93,8 @@ public class ShowNoteFragment extends Fragment {
         if (currentNote.getPassword().isEmpty()) {
             binding.unlockNoteImageView.setImageResource(R.drawable.ic_lock);
             isUnLock = false;
+        }else{
+            isUnLock = true;
         }
     }
 
@@ -115,9 +117,9 @@ public class ShowNoteFragment extends Fragment {
     }
 
     private void updatePassword() {
-        if (isUnLock)
+        if (isUnLock) {
             updateNote();
-        else {
+        } else {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
         }
     }
@@ -139,6 +141,7 @@ public class ShowNoteFragment extends Fragment {
                 .setPositiveButton(R.string.remove, (dialog, which) -> {
                     currentNote.setPassword("");
                     noteViewModel.updateNote(currentNote);
+                    noteViewModel.setCurrentNote(currentNote);
                     binding.unlockNoteImageView.setImageResource(R.drawable.ic_lock);
                     isUnLock = false;
                 })
