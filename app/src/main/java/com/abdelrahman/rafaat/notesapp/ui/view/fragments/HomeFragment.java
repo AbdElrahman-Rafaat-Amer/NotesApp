@@ -64,8 +64,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         return binding.getRoot();
-
-
     }
 
     @Override
@@ -82,6 +80,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         observeViewModel();
         initMenu();
         onBackPressed();
+        noteViewModel.setCurrentNote(null);
 
     }
 
@@ -187,8 +186,15 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     case R.id.pinned_note:
                         if (noteList.isEmpty()) {
                             showSnackBar(getString(R.string.no_notes));
-                        } else
-                            showPinnedNotes();
+                        } else {
+                            if (menuItem.getTitle() == getString(R.string.all_notes)){
+                                adapter.setList(noteList);
+                                menuItem.setTitle(getString(R.string.pinned_note));
+                            }else{
+                                showPinnedNotes();
+                                menuItem.setTitle(getString(R.string.all_notes));
+                            }
+                        }
                         break;
                 }
                 return false;
@@ -211,7 +217,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
             adapter.setList(pinnedNotes);
         }
-
     }
 
     private void showSnackBar(String message) {
@@ -220,8 +225,6 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                 .setActionTextColor(Color.WHITE);
         snackBar.getView().setBackgroundColor(Color.RED);
         snackBar.show();
-
-
     }
 
     public void onBackPressed() {

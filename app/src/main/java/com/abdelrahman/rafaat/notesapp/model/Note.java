@@ -1,19 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.model;
 
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.view.Gravity;
-
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 @Entity(tableName = "notes")
 public class Note {

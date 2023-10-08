@@ -86,7 +86,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
 
             binding.getRoot().setOnClickListener(view -> onClickListener.onClickListener(currentNote));
-
         }
 
         private void setViewVisibility(int visibility) {
@@ -106,10 +105,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             } else {
                 binding.noteImageView.setVisibility(View.GONE);
             }
-
         }
     }
-
 
 }
 

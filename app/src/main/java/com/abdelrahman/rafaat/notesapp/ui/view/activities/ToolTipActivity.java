@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 
@@ -88,9 +88,9 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                         .show();
                 break;
             case 2:
+                binding.notesRecyclerview.scrollToPosition(0);
                 CardView card = (CardView) linerLayoutManager.findViewByPosition(0);
                 if (card != null) {
-                    //   NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card);
                     Rect rect1 = new Rect();
                     card.getGlobalVisibleRect(rect1);
                     int top1 = (rect1.top + rect1.bottom) / 2;
@@ -103,6 +103,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                 }
                 break;
             case 3:
+                binding.notesRecyclerview.scrollToPosition(1);
                 CardView card1 = (CardView) linerLayoutManager.findViewByPosition(1);
                 if (card1 != null) {
                     Rect rect2 = new Rect();
@@ -117,6 +118,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                 }
                 break;
             case 4:
+                binding.notesRecyclerview.scrollToPosition(2);
                 CardView card2 = (CardView) linerLayoutManager.findViewByPosition(2);
                 if (card2 != null) {
                     NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card2);
