@@ -20,9 +20,6 @@ public interface NotesDAO {
     @Query("SELECT * FROM notes ORDER BY isPinned DESC")
     LiveData<List<Note>> getAllNotes();
 
-    @Query("UPDATE notes SET password = :password WHERE id = :id")
-    void lockNote(int id, String password);
-
     @Update
     void updateNote(Note note);
 

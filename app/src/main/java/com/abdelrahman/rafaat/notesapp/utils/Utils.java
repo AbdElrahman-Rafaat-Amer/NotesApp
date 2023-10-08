@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
+
 public class Utils {
     public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, String source) {
         BitmapDrawable drawable = setUpImage(bitmap);

@@ -23,6 +23,7 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.Locale;
+
 public class PasswordFragment extends Fragment {
     private FragmentPasswordBinding binding;
     private Note note;
@@ -57,7 +58,8 @@ public class PasswordFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -95,7 +97,7 @@ public class PasswordFragment extends Fragment {
         if (binding.notePinView.getText().toString().equals(note.getPassword())) {
             Navigation.findNavController(requireView()).popBackStack();
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
-        } else{
+        } else {
             binding.passwordErrorTextView.setVisibility(View.VISIBLE);
             hideKeyboard();
         }
