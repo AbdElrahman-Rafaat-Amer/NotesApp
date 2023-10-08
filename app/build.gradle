@@ -2,7 +2,8 @@ plugins {
     id 'com.android.application'
     id 'androidx.navigation.safeargs'
     id 'org.jetbrains.kotlin.android'
-
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -77,5 +78,10 @@ dependencies {
 
     //androidx preference
     implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
 }
