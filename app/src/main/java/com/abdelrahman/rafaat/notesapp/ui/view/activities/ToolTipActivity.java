@@ -88,6 +88,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                         .show();
                 break;
             case 2:
+                binding.notesRecyclerview.scrollToPosition(0);
                 CardView card = (CardView) linerLayoutManager.findViewByPosition(0);
                 if (card != null) {
                     Rect rect1 = new Rect();
@@ -102,6 +103,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                 }
                 break;
             case 3:
+                binding.notesRecyclerview.scrollToPosition(1);
                 CardView card1 = (CardView) linerLayoutManager.findViewByPosition(1);
                 if (card1 != null) {
                     Rect rect2 = new Rect();
@@ -116,6 +118,7 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
                 }
                 break;
             case 4:
+                binding.notesRecyclerview.scrollToPosition(2);
                 CardView card2 = (CardView) linerLayoutManager.findViewByPosition(2);
                 if (card2 != null) {
                     NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card2);
