@@ -10,12 +10,10 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSourceInterface;
 import java.util.List;
 
 public class Repository implements RepositoryInterface {
-
     private static Repository repository = null;
     private final LocalSourceInterface localSource;
     private final SharedPreferences sharedPrefs;
     private final SharedPreferences.Editor editor;
-
 
     private Repository(Context context, LocalSourceInterface localSource) {
         this.localSource = localSource;
@@ -49,11 +47,6 @@ public class Repository implements RepositoryInterface {
     @Override
     public void deleteNote(int id) {
         localSource.deleteNote(id);
-    }
-
-    @Override
-    public void lockNote(int noteID, String password) {
-        localSource.lockNote(noteID, password);
     }
 
     @Override

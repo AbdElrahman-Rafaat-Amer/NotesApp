@@ -11,24 +11,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.BulletSpan;
-import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,31 +29,34 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.utils.Utils;
-import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.FileOutputStream;
 
 public class AddNoteFragment extends Fragment {
 
-    public static final int PICK_IMAGE = 1;
-    private static final String TAG = "AddNoteFragment";
+    private static final int PICK_IMAGE = 1;
     private FragmentAddNoteBinding binding;
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
@@ -74,7 +66,6 @@ public class AddNoteFragment extends Fragment {
     private boolean isKeyboardVisible = false;
     private boolean isBodyHasFocus = false;
     private String imagePath;
-    private static final String FILENAME = "images";
     private Bitmap bitmap;
     private int textSize = 18;
     private int textAlignment = Gravity.TOP | Gravity.START;
@@ -343,7 +334,8 @@ public class AddNoteFragment extends Fragment {
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -495,7 +487,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void prepareFile() {
-        File imagesFile = new File(requireActivity().getExternalFilesDir(null), FILENAME);
+        File imagesFile = new File(requireActivity().getExternalFilesDir(null), "images");
         imagesFile.mkdirs();
         String filename = String.valueOf(System.currentTimeMillis());
         File outFile = new File(imagesFile, filename);

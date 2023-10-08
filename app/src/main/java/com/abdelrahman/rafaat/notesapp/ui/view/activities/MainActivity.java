@@ -2,7 +2,6 @@ package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityMainBinding;

@@ -101,7 +101,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding.getRoot().setVisibility(View.VISIBLE);
         binding.splashAnimation.addAnimatorListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(@NonNull Animator animator) {}
+            public void onAnimationStart(@NonNull Animator animator) {
+            }
 
             @Override
             public void onAnimationEnd(@NonNull Animator animator) {
@@ -113,10 +114,12 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationCancel(@NonNull Animator animator) {}
+            public void onAnimationCancel(@NonNull Animator animator) {
+            }
 
             @Override
-            public void onAnimationRepeat(@NonNull Animator animator) {}
+            public void onAnimationRepeat(@NonNull Animator animator) {
+            }
         });
         binding.splashAnimation.playAnimation();
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);

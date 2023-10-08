@@ -113,6 +113,7 @@ public class ShowNoteFragment extends Fragment {
         if (isRTL)
             binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
+
     private void updatePassword() {
         if (isUnLock)
             updateNote();
@@ -120,6 +121,7 @@ public class ShowNoteFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
         }
     }
+
     private void shareNote() {
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
