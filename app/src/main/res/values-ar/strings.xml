@@ -58,6 +58,7 @@
     <string name="continue_button">متابعة</string>
     <string name="share_using">المشاركة عبر</string>
     <string name="body">النص</string>
+    <string name="all_notes">جميع الملاحظات</string>
 
     <string name = "increase_font_size"> زيادة حجم الخط </string>
     <string name = "decrease_font_size"> تقليل حجم الخط </string>

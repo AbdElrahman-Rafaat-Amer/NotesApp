@@ -186,8 +186,15 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     case R.id.pinned_note:
                         if (noteList.isEmpty()) {
                             showSnackBar(getString(R.string.no_notes));
-                        } else
-                            showPinnedNotes();
+                        } else {
+                            if (menuItem.getTitle() == getString(R.string.all_notes)){
+                                adapter.setList(noteList);
+                                menuItem.setTitle(getString(R.string.pinned_note));
+                            }else{
+                                showPinnedNotes();
+                                menuItem.setTitle(getString(R.string.all_notes));
+                            }
+                        }
                         break;
                 }
                 return false;
