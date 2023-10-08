@@ -156,9 +156,4 @@ public class ShowNoteFragment extends Fragment {
         super.onDestroy();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        noteViewModel.setCurrentNote(null);
-    }
 }

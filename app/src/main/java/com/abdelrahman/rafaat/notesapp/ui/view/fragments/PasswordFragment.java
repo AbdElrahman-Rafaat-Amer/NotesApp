@@ -1,5 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
+
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentPasswordBinding;
@@ -92,8 +95,19 @@ public class PasswordFragment extends Fragment {
         if (binding.notePinView.getText().toString().equals(note.getPassword())) {
             Navigation.findNavController(requireView()).popBackStack();
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
-        } else
+        } else{
             binding.passwordErrorTextView.setVisibility(View.VISIBLE);
+            hideKeyboard();
+        }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getActivity().getCurrentFocus();
+        if (view == null) {
+            view = new View(getActivity());
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void updateNote() {
@@ -102,9 +116,4 @@ public class PasswordFragment extends Fragment {
         Navigation.findNavController(requireView()).popBackStack();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        noteViewModel.setCurrentNote(null);
-    }
 }

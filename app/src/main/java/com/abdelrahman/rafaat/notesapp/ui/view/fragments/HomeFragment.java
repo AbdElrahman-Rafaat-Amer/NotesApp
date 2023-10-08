@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
         observeViewModel();
         initMenu();
         onBackPressed();
+        noteViewModel.setCurrentNote(null);
 
     }
 
