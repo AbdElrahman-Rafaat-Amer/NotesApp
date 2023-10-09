@@ -30,7 +30,7 @@ import com.facebook.ads.AdView;
 
 import java.util.Locale;
 
-public class ShowNoteFragment extends Fragment {
+public class ShowNoteFragment extends BaseFragment {
     private FragmentShowBinding binding;
     private NoteViewModel noteViewModel;
     private Note currentNote;

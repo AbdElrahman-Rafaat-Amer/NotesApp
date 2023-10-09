@@ -59,6 +59,7 @@
     <string name="share_using">المشاركة عبر</string>
     <string name="body">النص</string>
     <string name="all_notes">جميع الملاحظات</string>
+    <string name="select_one_image_at_least">اختر صورة واحدة على الأقل</string>
 
     <string name = "increase_font_size"> زيادة حجم الخط </string>
     <string name = "decrease_font_size"> تقليل حجم الخط </string>

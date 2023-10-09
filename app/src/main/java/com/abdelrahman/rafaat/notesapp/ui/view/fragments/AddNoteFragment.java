@@ -1,8 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
@@ -31,9 +28,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -52,11 +51,12 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class AddNoteFragment extends Fragment {
+public class AddNoteFragment extends BaseFragment {
 
-    private static final int PICK_IMAGE = 1;
+//    private static final int PICK_IMAGE = 1;
     private FragmentAddNoteBinding binding;
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
@@ -72,6 +72,25 @@ public class AddNoteFragment extends Fragment {
     private boolean isBold = false;
     private boolean isItalic = false;
     private boolean isUnderLine = false;
+    ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
+            registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
+                if (!uris.isEmpty()) {
+                    for (Uri imageUri : uris) {
+                        try {
+                            InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
+                            bitmap = BitmapFactory.decodeStream(inputStream);
+                            if (isExternalStorageAvailable()) {
+                                prepareFile();
+                            }
+                            Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                } else {
+                    showSnackBar(binding.rootView, getString(R.string.select_one_image_at_least));
+                }
+            });
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -151,7 +170,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void watchKeyboard() {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         binding.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
             Rect r = new Rect();
@@ -385,9 +404,9 @@ public class AddNoteFragment extends Fragment {
         alertDialog.show();
 
         Rect displayRectangle = new Rect();
-        Window window = getActivity().getWindow();
+        Window window = requireActivity().getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-        alertDialog.getWindow().setLayout(
+        Objects.requireNonNull(alertDialog.getWindow()).setLayout(
                 (int) (displayRectangle.width() * 0.82f),
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogMessage.setText(message);
@@ -404,7 +423,7 @@ public class AddNoteFragment extends Fragment {
 
         discardButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            Navigation.findNavController(getView()).popBackStack();
+            Navigation.findNavController(binding.getRoot()).popBackStack();
         });
 
     }
@@ -453,28 +472,9 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void openGallery() {
-        Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(getIntent, PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-            if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                try {
-                    InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    if (isExternalStorageAvailable()) {
-                        prepareFile();
-                    }
-                    Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
+        pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
     private static boolean isExternalStorageAvailable() {

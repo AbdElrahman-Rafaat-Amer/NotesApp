@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -24,7 +23,7 @@ import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.Locale;
 
-public class PasswordFragment extends Fragment {
+public class PasswordFragment extends BaseFragment {
     private FragmentPasswordBinding binding;
     private Note note;
     private Boolean isSetPassword = false;

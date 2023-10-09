@@ -2,10 +2,18 @@ package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.app.AlertDialog;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -13,41 +21,25 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
+import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SearchView;
-
-import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-
-import com.abdelrahman.rafaat.notesapp.R;
-import com.google.android.material.snackbar.Snackbar;
-
-public class HomeFragment extends Fragment implements OnNotesClickListener {
+public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private FragmentHomeBinding binding;
     private NotesAdapter adapter;
@@ -94,7 +86,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (noteList.isEmpty() && !newText.trim().isEmpty()) {
-                    showSnackBar(getString(R.string.no_notes));
+                    showSnackBar(binding.rootView, getString(R.string.no_notes));
                 } else {
                     isSearching = true;
                     filter(newText);
@@ -174,7 +166,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.list_note){
                     if (noteList.isEmpty()) {
-                        showSnackBar(getString(R.string.no_notes));
+                        showSnackBar(binding.rootView, getString(R.string.no_notes));
                     } else {
                         isList = !isList;
                         setupLayoutManger();
@@ -183,7 +175,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     }
                 }else if (menuItem.getItemId() == R.id.pinned_note){
                     if (noteList.isEmpty()) {
-                        showSnackBar(getString(R.string.no_notes));
+                        showSnackBar(binding.rootView, getString(R.string.no_notes));
                     } else {
                         if (menuItem.getTitle() == getString(R.string.all_notes)) {
                             adapter.setList(noteList);
@@ -209,19 +201,11 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             }
         }
         if (pinnedNotes.isEmpty()) {
-            showSnackBar(getString(R.string.no_pinnedNotes));
+            showSnackBar(binding.rootView, getString(R.string.no_pinnedNotes));
         } else {
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
             adapter.setList(pinnedNotes);
         }
-    }
-
-    private void showSnackBar(String message) {
-        Snackbar snackBar = Snackbar.make(binding.rootView,
-                        message, Snackbar.LENGTH_SHORT)
-                .setActionTextColor(Color.WHITE);
-        snackBar.getView().setBackgroundColor(Color.RED);
-        snackBar.show();
     }
 
     public void onBackPressed() {
