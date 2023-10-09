@@ -327,7 +327,8 @@ public class AddNoteFragment extends BaseFragment {
     private void chooseColor() {
         binding.colorPickerView.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedOption = binding.colorPickerView.getCheckedRadioButtonId();
-            RadioButton radioButton = getView().findViewById(selectedOption);
+
+            RadioButton radioButton = binding.getRoot().findViewById(selectedOption);//requireView().findViewById(selectedOption);
             int color = Integer.parseInt(radioButton.getTag().toString());
             int[] colors = getResources().getIntArray(R.array.colors);
             noteColor = colors[color];
