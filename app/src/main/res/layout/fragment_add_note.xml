@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_View"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.fragments.AddNoteFragment">
@@ -46,33 +47,41 @@
 
             <EditText
                 android:id="@+id/noteTitle_editText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15sp"
                 android:autofillHints="@string/title"
                 android:background="@android:color/transparent"
                 android:hint="@string/title"
                 android:inputType="textMultiLine|text"
+                android:minHeight="48dp"
                 android:textColor="?colorOnSecondary"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/save_ImageView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/save_ImageView"
+                app:layout_constraintWidth_max="488dp"
+                app:layout_constraintWidth_min="400dp" />
 
             <EditText
                 android:id="@+id/noteBody_editText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="15sp"
                 android:autofillHints="@string/body"
                 android:background="@android:color/transparent"
                 android:hint="@string/body"
                 android:inputType="textMultiLine|text"
+                android:minHeight="48dp"
                 android:paddingBottom="15sp"
                 android:textColor="?colorOnSecondary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
+                app:layout_constraintTop_toBottomOf="@id/noteTitle_editText"
+                app:layout_constraintWidth_max="488dp"
+                app:layout_constraintWidth_min="400dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -94,7 +103,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="T"
             android:textColor="?colorOnSecondary"
             android:textSize="30sp"
             android:textStyle="bold" />
