@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     }
 
     private void observeViewModel() {
-        noteViewModel.notes.observe(this, notes -> {
+        noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
             if (notes.isEmpty())
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             else
@@ -156,7 +156,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
             noteList = notes;
         });
 
-        noteViewModel.isList.observe(this, aBoolean -> {
+        noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
             isList = aBoolean;
             setupLayoutManger();
         });
@@ -172,30 +172,27 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.list_note:
-                        if (noteList.isEmpty()) {
-                            showSnackBar(getString(R.string.no_notes));
+                if (menuItem.getItemId() == R.id.list_note){
+                    if (noteList.isEmpty()) {
+                        showSnackBar(getString(R.string.no_notes));
+                    } else {
+                        isList = !isList;
+                        setupLayoutManger();
+                        adapter.notifyDataSetChanged();
+                        noteViewModel.setLayoutMangerStyle(isList);
+                    }
+                }else if (menuItem.getItemId() == R.id.pinned_note){
+                    if (noteList.isEmpty()) {
+                        showSnackBar(getString(R.string.no_notes));
+                    } else {
+                        if (menuItem.getTitle() == getString(R.string.all_notes)) {
+                            adapter.setList(noteList);
+                            menuItem.setTitle(getString(R.string.pinned_note));
                         } else {
-                            isList = !isList;
-                            setupLayoutManger();
-                            adapter.notifyDataSetChanged();
-                            noteViewModel.setLayoutMangerStyle(isList);
+                            showPinnedNotes();
+                            menuItem.setTitle(getString(R.string.all_notes));
                         }
-                        break;
-                    case R.id.pinned_note:
-                        if (noteList.isEmpty()) {
-                            showSnackBar(getString(R.string.no_notes));
-                        } else {
-                            if (menuItem.getTitle() == getString(R.string.all_notes)) {
-                                adapter.setList(noteList);
-                                menuItem.setTitle(getString(R.string.pinned_note));
-                            } else {
-                                showPinnedNotes();
-                                menuItem.setTitle(getString(R.string.all_notes));
-                            }
-                        }
-                        break;
+                    }
                 }
                 return false;
             }
@@ -228,7 +225,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
     }
 
     public void onBackPressed() {
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (isSearching) {
@@ -241,7 +238,7 @@ public class HomeFragment extends Fragment implements OnNotesClickListener {
                     adapter.setList(noteList);
                 } else {
                     setEnabled(false);
-                    requireActivity().onBackPressed();
+                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
                 }
             }
         });

@@ -232,7 +232,7 @@ public class AddNoteFragment extends Fragment {
     private void setTextAlignment(String alignment) {
         switch (alignment) {
             case "left":
-                textAlignment = Gravity.LEFT;
+                textAlignment = Gravity.START;
                 binding.left.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
                 binding.center.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.right.setBackgroundColor(getResources().getColor(R.color.transparent, null));
@@ -246,7 +246,7 @@ public class AddNoteFragment extends Fragment {
                 break;
 
             case "right":
-                textAlignment = Gravity.RIGHT;
+                textAlignment = Gravity.END;
                 binding.left.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.center.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.right.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
