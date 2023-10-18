@@ -91,5 +91,6 @@
     <string name="update">Update</string>
     <string name="exit">Exit</string>
     <string name="update_complete_message">An update has just been downloaded</string>
+    <string name="t">T</string>
 
 </resources>
