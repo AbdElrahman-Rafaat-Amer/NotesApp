@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -41,6 +42,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     private AppUpdateManager appUpdateManager;
     private final int appUpdateType = AppUpdateType.IMMEDIATE;
 
+    private boolean isDeviceRooted = false;
+    private boolean isEmulator = false;
     private final ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
             result -> {
@@ -67,10 +70,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.getRoot().setVisibility(View.INVISIBLE);
-        if (appUpdateType == AppUpdateType.FLEXIBLE) {
-            appUpdateManager.registerListener(stateUpdatedListener);
+
+        isDeviceRooted = RootUtil.isDeviceRooted(this);
+        isEmulator     = RootUtil.isEmulator(this);
+        if (isDeviceRooted || isEmulator) {
+            initUI();
+        } else {
+            if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                appUpdateManager.registerListener(stateUpdatedListener);
+            }
+            checkForAppUpdate();
         }
-        checkForAppUpdate();
     }
 
     private void checkForAppUpdate() {
@@ -139,17 +149,19 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateType == AppUpdateType.IMMEDIATE) {
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    startUpdate(appUpdateInfo);
+        if (!isDeviceRooted && !isEmulator) {
+            appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+                if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                        startUpdate(appUpdateInfo);
+                    }
+                } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                        showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
+                    }
                 }
-            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
-                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
-                }
-            }
-        });
+            });
+        }
     }
 
     @Override
