@@ -57,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final InstallStateUpdatedListener stateUpdatedListener = installState -> {
         if (installState.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate();
+            showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
         }
     };
 
@@ -84,10 +84,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 })
                 .addOnCompleteListener(task -> {
-                    boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
-                    if (!isUpdateAvailable && task.isComplete()) {
-                        initUI();
+                    boolean isTaskSuccessful = task.isSuccessful();
+                    if (isTaskSuccessful) {
+                        boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
+                        if (!isUpdateAvailable && task.isComplete()) {
+                            initUI();
+                        }
                     }
+                })
+                .addOnFailureListener(exception -> {
+                    showSnackBar(exception.getLocalizedMessage(), Snackbar.LENGTH_LONG, false);
+                    initUI();
                 });
     }
 
@@ -139,7 +146,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
                 if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    popupSnackbarForCompleteUpdate();
+                    showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
                 }
             }
         });
@@ -153,13 +160,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void popupSnackbarForCompleteUpdate() {
-        Snackbar snackbar =
-                Snackbar.make(binding.getRoot(),
-                        getString(R.string.update_complete_message),
-                        Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+    private void showSnackBar(String message, int length, boolean isActionNeeded) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), message, length);
+        if (isActionNeeded) {
+            snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+        }
         snackbar.show();
     }
 
