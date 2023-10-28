@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -15,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
@@ -23,7 +23,8 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.Locale;
-public class PasswordFragment extends Fragment {
+
+public class PasswordFragment extends BaseFragment {
     private FragmentPasswordBinding binding;
     private Note note;
     private Boolean isSetPassword = false;
@@ -40,6 +41,7 @@ public class PasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         initUI();
         initViewModel();
@@ -57,15 +59,17 @@ public class PasswordFragment extends Fragment {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
-                    if (isSetPassword)
+                    if (isSetPassword){
                         updateNote();
-                    else
+                    } else{
                         checkPassword();
+                    }
                 }
             }
         });
@@ -95,7 +99,7 @@ public class PasswordFragment extends Fragment {
         if (binding.notePinView.getText().toString().equals(note.getPassword())) {
             Navigation.findNavController(requireView()).popBackStack();
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
-        } else{
+        } else {
             binding.passwordErrorTextView.setVisibility(View.VISIBLE);
             hideKeyboard();
         }
@@ -113,6 +117,7 @@ public class PasswordFragment extends Fragment {
     private void updateNote() {
         note.setPassword(binding.notePinView.getText().toString());
         noteViewModel.updateNote(note);
+        noteViewModel.setCurrentNote(note);
         Navigation.findNavController(requireView()).popBackStack();
     }
 

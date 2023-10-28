@@ -45,9 +45,4 @@ public class LocalSource implements LocalSourceInterface {
     public void deleteNote(int id) {
         new Thread(() -> dao.deleteNote(id)).start();
     }
-
-    @Override
-    public void lockNote(int noteID, String password) {
-        new Thread(() -> dao.lockNote(noteID, password)).start();
-    }
 }

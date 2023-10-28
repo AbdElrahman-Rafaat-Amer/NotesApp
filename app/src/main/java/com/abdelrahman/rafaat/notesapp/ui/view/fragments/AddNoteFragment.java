@@ -1,8 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,24 +9,12 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.BulletSpan;
-import android.text.style.ImageSpan;
 import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,31 +26,37 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.abdelrahman.rafaat.notesapp.R;
-import com.abdelrahman.rafaat.notesapp.utils.Utils;
-import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
-import com.abdelrahman.rafaat.notesapp.model.Repository;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.FileOutputStream;
 
-public class AddNoteFragment extends Fragment {
+public class AddNoteFragment extends BaseFragment {
 
-    public static final int PICK_IMAGE = 1;
-    private static final String TAG = "AddNoteFragment";
+//    private static final int PICK_IMAGE = 1;
     private FragmentAddNoteBinding binding;
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
@@ -74,13 +66,31 @@ public class AddNoteFragment extends Fragment {
     private boolean isKeyboardVisible = false;
     private boolean isBodyHasFocus = false;
     private String imagePath;
-    private static final String FILENAME = "images";
     private Bitmap bitmap;
     private int textSize = 18;
     private int textAlignment = Gravity.TOP | Gravity.START;
     private boolean isBold = false;
     private boolean isItalic = false;
     private boolean isUnderLine = false;
+    ActivityResultLauncher<PickVisualMediaRequest> pickMultipleMedia =
+            registerForActivityResult(new ActivityResultContracts.PickMultipleVisualMedia(5), uris -> {
+                if (!uris.isEmpty()) {
+                    for (Uri imageUri : uris) {
+                        try {
+                            InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
+                            bitmap = BitmapFactory.decodeStream(inputStream);
+                            if (isExternalStorageAvailable()) {
+                                prepareFile();
+                            }
+                            Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+                    }
+                } else {
+                    showSnackBar(binding.rootView, getString(R.string.select_one_image_at_least));
+                }
+            });
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -160,7 +170,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void watchKeyboard() {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         binding.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
 
             Rect r = new Rect();
@@ -241,7 +251,7 @@ public class AddNoteFragment extends Fragment {
     private void setTextAlignment(String alignment) {
         switch (alignment) {
             case "left":
-                textAlignment = Gravity.LEFT;
+                textAlignment = Gravity.START;
                 binding.left.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
                 binding.center.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.right.setBackgroundColor(getResources().getColor(R.color.transparent, null));
@@ -255,7 +265,7 @@ public class AddNoteFragment extends Fragment {
                 break;
 
             case "right":
-                textAlignment = Gravity.RIGHT;
+                textAlignment = Gravity.END;
                 binding.left.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.center.setBackgroundColor(getResources().getColor(R.color.transparent, null));
                 binding.right.setBackgroundColor(getResources().getColor(R.color.mainColor, null));
@@ -317,7 +327,8 @@ public class AddNoteFragment extends Fragment {
     private void chooseColor() {
         binding.colorPickerView.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedOption = binding.colorPickerView.getCheckedRadioButtonId();
-            RadioButton radioButton = getView().findViewById(selectedOption);
+
+            RadioButton radioButton = binding.getRoot().findViewById(selectedOption);//requireView().findViewById(selectedOption);
             int color = Integer.parseInt(radioButton.getTag().toString());
             int[] colors = getResources().getIntArray(R.array.colors);
             noteColor = colors[color];
@@ -343,7 +354,8 @@ public class AddNoteFragment extends Fragment {
 
         binding.noteBodyEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -393,9 +405,9 @@ public class AddNoteFragment extends Fragment {
         alertDialog.show();
 
         Rect displayRectangle = new Rect();
-        Window window = getActivity().getWindow();
+        Window window = requireActivity().getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-        alertDialog.getWindow().setLayout(
+        Objects.requireNonNull(alertDialog.getWindow()).setLayout(
                 (int) (displayRectangle.width() * 0.82f),
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         dialogMessage.setText(message);
@@ -412,7 +424,7 @@ public class AddNoteFragment extends Fragment {
 
         discardButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            Navigation.findNavController(getView()).popBackStack();
+            Navigation.findNavController(binding.getRoot()).popBackStack();
         });
 
     }
@@ -461,28 +473,9 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void openGallery() {
-        Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(getIntent, PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-            if (data.getData() != null) {
-                Uri imageUri = data.getData();
-                try {
-                    InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    if (isExternalStorageAvailable()) {
-                        prepareFile();
-                    }
-                    Utils.insertImageToCurrentSelection(bitmap, binding.noteBodyEditText, imagePath);
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        }
+        pickMultipleMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
     private static boolean isExternalStorageAvailable() {
@@ -495,7 +488,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void prepareFile() {
-        File imagesFile = new File(requireActivity().getExternalFilesDir(null), FILENAME);
+        File imagesFile = new File(requireActivity().getExternalFilesDir(null), "images");
         imagesFile.mkdirs();
         String filename = String.valueOf(System.currentTimeMillis());
         File outFile = new File(imagesFile, filename);

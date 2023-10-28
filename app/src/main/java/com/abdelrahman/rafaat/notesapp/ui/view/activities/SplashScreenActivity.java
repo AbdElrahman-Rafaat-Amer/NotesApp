@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -41,6 +42,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     private AppUpdateManager appUpdateManager;
     private final int appUpdateType = AppUpdateType.IMMEDIATE;
 
+    private boolean isDeviceRooted = false;
+    private boolean isEmulator = false;
     private final ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
             result -> {
@@ -57,7 +60,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final InstallStateUpdatedListener stateUpdatedListener = installState -> {
         if (installState.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate();
+            showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
         }
     };
 
@@ -67,10 +70,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.getRoot().setVisibility(View.INVISIBLE);
-        if (appUpdateType == AppUpdateType.FLEXIBLE) {
-            appUpdateManager.registerListener(stateUpdatedListener);
+
+        isDeviceRooted = RootUtil.isDeviceRooted(this);
+        isEmulator     = RootUtil.isEmulator(this);
+        if (isDeviceRooted || isEmulator) {
+            initUI();
+        } else {
+            if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                appUpdateManager.registerListener(stateUpdatedListener);
+            }
+            checkForAppUpdate();
         }
-        checkForAppUpdate();
     }
 
     private void checkForAppUpdate() {
@@ -84,10 +94,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 })
                 .addOnCompleteListener(task -> {
-                    boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
-                    if (!isUpdateAvailable && task.isComplete()) {
-                        initUI();
+                    boolean isTaskSuccessful = task.isSuccessful();
+                    if (isTaskSuccessful) {
+                        boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
+                        if (!isUpdateAvailable && task.isComplete()) {
+                            initUI();
+                        }
                     }
+                })
+                .addOnFailureListener(exception -> {
+                    showSnackBar(exception.getLocalizedMessage(), Snackbar.LENGTH_LONG, false);
+                    initUI();
                 });
     }
 
@@ -101,7 +118,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding.getRoot().setVisibility(View.VISIBLE);
         binding.splashAnimation.addAnimatorListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(@NonNull Animator animator) {}
+            public void onAnimationStart(@NonNull Animator animator) {
+            }
 
             @Override
             public void onAnimationEnd(@NonNull Animator animator) {
@@ -113,10 +131,12 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationCancel(@NonNull Animator animator) {}
+            public void onAnimationCancel(@NonNull Animator animator) {
+            }
 
             @Override
-            public void onAnimationRepeat(@NonNull Animator animator) {}
+            public void onAnimationRepeat(@NonNull Animator animator) {
+            }
         });
         binding.splashAnimation.playAnimation();
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);
@@ -129,17 +149,19 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateType == AppUpdateType.IMMEDIATE) {
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    startUpdate(appUpdateInfo);
+        if (!isDeviceRooted && !isEmulator) {
+            appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+                if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                        startUpdate(appUpdateInfo);
+                    }
+                } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                        showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
+                    }
                 }
-            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
-                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    popupSnackbarForCompleteUpdate();
-                }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -150,13 +172,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void popupSnackbarForCompleteUpdate() {
-        Snackbar snackbar =
-                Snackbar.make(binding.getRoot(),
-                        getString(R.string.update_complete_message),
-                        Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+    private void showSnackBar(String message, int length, boolean isActionNeeded) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), message, length);
+        if (isActionNeeded) {
+            snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+        }
         snackbar.show();
     }
 

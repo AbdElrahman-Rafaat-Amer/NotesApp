@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_View"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.fragments.AddNoteFragment">
@@ -9,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="5sp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/helper_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +22,10 @@
 
             <ImageView
                 android:id="@+id/goBack_imageView"
-                android:layout_width="35sp"
-                android:layout_height="35sp"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="25sp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/ic_search_view_background"
                 android:contentDescription="@string/go_back"
                 android:src="@drawable/ic_arrow_left"
@@ -33,10 +34,10 @@
 
             <ImageView
                 android:id="@+id/save_ImageView"
-                android:layout_width="35sp"
-                android:layout_height="35sp"
-                android:layout_marginTop="25sp"
-                android:layout_marginEnd="10sp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/ic_search_view_background"
                 android:contentDescription="@string/save_note"
                 android:scaleType="center"
@@ -46,33 +47,39 @@
 
             <EditText
                 android:id="@+id/noteTitle_editText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="15sp"
+                android:layout_margin="15dp"
                 android:autofillHints="@string/title"
                 android:background="@android:color/transparent"
                 android:hint="@string/title"
                 android:inputType="textMultiLine|text"
+                android:minHeight="48dp"
                 android:textColor="?colorOnSecondary"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/save_ImageView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/save_ImageView"
+                app:layout_constraintWidth_max="488dp" />
 
             <EditText
                 android:id="@+id/noteBody_editText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="15sp"
+                android:layout_margin="15dp"
                 android:autofillHints="@string/body"
                 android:background="@android:color/transparent"
                 android:hint="@string/body"
                 android:inputType="textMultiLine|text"
-                android:paddingBottom="15sp"
+                android:minHeight="48dp"
+                android:paddingBottom="15dp"
                 android:textColor="?colorOnSecondary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/noteTitle_editText" />
+                app:layout_constraintTop_toBottomOf="@id/noteTitle_editText"
+                app:layout_constraintWidth_max="488dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -80,7 +87,7 @@
     <LinearLayout
         android:id="@+id/helper_bar"
         android:layout_width="match_parent"
-        android:layout_height="54sp"
+        android:layout_height="54dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="invisible"
@@ -94,27 +101,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="T"
+            android:text="@string/t"
             android:textColor="?colorOnSecondary"
             android:textSize="30sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/choseColor_imageView"
-            android:layout_width="35sp"
-            android:layout_height="35sp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
             android:contentDescription="@string/choose_color"
-            android:padding="2sp"
+            android:padding="2dp"
             android:src="@drawable/ic_palette_white" />
 
         <ImageView
             android:id="@+id/choseImage_imageView"
-            android:layout_width="35sp"
-            android:layout_height="35sp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
             android:contentDescription="@string/choose_color"
-            android:padding="2sp"
+            android:padding="2dp"
             android:src="@drawable/ic_image" />
 
     </LinearLayout>
@@ -123,7 +130,7 @@
         android:id="@+id/colors_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2sp"
+        android:paddingBottom="2dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,15 +145,15 @@
 
             <ImageView
                 android:id="@+id/close_color_picker_view"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_marginStart="10sp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
                 android:contentDescription="@string/close"
                 android:src="@drawable/ic_close" />
 
             <View
-                android:layout_width="30sp"
-                android:layout_height="50sp"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
                 android:background="@drawable/ic_line"
                 android:contentDescription="@string/close"
                 android:rotation="90" />
@@ -155,96 +162,96 @@
                 android:id="@+id/color_picker_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1sp"
+                android:layout_marginBottom="1dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingHorizontal="7sp"
+                android:paddingHorizontal="7dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view">
 
                 <RadioButton
                     android:id="@+id/color1"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/ic_color1"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="0" />
 
                 <RadioButton
                     android:id="@+id/color2"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_marginHorizontal="4sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/ic_color2"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="1" />
 
                 <RadioButton
                     android:id="@+id/color3"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/ic_color3"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="2" />
 
                 <RadioButton
                     android:id="@+id/color4"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_marginHorizontal="4sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/ic_color4"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="3" />
 
                 <RadioButton
                     android:id="@+id/color5"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/ic_color5"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="4" />
 
                 <RadioButton
                     android:id="@+id/color6"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_marginHorizontal="4sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/ic_color6"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="5" />
 
                 <RadioButton
                     android:id="@+id/color7"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/ic_color7"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="6" />
 
                 <RadioButton
                     android:id="@+id/color8"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:layout_marginHorizontal="4sp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/ic_color8"
                     android:button="@android:color/transparent"
                     android:drawableTop="@drawable/gender_background_selector"
-                    android:paddingTop="9sp"
+                    android:paddingTop="9dp"
                     android:tag="7" />
 
             </RadioGroup>
@@ -255,7 +262,7 @@
         android:id="@+id/text_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="7sp"
+        android:padding="7dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -270,86 +277,86 @@
 
             <ImageView
                 android:id="@+id/close_text_picker_view"
-                android:layout_width="40sp"
-                android:layout_height="40sp"
-                android:layout_marginStart="10sp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
                 android:contentDescription="@string/close"
                 android:src="@drawable/ic_close" />
 
             <View
-                android:layout_width="30sp"
-                android:layout_height="50sp"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
                 android:background="@drawable/ic_line"
                 android:contentDescription="@string/close"
                 android:rotation="90" />
 
             <ImageView
                 android:id="@+id/bold"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="15sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="15dp"
                 android:contentDescription="@string/bold_text"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_bold" />
 
             <ImageView
                 android:id="@+id/italic"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/italic_text"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_italic" />
 
             <ImageView
                 android:id="@+id/underline"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="15sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="15dp"
                 android:contentDescription="@string/underline_text"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_underline" />
 
             <ImageView
                 android:id="@+id/left"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/align_left"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_left" />
 
             <ImageView
                 android:id="@+id/center"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="15sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="15dp"
                 android:contentDescription="@string/align_center"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_center" />
 
 
             <ImageView
                 android:id="@+id/right"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/align_right"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_right" />
 
             <ImageView
                 android:id="@+id/bigFont"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
-                android:layout_marginHorizontal="15sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="15dp"
                 android:contentDescription="@string/increase_font_size"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_font_increase" />
 
             <ImageView
                 android:id="@+id/smallFont"
-                android:layout_width="40sp"
-                android:layout_height="50sp"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
                 android:contentDescription="@string/decrease_font_size"
-                android:paddingHorizontal="9sp"
+                android:paddingHorizontal="9dp"
                 android:src="@drawable/ic_text_font_decrease" />
 
         </LinearLayout>

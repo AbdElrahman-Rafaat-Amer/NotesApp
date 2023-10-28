@@ -59,6 +59,7 @@
     <string name="sharing_note" translatable="false">%1$s: %2$s\n\n\n%3$s: %4$s</string>
     <string name="body">body</string>
     <string name="all_notes">All Notes</string>
+    <string name="select_one_image_at_least">Select one image at least</string>
 
 
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
@@ -90,5 +91,6 @@
     <string name="update">Update</string>
     <string name="exit">Exit</string>
     <string name="update_complete_message">An update has just been downloaded</string>
+    <string name="t">T</string>
 
 </resources>

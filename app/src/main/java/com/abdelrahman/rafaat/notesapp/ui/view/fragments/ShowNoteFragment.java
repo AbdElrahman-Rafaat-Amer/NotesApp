@@ -30,7 +30,7 @@ import com.facebook.ads.AdView;
 
 import java.util.Locale;
 
-public class ShowNoteFragment extends Fragment {
+public class ShowNoteFragment extends BaseFragment {
     private FragmentShowBinding binding;
     private NoteViewModel noteViewModel;
     private Note currentNote;
@@ -93,6 +93,8 @@ public class ShowNoteFragment extends Fragment {
         if (currentNote.getPassword().isEmpty()) {
             binding.unlockNoteImageView.setImageResource(R.drawable.ic_lock);
             isUnLock = false;
+        }else{
+            isUnLock = true;
         }
     }
 
@@ -113,13 +115,15 @@ public class ShowNoteFragment extends Fragment {
         if (isRTL)
             binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
+
     private void updatePassword() {
-        if (isUnLock)
+        if (isUnLock) {
             updateNote();
-        else {
+        } else {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
         }
     }
+
     private void shareNote() {
         Intent myIntent = new Intent(Intent.ACTION_SEND);
         myIntent.setType("text/plain");
@@ -137,6 +141,7 @@ public class ShowNoteFragment extends Fragment {
                 .setPositiveButton(R.string.remove, (dialog, which) -> {
                     currentNote.setPassword("");
                     noteViewModel.updateNote(currentNote);
+                    noteViewModel.setCurrentNote(currentNote);
                     binding.unlockNoteImageView.setImageResource(R.drawable.ic_lock);
                     isUnLock = false;
                 })
