@@ -48,3 +48,5 @@ google-services.json
 # Android Profiling
 *.hprof
 app/release/output-metadata.json
+.idea/gradle.xml
+.idea/misc.xml
