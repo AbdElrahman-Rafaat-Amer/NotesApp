@@ -77,4 +77,7 @@
     <string name="update">تحديث</string>
     <string name="exit">اغلاق</string>
     <string name="update_complete_message">لقد تم تنزيل التحديث. </string>
+    <string name="biometric_authentication_failed">فشلت المصادقة، يرجى المحاولة مرة أخرى</string>
+    <string name="biometric_title"> المصادقة</string>
+    <string name="biometric_subtitle">استخدم بصمة إصبعك أو كلمة المرور للمصادقة</string>
 </resources>

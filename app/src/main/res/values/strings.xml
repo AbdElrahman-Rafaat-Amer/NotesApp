@@ -91,6 +91,10 @@
     <string name="update">Update</string>
     <string name="exit">Exit</string>
     <string name="update_complete_message">An update has just been downloaded</string>
-    <string name="t">T</string>
+    <string name="biometric_authentication_failed">Biometric Authentication Failed please try again</string>
+
+    <string name="t" translatable="false">T</string>
+    <string name="biometric_title">Biometric Authentication</string>
+    <string name="biometric_subtitle">Use your fingerprint or Password to authenticate</string>
 
 </resources>

@@ -4,14 +4,7 @@ import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
-import androidx.biometric.BiometricManager;
 import android.os.Bundle;
-
-import androidx.biometric.BiometricPrompt;
-import androidx.preference.PreferenceManager;
-
-import android.provider.Settings;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +18,14 @@ import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.utils.BiometricUtils;
 import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -78,77 +75,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding.getRoot().setVisibility(View.INVISIBLE);
 
         isDeviceRooted = RootUtil.isDeviceRooted(this);
-        isEmulator     = RootUtil.isEmulator(this);
+        isEmulator = RootUtil.isEmulator(this);
         if (isDeviceRooted || isEmulator) {
-//            initUI();
+            checkBiometricAuthenticationAvailability();
         } else {
             if (appUpdateType == AppUpdateType.FLEXIBLE) {
                 appUpdateManager.registerListener(stateUpdatedListener);
             }
             checkForAppUpdate();
         }
-
-        checkSupportsBiometricAuthentication();
-    }
-
-    private void checkSupportsBiometricAuthentication(){
-        BiometricManager biometricManager = androidx.biometric.BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-            case BiometricManager.BIOMETRIC_SUCCESS:
-                Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                Log.e("MY_APP_TAG", "No biometric features available on this device.");
-//                b.biometricCardView.setVisibility(View.GONE);
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                Log.e("MY_APP_TAG", "Biometric features are currently unavailable.");
-//                b.biometricCardView.setVisibility(View.GONE);
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                Log.e("MY_APP_TAG", "BIOMETRIC_ERROR_NONE_ENROLLED.");
-                // Prompts the user to create credentials that your app accepts.
-                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
-                enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
-                startActivityForResult(enrollIntent, 123);
-                break;
-        }
-
-        Executor executor = ContextCompat.getMainExecutor(this);
-
-        BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-//                viewEditAndSave();
-                Log.e("MY_APP_TAG", "onAuthenticationError. errorCode:" + errorCode + ", errString:" + errString);
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-//                authComplete = true;
-//                viewEditAndSave();
-                Log.e("MY_APP_TAG", "onAuthenticationSucceeded.");
-                super.onAuthenticationSucceeded(result);
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Log.e("MY_APP_TAG", "onAuthenticationFailed.");
-            }
-        });
-
-        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("biometric_title")
-                .setSubtitle("biometric_subtitle")
-                .setDescription("biometric_desc")
-                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                .setConfirmationRequired(false)
-                .build();
-
-        biometricPrompt.authenticate(promptInfo);
-
     }
 
     private void checkForAppUpdate() {
@@ -166,13 +101,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (isTaskSuccessful) {
                         boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
                         if (!isUpdateAvailable && task.isComplete()) {
-//                            initUI();
+                            checkBiometricAuthenticationAvailability();
                         }
                     }
                 })
                 .addOnFailureListener(exception -> {
                     showSnackBar(exception.getLocalizedMessage(), Snackbar.LENGTH_LONG, false);
-//                    initUI();
+                    checkBiometricAuthenticationAvailability();
                 });
     }
 
@@ -180,6 +115,54 @@ public class SplashScreenActivity extends AppCompatActivity {
         appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(appUpdateType)
                 .setAllowAssetPackDeletion(true)
                 .build());
+    }
+
+    private void checkBiometricAuthenticationAvailability() {
+
+        int result = BiometricUtils.checkBiometricAuthenticationAvailability(this);
+        if (result == BiometricManager.BIOMETRIC_SUCCESS) {
+            showBiometricAuthentication();
+        } else {
+            initUI();
+        }
+    }
+
+    private void showBiometricAuthentication() {
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                if (errorCode == 10) {
+                    finish();
+                } else {
+                    showSnackBar(errString.toString(), Snackbar.LENGTH_LONG, false);
+                }
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                initUI();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getString(R.string.biometric_title))
+                .setSubtitle(getString(R.string.biometric_subtitle))
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                .setConfirmationRequired(false)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
     }
 
     private void initUI() {
@@ -277,7 +260,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            System.exit(0);
+            initUI();
         });
 
     }
