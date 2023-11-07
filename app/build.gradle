@@ -85,4 +85,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
 
+    implementation "androidx.biometric:biometric:1.1.0"
+
+
 }
