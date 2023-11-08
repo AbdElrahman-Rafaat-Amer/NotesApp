@@ -16,6 +16,8 @@ public class Note {
     private int textSize;
     private int textAlignment;
 
+    private boolean isArchived;
+
     public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
         this.title = title;
         this.body = body;
@@ -25,6 +27,7 @@ public class Note {
         this.isPinned = false;
         this.textSize = textSize;
         this.textAlignment = textAlignment;
+        this.isArchived = false;
     }
 
     public int getId() {
@@ -97,5 +100,13 @@ public class Note {
 
     public void setTextAlignment(int textAlignment) {
         this.textAlignment = textAlignment;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
     }
 }
