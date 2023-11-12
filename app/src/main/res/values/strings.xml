@@ -45,6 +45,7 @@
     <string name="error_in_save">Error in save image</string>
     <string name="tips">Tips</string>
     <string name="delete_note">Delete note</string>
+    <string name="delete">Delete</string>
     <string name="swipe_left">you can swipe left to delete note</string>
     <string name="pin_note">Pin note</string>
     <string name="swipe_right">you can swipe right to pin note</string>
@@ -96,5 +97,6 @@
     <string name="t" translatable="false">T</string>
     <string name="biometric_title">Biometric Authentication</string>
     <string name="biometric_subtitle">Use your fingerprint or Password to authenticate</string>
+    <string name="archive">Archive</string>
 
 </resources>

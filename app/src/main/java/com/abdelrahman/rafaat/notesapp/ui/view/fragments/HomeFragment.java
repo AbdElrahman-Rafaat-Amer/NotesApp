@@ -1,14 +1,17 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE;
-
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,31 +46,13 @@ import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
+
 public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private FragmentHomeBinding binding;
@@ -411,51 +396,30 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 //        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
 //        itemTouchHelper.attachToRecyclerView(binding.notesRecyclerview);
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new SwipeHelper(requireContext(), binding.notesRecyclerview, true) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new SwipeHelper(requireContext(), binding.notesRecyclerview) {
 
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
 
                 underlayButtons.add(new UnderlayButton(
-                        "Archive",
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete
-                    ),
-                Color.parseColor("#000000"), Color.parseColor("#ffffff"), new UnderlayButtonClickListener(){
-
-                            @Override
-                            public void onClick(int pos) {
-
-                            }
-                        }
-                ));
-
-                underlayButtons.add(new UnderlayButton(
-                        "Flag",
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete
-                        ),
-                        Color.parseColor("#000000"), Color.parseColor("#ffffff"), new UnderlayButtonClickListener(){
-
-                    @Override
-                    public void onClick(int pos) {
-
-                    }
+                        getString(R.string.delete),
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete),
+                        ContextCompat.getColor(requireContext(), R.color.red), ContextCompat.getColor(requireContext(), R.color.white), pos -> {
+                    Log.d("SWIPE_HELPER", "instantiateUnderlayButton: delete_note");
                 }
                 ));
 
                 underlayButtons.add(new UnderlayButton(
-                        "More",
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete
-                        ),
-                        Color.parseColor("#000000"), Color.parseColor("#ffffff"), new UnderlayButtonClickListener(){
-
-                    @Override
-                    public void onClick(int pos) {
-
-                    }
+                        getString(R.string.archive),
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_archive),
+                        ContextCompat.getColor(requireContext(), R.color.mainColor), ContextCompat.getColor(requireContext(), R.color.white), pos -> {
+                    Log.d("SWIPE_HELPER", "instantiateUnderlayButton: archive");
                 }
                 ));
             }
         };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(binding.notesRecyclerview);
     }
 
     private void drawBackGround(int color, int left, int top, int right, int bottom, Canvas canvas) {
@@ -488,27 +452,17 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
     }
 
-    enum ButtonsState {
-        GONE,
-        LEFT_VISIBLE,
-        RIGHT_VISIBLE
-    }
-
-
-
 }
 
 abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
-    public static final int BUTTON_WIDTH = 200;
-    private RecyclerView recyclerView;
+    public static final int BUTTON_WIDTH = 300;
+    private final RecyclerView recyclerView;
     private List<UnderlayButton> buttons;
-    private GestureDetector gestureDetector;
-    private int swipedPos = -1;
-    private float swipeThreshold = 0.5f;
-    private Map<Integer, List<UnderlayButton>> buttonsBuffer;
-    private Queue<Integer> recoverQueue;
-    private static Boolean animate;
+    private final GestureDetector gestureDetector;
+    private int swipedPosition = -1;
+    private final Map<Integer, List<UnderlayButton>> buttonsBuffer;
+    private final Queue<Integer> recoverQueue;
 
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
@@ -525,10 +479,12 @@ abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent e) {
-            if (swipedPos < 0) return false;
+            if (swipedPosition < 0){
+                return false;
+            }
             Point point = new Point((int) e.getRawX(), (int) e.getRawY());
 
-            RecyclerView.ViewHolder swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(swipedPos);
+            RecyclerView.ViewHolder swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(swipedPosition);
             View swipedItem = swipedViewHolder.itemView;
             Rect rect = new Rect();
             swipedItem.getGlobalVisibleRect(rect);
@@ -537,8 +493,8 @@ abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                 if (rect.top < point.y && rect.bottom > point.y)
                     gestureDetector.onTouchEvent(e);
                 else {
-                    recoverQueue.add(swipedPos);
-                    swipedPos = -1;
+                    recoverQueue.add(swipedPosition);
+                    swipedPosition = -1;
                     recoverSwipedItem();
                 }
             }
@@ -546,9 +502,8 @@ abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         }
     };
 
-    public SwipeHelper(Context context, RecyclerView recyclerView, Boolean animate) {
-        super(0, ItemTouchHelper.LEFT);
-        this.animate = animate;
+    public SwipeHelper(Context context, RecyclerView recyclerView) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.recyclerView = recyclerView;
         this.buttons = new ArrayList<>();
         this.gestureDetector = new GestureDetector(context, gestureListener);
@@ -563,204 +518,172 @@ abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
                     return super.add(o);
             }
         };
-
-        attachSwipe();
     }
 
-
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         return false;
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        int pos = viewHolder.getAdapterPosition();
+        int position = viewHolder.getAdapterPosition();
 
-        if (swipedPos != pos)
-            recoverQueue.add(swipedPos);
+        if (swipedPosition != position) {
+            recoverQueue.add(swipedPosition);
+        }
+        swipedPosition = position;
 
-        swipedPos = pos;
-
-        if (buttonsBuffer.containsKey(swipedPos))
-            buttons = buttonsBuffer.get(swipedPos);
-        else
+        if (buttonsBuffer.containsKey(swipedPosition)) {
+            buttons = buttonsBuffer.get(swipedPosition);
+        } else {
             buttons.clear();
+        }
 
         buttonsBuffer.clear();
-        swipeThreshold = 0.5f * buttons.size() * BUTTON_WIDTH;
         recoverSwipedItem();
-    }
-
-    @Override
-    public float getSwipeThreshold(RecyclerView.ViewHolder viewHolder) {
-        return swipeThreshold;
-    }
-
-    @Override
-    public float getSwipeEscapeVelocity(float defaultValue) {
-        return 0.1f * defaultValue;
-    }
-
-    @Override
-    public float getSwipeVelocityThreshold(float defaultValue) {
-        return 5.0f * defaultValue;
-    }
-
-    @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        int pos = viewHolder.getAdapterPosition();
-        float translationX = dX;
-        View itemView = viewHolder.itemView;
-
-        if (pos < 0) {
-            swipedPos = pos;
-            return;
-        }
-
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            if (dX < 0) {
-                List<UnderlayButton> buffer = new ArrayList<>();
-
-                if (!buttonsBuffer.containsKey(pos)) {
-                    instantiateUnderlayButton(viewHolder, buffer);
-                    buttonsBuffer.put(pos, buffer);
-                } else {
-                    buffer = buttonsBuffer.get(pos);
-                }
-
-                translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
-                drawButtons(c, itemView, buffer, pos, translationX);
-            }
-        }
-
-        super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
     }
 
     private synchronized void recoverSwipedItem() {
         while (!recoverQueue.isEmpty()) {
             int pos = recoverQueue.poll();
             if (pos > -1) {
-                recyclerView.getAdapter().notifyItemChanged(pos);
+                Objects.requireNonNull(recyclerView.getAdapter()).notifyItemChanged(pos);
             }
         }
     }
 
-    private void drawButtons(Canvas c, View itemView, List<UnderlayButton> buffer, int pos, float dX) {
-        float right = itemView.getRight();
-        float dButtonWidth = (-1) * dX / buffer.size();
+    @Override
+    public void onChildDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        int position = viewHolder.getAdapterPosition();
+        float translationX = dX;
+        View itemView = viewHolder.itemView;
 
-        for (UnderlayButton button : buffer) {
-            float left = right - dButtonWidth;
-            button.onDraw(
-                    c,
-                    new RectF(
-                            left,
-                            itemView.getTop(),
-                            right,
-                            itemView.getBottom()
-                    ),
-                    pos
-            );
-
-            right = left;
+        if (position < 0) {
+            swipedPosition = position;
+            return;
         }
+
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            if (dX < 0) {
+                //swiped left
+                List<UnderlayButton> buffer = new ArrayList<>();
+
+                if (!buttonsBuffer.containsKey(position)) {
+                    instantiateUnderlayButton(viewHolder, buffer);
+                    buttonsBuffer.put(position, buffer);
+                } else {
+                    buffer = buttonsBuffer.get(position);
+                }
+
+                translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
+                drawButtons(canvas, itemView, buffer, position, translationX);
+            } else if (dX > 0) {
+                //swapRight
+                List<UnderlayButton> buffer = new ArrayList<>();
+
+                if (!buttonsBuffer.containsKey(position)) {
+                    instantiateUnderlayButton(viewHolder, buffer);
+                    buttonsBuffer.put(position, buffer);
+                } else {
+                    buffer = buttonsBuffer.get(position);
+                }
+
+                translationX = dX * buffer.size() * BUTTON_WIDTH / itemView.getWidth();
+                drawButtons(canvas, itemView, buffer, position, translationX);
+            }
+        }
+        super.onChildDraw(canvas, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
     }
 
-    public void attachSwipe() {
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(this);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+    private void drawButtons(Canvas canvas, View itemView, List<UnderlayButton> buffer, int position, float dx) {
+        float direction = itemView.getRight();
+        boolean isSwipingRight = dx > 0;
+        if (isSwipingRight) {
+            direction = itemView.getLeft();
+        }
+
+        float dButtonWidth = (-1) * dx / buffer.size();
+
+        for (UnderlayButton button : buffer) {
+            float left = direction - dButtonWidth;
+            button.onDraw(canvas, position, isSwipingRight,
+                    new RectF(left, itemView.getTop(), direction, itemView.getBottom())
+            );
+            direction = left;
+        }
     }
 
     public abstract void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons);
 
     public static class UnderlayButton {
-        private String text;
-        private Drawable imageResId;
-        private int buttonBackgroundcolor;
-        private int textColor;
-        private int pos;
+        private final String text;
+        private final Drawable imageResId;
+        private final int buttonBackgroundColor;
+        private final int textColor;
+        private int position;
         private RectF clickRegion;
-        private UnderlayButtonClickListener clickListener;
+        private final UnderlayButtonClickListener clickListener;
 
-        public UnderlayButton(String text, Drawable imageResId, int buttonBackgroundcolor, int textColor, UnderlayButtonClickListener clickListener) {
+        public UnderlayButton(String text, Drawable imageResId, int buttonBackgroundColor, int textColor, UnderlayButtonClickListener clickListener) {
             this.text = text;
             this.imageResId = imageResId;
-            this.buttonBackgroundcolor = buttonBackgroundcolor;
+            this.buttonBackgroundColor = buttonBackgroundColor;
             this.textColor = textColor;
             this.clickListener = clickListener;
         }
 
         public boolean onClick(float x, float y) {
             if (clickRegion != null && clickRegion.contains(x, y)) {
-                clickListener.onClick(pos);
+                clickListener.onClick(position);
                 return true;
             }
 
             return false;
         }
 
-        private void onDraw(Canvas canvas, RectF rect, int pos) {
+        private void onDraw(Canvas canvas, int position, boolean isSwipingRight, RectF rect) {
 
-            Paint p = new Paint();
+            Paint paint = new Paint();
             // Draw background
-            p.setColor(buttonBackgroundcolor);
-            canvas.drawRect(rect, p);
+            paint.setColor(buttonBackgroundColor);
+            canvas.drawRect(rect, paint);
 
-            if (!animate) {
-                // Draw Text
-//                p.setColor(Color.BLACK);
-                p.setColor(textColor);
-                p.setTextSize(40);
-                Rect r = new Rect();
-                float cHeight = rect.height();
-                float cWidth = rect.width();
-                p.setTextAlign(Paint.Align.LEFT);
-                p.getTextBounds(text, 0, text.length(), r);
-                float x = cWidth / 2f - r.width() / 2f - r.left;
-                float y = cHeight / 2f + r.height() / 2f - r.bottom - 40;
-                canvas.drawText(text, rect.left + x, rect.top + y, p);
+            // Draw Text
+            paint.setColor(textColor);
+            paint.setTextSize(40);
+            Rect r = new Rect();
+            float cHeight = rect.height();
+            float cWidth = rect.width();
+            paint.setTextAlign(Paint.Align.LEFT);
+            paint.getTextBounds(text, 0, text.length(), r);
+            float x = cWidth / 2f - r.width() / 2f - r.left;
+            float y = cHeight / 2f + r.height() / 2f - r.bottom - 40;
+            canvas.drawText(text, rect.left + x, rect.top + y, paint);
 
-                if (imageResId != null) {
-                    imageResId.setBounds((int) (rect.left + 50), (int) (rect.top + (cHeight / 2f)), (int) (rect.right - 50), (int) (rect.bottom - ((cHeight / 10f))));
-                    imageResId.draw(canvas);
+            if (imageResId != null) {
+                int left = (int) (rect.left + 50);
+                int right = (int) (rect.right - 50);
+                if (isSwipingRight) {
+                    left = (int) (rect.right + 50);
+                    right = (int) (rect.left - 50);
                 }
 
-            } else {
-                //animate
-                // Draw Text
-                TextPaint textPaint = new TextPaint();
-                textPaint.setTextSize(40);
-                textPaint.setColor(textColor);
-                StaticLayout sl = new StaticLayout(text, textPaint, (int) rect.width(),
-                        Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+                int top = (int) (rect.top + (cHeight / 2f));
+                int bottom = (int) (rect.bottom - (cHeight / 10f));
 
-                if (imageResId != null) {
-                    imageResId.setBounds((int) (rect.left + 50), (int) (rect.top + (rect.height() / 2f)), (int) (rect.right - 50), (int) (rect.bottom - ((rect.height() / 10f))));
-                    imageResId.draw(canvas);
-                }
-
-                canvas.save();
-                Rect r = new Rect();
-                float y = (rect.height() / 2f) + (r.height() / 2f) - r.bottom - (sl.getHeight() / 2);
-
-                if (imageResId == null)
-                    canvas.translate(rect.left, rect.top + y);
-                else
-                    canvas.translate(rect.left, rect.top + y - 30);
-
-
-                sl.draw(canvas);
-                canvas.restore();
+                imageResId.setBounds(left, top, right, bottom);
+                imageResId.draw(canvas);
             }
 
             clickRegion = rect;
-            this.pos = pos;
+            this.position = position;
         }
 
     }
 
     public interface UnderlayButtonClickListener {
-        void onClick(int pos);
+        void onClick(int position);
     }
 }

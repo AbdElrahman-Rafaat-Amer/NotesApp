@@ -46,6 +46,7 @@
     <string name="error_in_save">خطأ في حفظ الصورة</string>
     <string name="tips">كيفية الاستخدام</string>
     <string name="delete_note">مسح الملاحظة</string>
+    <string name="delete">مسح</string>
     <string name="swipe_left">يمكنك التمرير إلى اليسار لحذف الملاحظة</string>
     <string name="pin_note">تثبيت الملاحظة</string>
     <string name="swipe_right">يمكنك التمرير لليمين لتثبيت الملاحظة</string>
