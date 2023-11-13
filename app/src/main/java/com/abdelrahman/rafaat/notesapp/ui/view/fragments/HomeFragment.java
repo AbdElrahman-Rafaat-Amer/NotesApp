@@ -154,10 +154,13 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void observeViewModel() {
         noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
-            if (notes.isEmpty())
+            if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
-            else
+            } else {
+                notes.removeIf(Note::isArchived);
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
+            }
+
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
             adapter.setList(notes);
@@ -256,6 +259,8 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             @Override
             public void archiveButtonPressed(int position) {
                 selectedNote = noteList.get(position);
+                selectedNote.setArchived(!selectedNote.isArchived());
+                noteViewModel.updateNote(selectedNote);
                 Log.d(TAG, "archiveButtonPressed");
             }
 
