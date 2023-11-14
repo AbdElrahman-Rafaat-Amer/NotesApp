@@ -45,8 +45,12 @@
     <string name="error_in_save">Error in save image</string>
     <string name="tips">Tips</string>
     <string name="delete_note">Delete note</string>
+    <string name="delete">Delete</string>
     <string name="swipe_left">you can swipe left to delete note</string>
     <string name="pin_note">Pin note</string>
+    <string name="pin">Pin</string>
+    <string name="archive">Archive</string>
+    <string name="archived">Archived</string>
     <string name="swipe_right">you can swipe right to pin note</string>
     <string name="show_details">show details</string>
     <string name="click_on_note">you can click on note to show details</string>
