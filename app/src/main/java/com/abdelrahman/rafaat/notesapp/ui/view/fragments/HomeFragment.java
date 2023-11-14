@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.SearchView;
@@ -24,6 +25,7 @@ import android.widget.SearchView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuHost;
@@ -42,9 +44,11 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
@@ -57,6 +61,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
+    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -73,6 +78,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 Navigation.findNavController(v).navigate(R.id.action_home_to_addNote)
         );
 
+        setUpToolbar();
         search();
         initRecyclerView();
         initViewModel();
@@ -81,6 +87,44 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
+    }
+
+    private void setUpToolbar() {
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            activity.setSupportActionBar(binding.toolBar);
+        }
+
+        navigationClickListener = new NavigationIconClickListener(
+                getContext(), binding.productGrid,
+                new AccelerateDecelerateInterpolator(),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_menu),
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_menu));
+        binding.toolBar.setNavigationOnClickListener(navigationClickListener); // Menu close icon
+
+
+        binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
+            List<Note> nonArchivedNotes = noteList.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
+            adapter.setList(nonArchivedNotes);
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
+            showPinnedNotes();
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
+            List<Note> archivedNotes = noteList.stream().filter(Note::isArchived).collect(Collectors.toList());
+            adapter.setList(archivedNotes);
+            closeMenu();
+        });
+    }
+
+    private void closeMenu() {
+        navigationClickListener.startAnimation();
+        binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
     }
 
     private void search() {
@@ -145,16 +189,16 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void observeViewModel() {
         noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
+            List<Note> nonArchivedNotes = notes;
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-                notes.removeIf(Note::isArchived);
+                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 
-
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(notes);
+            adapter.setList(nonArchivedNotes);
             noteList = notes;
         });
 
@@ -183,18 +227,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                         adapter.notifyDataSetChanged();
                         noteViewModel.setLayoutMangerStyle(isList);
                     }
-                } else if (menuItem.getItemId() == R.id.pinned_note) {
-                    if (noteList.isEmpty()) {
-                        showSnackBar(binding.rootView, getString(R.string.no_notes));
-                    } else {
-                        if (menuItem.getTitle() == getString(R.string.all_notes)) {
-                            adapter.setList(noteList);
-                            menuItem.setTitle(getString(R.string.pinned_note));
-                        } else {
-                            showPinnedNotes();
-                            menuItem.setTitle(getString(R.string.all_notes));
-                        }
-                    }
                 }
                 return false;
             }
@@ -202,19 +234,17 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     }
 
     private void showPinnedNotes() {
-        isPinned = true;
-        List<Note> pinnedNotes = new ArrayList<>();
-
-        for (Note note : noteList) {
-            if (note.isPinned()) {
-                pinnedNotes.add(note);
-            }
-        }
-        if (pinnedNotes.isEmpty()) {
-            showSnackBar(binding.rootView, getString(R.string.no_pinnedNotes));
+        if (noteList.isEmpty()) {
+            showSnackBar(binding.rootView, getString(R.string.no_notes));
         } else {
-            binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(pinnedNotes);
+            isPinned = true;
+            List<Note> pinnedNotes = noteList.stream().filter(Note::isPinned).collect(Collectors.toList());
+            if (pinnedNotes.isEmpty()) {
+                showSnackBar(binding.rootView, getString(R.string.no_pinnedNotes));
+            } else {
+                binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
+                adapter.setList(pinnedNotes);
+            }
         }
     }
 
@@ -446,13 +476,13 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         canvas.drawText(text, textX, textY, paint);
 
         float cHeight = background.height();
-        float cWidth  = background.width() / 2;
+        float cWidth = background.width() / 2;
         // Draw the button image
         if (imageResId != null) {
             int top = (int) (background.top + (cHeight / 2f));
             int bottom = (int) (background.bottom - (cHeight / 10f));
-            int imageLeft = (int) (left  + cWidth - 60);
-            int imageRight= (int) (right - cWidth + 60);
+            int imageLeft = (int) (left + cWidth - 60);
+            int imageRight = (int) (right - cWidth + 60);
             imageResId.setBounds(imageLeft, top, imageRight, bottom);
             imageResId.draw(canvas);
         }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/allNotesButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_note"
+        android:text="@string/all_notes"
+        tools:background="@color/purple_200" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/pinnedNotesButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_pin"
+        android:text="@string/pinned_note"
+        tools:background="@color/color2"
+        tools:layout_marginVertical="90dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/archivedNotesButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_archive"
+        android:drawableTint="@color/mainColor"
+        android:text="@string/archived"
+        tools:background="@color/red"
+        tools:layout_marginVertical="190dp" />
+
+</merge>

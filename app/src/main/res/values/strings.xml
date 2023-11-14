@@ -50,6 +50,7 @@
     <string name="pin_note">Pin note</string>
     <string name="pin">Pin</string>
     <string name="archive">Archive</string>
+    <string name="archived">Archived</string>
     <string name="swipe_right">you can swipe right to pin note</string>
     <string name="show_details">show details</string>
     <string name="click_on_note">you can click on note to show details</string>
