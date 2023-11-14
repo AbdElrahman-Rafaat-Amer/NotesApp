@@ -7,10 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,12 +44,7 @@ import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
 
 public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
@@ -64,8 +57,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-
-    private final String TAG = "SWIPE_HELPER";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -251,7 +242,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         MyItemTouchHelperCallback simpleCallback = new MyItemTouchHelperCallback(requireContext(), binding.notesRecyclerview) {
             @Override
             public void deleteButtonPressed(int position) {
-                Log.d(TAG, "deleteButtonPressed");
                 selectedNote = noteList.get(position);
                 showAlertDialog(position);
             }
@@ -261,7 +251,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 selectedNote = noteList.get(position);
                 selectedNote.setArchived(!selectedNote.isArchived());
                 noteViewModel.updateNote(selectedNote);
-                Log.d(TAG, "archiveButtonPressed");
             }
 
             @Override
@@ -269,7 +258,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 selectedNote = noteList.get(position);
                 selectedNote.setPinned(!selectedNote.isPinned());
                 noteViewModel.updateNote(selectedNote);
-                Log.d(TAG, "pinButtonPressed");
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -303,9 +291,8 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 }
 
 abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    public static final int BUTTON_WIDTH = 300;
+    public static final int BUTTON_WIDTH = 250;
     public Context context;
-    private final String TAG = "SWIPE_HELPER";
     private float deleteButtonLeft;
     private float deleteButtonRight;
     private float archiveButtonLeft;
@@ -313,32 +300,26 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private float pinButtonRight;
     private float pinButtonLeft;
     private View itemView;
-    private final RecyclerView recyclerView;
     private int swipedPosition = -1;
-
     private final GestureDetector gestureDetector;
 
-    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
+    private final GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            // Handle single tap (button click) here if needed
             float x = e.getX();
             float y = e.getY();
 
             if (isTapOnDeleteButton(x, y)) {
-                Log.d(TAG, "onSingleTapConfirmed: isTapOnDeleteButton");
                 deleteButtonPressed(swipedPosition);
                 return true;
             }
 
             if (isTapOnArchiveButton(x, y)) {
-                Log.d(TAG, "onSingleTapConfirmed: isTapOnArchiveButton");
                 archiveButtonPressed(swipedPosition);
                 return true;
             }
 
             if (isTapOnPinButton(x, y)) {
-                Log.d(TAG, "onSingleTapConfirmed: isTapOnPinButton");
                 pinButtonPressed(swipedPosition);
                 return true;
             }
@@ -359,7 +340,7 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         }
     };
 
-    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+    private final View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent e) {
 
@@ -379,9 +360,8 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public MyItemTouchHelperCallback(Context context, RecyclerView recyclerView) {
         this.context = context;
-        this.recyclerView = recyclerView;
         gestureDetector = new GestureDetector(context, gestureListener);
-        this.recyclerView.setOnTouchListener(onTouchListener);
+        recyclerView.setOnTouchListener(onTouchListener);
     }
 
     @Override
@@ -452,7 +432,7 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private void drawButton(Canvas canvas, View itemView, Drawable imageResId, String text, float left, float right, int color) {
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setTextSize(70);
+        paint.setTextSize(50);
         paint.setAntiAlias(true);
 
         // Draw the button background
@@ -466,11 +446,14 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         canvas.drawText(text, textX, textY, paint);
 
         float cHeight = background.height();
+        float cWidth  = background.width() / 2;
         // Draw the button image
         if (imageResId != null) {
             int top = (int) (background.top + (cHeight / 2f));
             int bottom = (int) (background.bottom - (cHeight / 10f));
-            imageResId.setBounds((int) left, top, (int) right, bottom);
+            int imageLeft = (int) (left  + cWidth - 60);
+            int imageRight= (int) (right - cWidth + 60);
+            imageResId.setBounds(imageLeft, top, imageRight, bottom);
             imageResId.draw(canvas);
         }
     }
