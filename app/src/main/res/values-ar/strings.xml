@@ -46,8 +46,12 @@
     <string name="error_in_save">خطأ في حفظ الصورة</string>
     <string name="tips">كيفية الاستخدام</string>
     <string name="delete_note">مسح الملاحظة</string>
+    <string name="delete">مسح</string>
     <string name="swipe_left">يمكنك التمرير إلى اليسار لحذف الملاحظة</string>
     <string name="pin_note">تثبيت الملاحظة</string>
+    <string name="pin">تثبيت</string>
+    <string name="archive">أرشف</string>
+    <string name="archived">المؤرشفة</string>
     <string name="swipe_right">يمكنك التمرير لليمين لتثبيت الملاحظة</string>
     <string name="show_details">اظهار التفاصيل</string>
     <string name="click_on_note">يمكنك النقر فوق الملاحظة لإظهار التفاصيل</string>
@@ -77,4 +81,7 @@
     <string name="update">تحديث</string>
     <string name="exit">اغلاق</string>
     <string name="update_complete_message">لقد تم تنزيل التحديث. </string>
+    <string name="biometric_authentication_failed">فشلت المصادقة، يرجى المحاولة مرة أخرى</string>
+    <string name="biometric_title"> المصادقة</string>
+    <string name="biometric_subtitle">استخدم بصمة إصبعك أو كلمة المرور للمصادقة</string>
 </resources>
