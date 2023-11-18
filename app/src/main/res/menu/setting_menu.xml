@@ -4,7 +4,6 @@
     <item
         android:id="@+id/list_note"
         android:icon="@drawable/ic_grid"
-        app:iconTint="@color/white"
         android:title="@string/list_note"
         app:showAsAction="always" />
 </menu>
