@@ -12,11 +12,14 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
     public LiveData<List<Note>> notes;
+    private MutableLiveData<List<String>> _files = new MutableLiveData<List<String>>();
+    public LiveData<List<String>> files = _files;
     private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
     public LiveData<Boolean> isList = _isList;
     private Note currentNote;
@@ -38,6 +41,9 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void getAllNotes() {
         notes = repositoryInterface.getAllNotes();
+        List<String> files = new ArrayList<String>();
+        files.add("All");
+        _files.postValue(files);
     }
 
     public void saveNote(Note note) {

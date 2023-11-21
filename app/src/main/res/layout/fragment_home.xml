@@ -80,12 +80,34 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/files_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            tools:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/showAllFolders"
+            app:layout_constraintStart_toStartOf="@+id/notes_recyclerview"
+            app:layout_constraintTop_toBottomOf="@id/note_searchView"
+            tools:itemCount="1"
+            tools:listitem="@layout/custom_row_file" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/showAllFolders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:src="@drawable/ic_folder"
+            app:layout_constraintBottom_toBottomOf="@id/files_recyclerview"
+            app:layout_constraintEnd_toEndOf="@+id/notes_recyclerview"
+            app:layout_constraintTop_toTopOf="@id/files_recyclerview" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notes_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:tooltipText="@string/add_note"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/note_searchView"
+            app:layout_constraintTop_toBottomOf="@id/files_recyclerview"
             tools:itemCount="20"
             tools:listitem="@layout/custom_row_note" />
 

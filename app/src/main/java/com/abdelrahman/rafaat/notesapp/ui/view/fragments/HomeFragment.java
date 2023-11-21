@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +42,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.ui.view.FilesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
+import com.abdelrahman.rafaat.notesapp.ui.view.OnFileClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
@@ -50,10 +53,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeFragment extends BaseFragment implements OnNotesClickListener {
+public class HomeFragment extends BaseFragment implements OnNotesClickListener, OnFileClickListener {
 
     private FragmentHomeBinding binding;
-    private NotesAdapter adapter;
+    private NotesAdapter notesAdapter;
+    private FilesAdapter filesAdapter;
     private NoteViewModel noteViewModel;
     private List<Note> noteList = new ArrayList<>();
     private Note selectedNote;
@@ -106,7 +110,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
         binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
             List<Note> nonArchivedNotes = noteList.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
-            adapter.setList(nonArchivedNotes);
+            notesAdapter.setList(nonArchivedNotes);
             closeMenu();
         });
 
@@ -117,7 +121,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
         binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
             List<Note> archivedNotes = noteList.stream().filter(Note::isArchived).collect(Collectors.toList());
-            adapter.setList(archivedNotes);
+            notesAdapter.setList(archivedNotes);
             closeMenu();
         });
     }
@@ -160,14 +164,19 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             binding.noSearchLayout.noFilesView.setVisibility(View.VISIBLE);
         } else
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-        adapter.setList(filteredList);
+        notesAdapter.setList(filteredList);
 
     }
 
     private void initRecyclerView() {
-        adapter = new NotesAdapter(this);
+        filesAdapter = new FilesAdapter(this);
+        LinearLayoutManager manager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        binding.filesRecyclerview.setLayoutManager(manager);
+        binding.filesRecyclerview.setAdapter(filesAdapter);
+
+        notesAdapter = new NotesAdapter(this);
         setupLayoutManger();
-        binding.notesRecyclerview.setAdapter(adapter);
+        binding.notesRecyclerview.setAdapter(notesAdapter);
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         binding.notesRecyclerview.setLayoutAnimation(animation);
@@ -198,8 +207,12 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             }
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(nonArchivedNotes);
+            notesAdapter.setList(nonArchivedNotes);
             noteList = notes;
+        });
+
+        noteViewModel.files.observe(getViewLifecycleOwner(), files -> {
+            filesAdapter.setList(files);
         });
 
         noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
@@ -224,7 +237,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                     } else {
                         isList = !isList;
                         setupLayoutManger();
-                        adapter.notifyDataSetChanged();
+                        notesAdapter.notifyDataSetChanged();
                         noteViewModel.setLayoutMangerStyle(isList);
                     }
                 }
@@ -243,7 +256,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 showSnackBar(binding.rootView, getString(R.string.no_pinnedNotes));
             } else {
                 binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-                adapter.setList(pinnedNotes);
+                notesAdapter.setList(pinnedNotes);
             }
         }
     }
@@ -259,7 +272,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                     isSearching = false;
                 } else if (isPinned) {
                     isPinned = false;
-                    adapter.setList(noteList);
+                    notesAdapter.setList(noteList);
                 } else {
                     setEnabled(false);
                     requireActivity().getOnBackPressedDispatcher().onBackPressed();
@@ -301,7 +314,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 .setPositiveButton(R.string.remove, (dialog, which) -> noteViewModel.deleteNote(selectedNote.getId()))
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     alertDialog.dismiss();
-                    adapter.notifyItemChanged(position);
+                    notesAdapter.notifyItemChanged(position);
                 });
 
         alertDialog = builder.create();
@@ -318,6 +331,10 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
     }
 
+    @Override
+    public void onFiledClickListener(String fileName) {
+        Log.d("onFiledClickListener", "onFiledClickListener: ");
+    }
 }
 
 abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
