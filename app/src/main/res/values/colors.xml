@@ -22,7 +22,8 @@
     <color name="color6">#8CCDFF</color>
     <color name="color7">#da8b5f</color>
     <color name="color8">#D5ABFF</color>
-
+    <color name="alto">#DAD7D7</color>
+    <color name="tundora">#4A4A4A</color>
 
     <integer-array name="colors">
         <item>@color/color1</item>

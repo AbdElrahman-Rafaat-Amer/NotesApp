@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.abdelrahman.rafaat.notesapp.model.Folder;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface NotesDAO {
 
     @Query("SELECT * FROM notes ORDER BY isPinned DESC")
     LiveData<List<Note>> getAllNotes();
+
+    @Query("SELECT * FROM folders ORDER BY isPinned DESC")
+    LiveData<List<Folder>> getAllFolders();
 
     @Update
     void updateNote(Note note);

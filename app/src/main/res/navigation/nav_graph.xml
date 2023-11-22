@@ -32,10 +32,16 @@
             app:destination="@id/add_note_fragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/password_fragment"
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.PasswordFragment"
         android:label="edit note fragment"
         tools:layout="@layout/fragment_password" />
+
+
+    <fragment
+        android:id="@+id/all_folders_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.AllFoldersFragment"
+        android:label="all folders fragment"
+        tools:layout="@layout/fragment_all_folders" />
 </navigation>

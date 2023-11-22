@@ -40,6 +40,11 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public LiveData<List<Folder>> getAllFolders() {
+        return localSource.getAllFolders();
+    }
+
+    @Override
     public void updateNote(Note note) {
         localSource.updateNote(note);
     }

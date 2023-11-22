@@ -66,7 +66,8 @@
     <string name="select_one_image_at_least">Select one image at least</string>
 
 
-    <string name="all" translatable="false">All</string>
+    <string name="all">All</string>
+    <string name="folder">Folder</string>
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
     <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -101,5 +102,10 @@
     <string name="t" translatable="false">T</string>
     <string name="biometric_title">Biometric Authentication</string>
     <string name="biometric_subtitle">Use your fingerprint or Password to authenticate</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="folders">Folders</string>
+    <string name="new_folder">New Folder</string>
+    <string name="_100">100</string>
 
 </resources>

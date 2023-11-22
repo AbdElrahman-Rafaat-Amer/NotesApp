@@ -41,11 +41,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
+import com.abdelrahman.rafaat.notesapp.model.Folder;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.FilesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
-import com.abdelrahman.rafaat.notesapp.ui.view.OnFileClickListener;
+import com.abdelrahman.rafaat.notesapp.ui.view.OnFolderClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
+import com.abdelrahman.rafaat.notesapp.ui.view.ViewTypes;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 
@@ -53,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeFragment extends BaseFragment implements OnNotesClickListener, OnFileClickListener {
+public class HomeFragment extends BaseFragment implements OnNotesClickListener, OnFolderClickListener {
 
     private FragmentHomeBinding binding;
     private NotesAdapter notesAdapter;
@@ -169,7 +171,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
     }
 
     private void initRecyclerView() {
-        filesAdapter = new FilesAdapter(this);
+        filesAdapter = new FilesAdapter(this,  ViewTypes.VIEW_TYPE_ITEM_1);
         LinearLayoutManager manager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         binding.filesRecyclerview.setLayoutManager(manager);
         binding.filesRecyclerview.setAdapter(filesAdapter);
@@ -194,6 +196,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
         noteViewModel.getLayoutMangerStyle();
         noteViewModel.getAllNotes();
+        noteViewModel.getAllFolders();
     }
 
     private void observeViewModel() {
@@ -201,9 +204,11 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
             List<Note> nonArchivedNotes = notes;
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
+                binding.filesRecyclerview.setVisibility(View.GONE);
             } else {
                 nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
+                binding.filesRecyclerview.setVisibility(View.VISIBLE);
             }
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
@@ -211,7 +216,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
             noteList = notes;
         });
 
-        noteViewModel.files.observe(getViewLifecycleOwner(), files -> {
+        noteViewModel.folders.observe(getViewLifecycleOwner(), files -> {
             filesAdapter.setList(files);
         });
 
@@ -332,8 +337,12 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
     }
 
     @Override
-    public void onFiledClickListener(String fileName) {
-        Log.d("onFiledClickListener", "onFiledClickListener: ");
+    public void onFolderClickListener(Folder folder) {
+        if (folder.getName().equals(getString(R.string.folder))){
+            Navigation.findNavController(requireView()).navigate(R.id.all_folders_fragment);
+        }else{
+            Log.d("onFileClickListener", "Will show notes to this folder");
+        }
     }
 }
 

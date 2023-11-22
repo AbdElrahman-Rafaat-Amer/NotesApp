@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
+import com.abdelrahman.rafaat.notesapp.model.Folder;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
@@ -18,8 +20,9 @@ import java.util.List;
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
     public LiveData<List<Note>> notes;
-    private MutableLiveData<List<String>> _files = new MutableLiveData<List<String>>();
-    public LiveData<List<String>> files = _files;
+
+    private final MutableLiveData<List<Folder>> _folders = new MutableLiveData<>();
+    public LiveData<List<Folder>> folders = _folders;
     private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
     public LiveData<Boolean> isList = _isList;
     private Note currentNote;
@@ -41,9 +44,19 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void getAllNotes() {
         notes = repositoryInterface.getAllNotes();
-        List<String> files = new ArrayList<String>();
-        files.add("All");
-        _files.postValue(files);
+    }
+
+    public void getAllFolders() {
+        LiveData<List<Folder>> savedFolder = repositoryInterface.getAllFolders();
+        List<Folder> currentFolders = savedFolder.getValue();
+        if (currentFolders == null){
+            currentFolders = new ArrayList<>();
+        }
+        Folder allFolder = new Folder(getApplication().getString(R.string.all));
+        allFolder.setChecked(true);
+        currentFolders.add(0, allFolder);
+        currentFolders.add(new Folder(getApplication().getString(R.string.folder)));
+        _folders.postValue(currentFolders);
     }
 
     public void saveNote(Note note) {
