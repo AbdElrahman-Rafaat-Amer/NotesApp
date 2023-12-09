@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.ui.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -42,23 +43,9 @@ public class NoteViewModel extends AndroidViewModel {
         repositoryInterface.setLayoutMangerStyle(isList);
     }
 
+    //Notes
     public void getAllNotes() {
         notes = repositoryInterface.getAllNotes();
-    }
-
-    public void getAllFolders() {
-//        LiveData<List<Folder>> savedFolder = repositoryInterface.getAllFolders();
-//        List<Folder> currentFolders = savedFolder.getValue();
-//        if (currentFolders == null){
-//            currentFolders = new ArrayList<>();
-//        }
-//        Folder allFolder = new Folder(getApplication().getString(R.string.all));
-//        allFolder.setChecked(true);
-//        currentFolders.add(0, allFolder);
-//        currentFolders.add(new Folder(getApplication().getString(R.string.folder)));
-//        _folders.postValue(currentFolders);
-        folders = repositoryInterface.getAllFolders();
-//        _folders.postValue(folders);
     }
 
     public void saveNote(Note note) {
@@ -79,5 +66,21 @@ public class NoteViewModel extends AndroidViewModel {
 
     public Note getCurrentNote() {
         return currentNote;
+    }
+
+    //Folders
+    public void getAllFolders() {
+        folders = repositoryInterface.getAllFolders();
+        Log.i("AllFoldersFragment", "getAllFolders: folders--------> " + folders.getValue());
+    }
+
+    public void addFolder(Folder folder) {
+        repositoryInterface.addFolder(folder);
+    }
+
+    public void addFolder(String folderName) {
+        Folder newFolder = new Folder(folderName);
+        Log.i("AllFoldersFragment", "addFolder: folderName-------->" + folderName);
+        addFolder(newFolder);
     }
 }

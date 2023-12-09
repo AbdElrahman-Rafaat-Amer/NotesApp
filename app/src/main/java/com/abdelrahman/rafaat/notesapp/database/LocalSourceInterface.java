@@ -9,12 +9,13 @@ import java.util.List;
 
 public interface LocalSourceInterface {
 
+    //Notes
     void insertNote(Note note);
-
     LiveData<List<Note>> getAllNotes();
-    LiveData<List<Folder>> getAllFolders();
-
     void updateNote(Note note);
-
     void deleteNote(int id);
+
+    //Folders
+    LiveData<List<Folder>> getAllFolders();
+    void addFolder(Folder folder);
 }

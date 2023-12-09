@@ -15,19 +15,19 @@ import java.util.List;
 @Dao
 public interface NotesDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertNote(Note note);
-
     @Query("SELECT * FROM notes ORDER BY isPinned DESC")
     LiveData<List<Note>> getAllNotes();
-
-    @Query("SELECT * FROM folders ORDER BY isPinned DESC")
-    LiveData<List<Folder>> getAllFolders();
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertNote(Note note);
     @Update
     void updateNote(Note note);
-
     @Query("DELETE FROM notes where id = :id")
     void deleteNote(int id);
+
+    //Folders
+    @Query("SELECT * FROM folders ORDER BY isPinned DESC")
+    LiveData<List<Folder>> getAllFolders();
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addFolder(Folder folder);
 
 }

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_background"
-        android:hint="@string/unnamed_folder"
+        android:text="@string/unnamed_folder"
         android:paddingHorizontal="20dp"
         android:paddingVertical="15dp"
         android:textColor="@color/white"

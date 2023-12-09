@@ -40,11 +40,6 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
-    public LiveData<List<Folder>> getAllFolders() {
-        return folders;
-    }
-
-    @Override
     public void updateNote(Note note) {
         new Thread(() -> dao.updateNote(note)).start();
     }
@@ -52,5 +47,16 @@ public class LocalSource implements LocalSourceInterface {
     @Override
     public void deleteNote(int id) {
         new Thread(() -> dao.deleteNote(id)).start();
+    }
+
+    //Folders
+    @Override
+    public LiveData<List<Folder>> getAllFolders() {
+        return folders;
+    }
+
+    @Override
+    public  void addFolder(Folder folder){
+        new Thread(() -> dao.addFolder(folder)).start();
     }
 }

@@ -2,6 +2,7 @@ package com.abdelrahman.rafaat.notesapp.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -44,23 +45,6 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public LiveData<List<Folder>> getAllFolders() {
-        LiveData<List<Folder>> savedFolder = localSource.getAllFolders();
-        return Transformations.map(savedFolder, originalList -> {
-            List<Folder> modifiedList = new ArrayList<>(originalList);
-
-            // Add your two items
-            Folder allFolder = new Folder(context.getString(R.string.all));
-            allFolder.setChecked(true);
-            allFolder.setNumberOfNotes(getNotesCount());
-            modifiedList.add(0, allFolder);
-            modifiedList.add(new Folder(context.getString(R.string.folder)));
-
-            return modifiedList;
-        });
-    }
-
-    @Override
     public void updateNote(Note note) {
         localSource.updateNote(note);
     }
@@ -81,6 +65,30 @@ public class Repository implements RepositoryInterface {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("IS_LIST", isList);
         editor.apply();
+    }
+
+
+    @Override
+    public LiveData<List<Folder>> getAllFolders() {
+        LiveData<List<Folder>> savedFolder = localSource.getAllFolders();
+        Log.i("AllFoldersFragment", "getAllFolders: Repo savedFolder--------> " + savedFolder.getValue());
+        return Transformations.map(savedFolder, originalList -> {
+            List<Folder> modifiedList = new ArrayList<>(originalList);
+
+            // Add your two items
+            Folder allFolder = new Folder(context.getString(R.string.all));
+            allFolder.setChecked(true);
+            allFolder.setNumberOfNotes(getNotesCount());
+            modifiedList.add(0, allFolder);
+            modifiedList.add(new Folder(context.getString(R.string.folder)));
+            Log.i("AllFoldersFragment", "getAllFolders: Repo modifiedList--------> " + modifiedList);
+            return modifiedList;
+        });
+    }
+
+    @Override
+    public void addFolder(Folder folder) {
+        localSource.addFolder(folder);
     }
 
     private void updateNotesCount(int delta){

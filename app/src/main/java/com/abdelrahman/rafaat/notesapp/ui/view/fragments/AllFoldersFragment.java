@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.databinding.AddFolderDialogBinding;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAllFoldersBinding;
 import com.abdelrahman.rafaat.notesapp.model.Folder;
 import com.abdelrahman.rafaat.notesapp.ui.view.FilesAdapter;
@@ -70,34 +73,50 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
 
     private void showCustomDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),  R.style.CustomAlertDialog);
-        View customView = getLayoutInflater().inflate(R.layout.add_folder_dialog, null);
-        builder.setView(customView);
+        AddFolderDialogBinding dialogBinding = AddFolderDialogBinding.inflate(getLayoutInflater());
+        builder.setView(dialogBinding.getRoot());
 
-        // Set up dialog components
-        TextView textViewTitle = customView.findViewById(R.id.textViewTitle);
-        EditText editTextFolderName = customView.findViewById(R.id.editTextFolderName);
-        Button buttonOk = customView.findViewById(R.id.ok_button);
-        Button buttonCancel = customView.findViewById(R.id.cancel_button);
-
-        // Customize as needed
-
-        // Create and show the dialog
         AlertDialog dialog = builder.create();
 
-        // Set dialog to appear at the bottom
+        // Set up dialog components
+        dialogBinding.okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: okButton pressed");
+                noteViewModel.addFolder(dialogBinding.editTextFolderName.getText().toString());
+                hideKeyboard();
+                dialog.cancel();
+            }
+        });
+
+        dialogBinding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: cancelButton pressed");
+                hideKeyboard();
+                dialog.cancel();
+            }
+        });
+
         Window window = dialog.getWindow();
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(window.getAttributes());
         layoutParams.gravity = Gravity.BOTTOM;
         window.setAttributes(layoutParams);
 
-        // Show the keyboard and focus on the EditText
-        editTextFolderName.requestFocus();
+        dialogBinding.editTextFolderName.requestFocus();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        View currentFocus = requireActivity().getCurrentFocus();
+        if (currentFocus != null) {
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
+    }
     private void initRecyclerView() {
         filesAdapter = new FilesAdapter(this, ViewTypes.VIEW_TYPE_ITEM_2);
         LinearLayoutManager manager = new LinearLayoutManager(requireContext());

@@ -1,5 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 binding.showAllFolders.setVisibility(View.GONE);
                 binding.noteTitleTextView.setVisibility(View.VISIBLE);
+                binding.noteTitleTextView.setText(folder.getName());
             }
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
         }
@@ -109,6 +111,7 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         void bind(Folder folder) {
+            Log.i("AllFoldersFragment", "bind: folder--------> " + folder.toString());
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
             binding.folderNotesNumberTextView.setText(""+folder.getNumberOfNotes());
             binding.folderTitleTextView.setText(folder.getName());
