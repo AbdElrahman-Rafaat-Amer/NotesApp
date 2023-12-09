@@ -110,6 +110,8 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         void bind(Folder folder) {
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
+            binding.folderNotesNumberTextView.setText(""+folder.getNumberOfNotes());
+            binding.folderTitleTextView.setText(folder.getName());
         }
     }
 

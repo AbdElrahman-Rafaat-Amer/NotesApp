@@ -47,16 +47,18 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getAllFolders() {
-        LiveData<List<Folder>> savedFolder = repositoryInterface.getAllFolders();
-        List<Folder> currentFolders = savedFolder.getValue();
-        if (currentFolders == null){
-            currentFolders = new ArrayList<>();
-        }
-        Folder allFolder = new Folder(getApplication().getString(R.string.all));
-        allFolder.setChecked(true);
-        currentFolders.add(0, allFolder);
-        currentFolders.add(new Folder(getApplication().getString(R.string.folder)));
-        _folders.postValue(currentFolders);
+//        LiveData<List<Folder>> savedFolder = repositoryInterface.getAllFolders();
+//        List<Folder> currentFolders = savedFolder.getValue();
+//        if (currentFolders == null){
+//            currentFolders = new ArrayList<>();
+//        }
+//        Folder allFolder = new Folder(getApplication().getString(R.string.all));
+//        allFolder.setChecked(true);
+//        currentFolders.add(0, allFolder);
+//        currentFolders.add(new Folder(getApplication().getString(R.string.folder)));
+//        _folders.postValue(currentFolders);
+        folders = repositoryInterface.getAllFolders();
+//        _folders.postValue(folders);
     }
 
     public void saveNote(Note note) {

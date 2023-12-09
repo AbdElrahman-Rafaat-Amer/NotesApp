@@ -4,21 +4,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
+import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.database.LocalSourceInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository implements RepositoryInterface {
     private static Repository repository = null;
     private final LocalSourceInterface localSource;
-    private final SharedPreferences sharedPrefs;
-    private final SharedPreferences.Editor editor;
+    private final SharedPreferences sharedPreferences;
+    private final Context context;
 
     private Repository(Context context, LocalSourceInterface localSource) {
         this.localSource = localSource;
-        this.sharedPrefs = context.getSharedPreferences("LAYOUT_MANGER", Context.MODE_PRIVATE);
-        this.editor = sharedPrefs.edit();
+        this.sharedPreferences = context.getSharedPreferences("LAYOUT_MANGER", Context.MODE_PRIVATE);
+        this.context = context;
     }
 
     public static Repository getInstance(LocalSourceInterface localSource, Context context) {
@@ -31,6 +34,7 @@ public class Repository implements RepositoryInterface {
 
     @Override
     public void insertNote(Note note) {
+        updateNotesCount(1);
         localSource.insertNote(note);
     }
 
@@ -41,7 +45,19 @@ public class Repository implements RepositoryInterface {
 
     @Override
     public LiveData<List<Folder>> getAllFolders() {
-        return localSource.getAllFolders();
+        LiveData<List<Folder>> savedFolder = localSource.getAllFolders();
+        return Transformations.map(savedFolder, originalList -> {
+            List<Folder> modifiedList = new ArrayList<>(originalList);
+
+            // Add your two items
+            Folder allFolder = new Folder(context.getString(R.string.all));
+            allFolder.setChecked(true);
+            allFolder.setNumberOfNotes(getNotesCount());
+            modifiedList.add(0, allFolder);
+            modifiedList.add(new Folder(context.getString(R.string.folder)));
+
+            return modifiedList;
+        });
     }
 
     @Override
@@ -51,18 +67,31 @@ public class Repository implements RepositoryInterface {
 
     @Override
     public void deleteNote(int id) {
+        updateNotesCount(-1);
         localSource.deleteNote(id);
     }
 
     @Override
     public boolean getLayoutMangerStyle() {
-        return sharedPrefs.getBoolean("IS_LIST", false);
+        return sharedPreferences.getBoolean("IS_LIST", false);
     }
 
     @Override
     public void setLayoutMangerStyle(boolean isList) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("IS_LIST", isList);
         editor.apply();
-        sharedPrefs.getBoolean("IS_LIST", false);
+    }
+
+    private void updateNotesCount(int delta){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int notesCount = getNotesCount() + delta;
+        notesCount = Math.max(0, notesCount);
+        editor.putInt("NOTES_COUNT", notesCount);
+        editor.apply();
+    }
+
+    private int getNotesCount(){
+        return sharedPreferences.getInt("NOTES_COUNT", 0);
     }
 }
