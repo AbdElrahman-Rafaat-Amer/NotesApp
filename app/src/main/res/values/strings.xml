@@ -107,5 +107,7 @@
     <string name="folders">Folders</string>
     <string name="new_folder">New Folder</string>
     <string name="_100">100</string>
+    <string name="ok">Ok</string>
+    <string name="unnamed_folder">Unnamed Folder</string>
 
 </resources>

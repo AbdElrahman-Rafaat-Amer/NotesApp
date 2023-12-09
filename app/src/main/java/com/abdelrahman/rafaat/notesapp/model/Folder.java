@@ -77,8 +77,19 @@ public class Folder {
     }
 
     public void setNumberOfNotes(int numberOfNotes) {
-        this.numberOfNotes = numberOfNotes;
+        this.numberOfNotes = Math.max(0, numberOfNotes);;
     }
 
 
+    @Override
+    public String toString() {
+        return "Folder{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", isPinned=" + isPinned +
+                ", isChecked=" + isChecked +
+                ", numberOfNotes=" + numberOfNotes +
+                '}';
+    }
 }

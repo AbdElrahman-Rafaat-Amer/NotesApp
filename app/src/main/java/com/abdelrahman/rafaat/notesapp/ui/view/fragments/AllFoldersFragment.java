@@ -1,10 +1,17 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAllFoldersBinding;
@@ -31,6 +39,7 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
     private NoteViewModel noteViewModel;
 
     private List<Folder> folders;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,8 +61,41 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
 
         binding.backImageView.setOnClickListener(view -> Navigation.findNavController(view).popBackStack());
         binding.restoreFromTrash.setOnClickListener(view -> Log.d(TAG, "initUI: restoreFromTrash clicked"));
-        binding.addNewFolder.setOnClickListener(view -> Log.d(TAG, "initUI: addNewFolder clicked"));
+        binding.addNewFolder.setOnClickListener(view -> {
+            Log.d(TAG, "initUI: addNewFolder clicked");
+            showCustomDialog();
+        });
 
+    }
+
+    private void showCustomDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),  R.style.CustomAlertDialog);
+        View customView = getLayoutInflater().inflate(R.layout.add_folder_dialog, null);
+        builder.setView(customView);
+
+        // Set up dialog components
+        TextView textViewTitle = customView.findViewById(R.id.textViewTitle);
+        EditText editTextFolderName = customView.findViewById(R.id.editTextFolderName);
+        Button buttonOk = customView.findViewById(R.id.ok_button);
+        Button buttonCancel = customView.findViewById(R.id.cancel_button);
+
+        // Customize as needed
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+
+        // Set dialog to appear at the bottom
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(window.getAttributes());
+        layoutParams.gravity = Gravity.BOTTOM;
+        window.setAttributes(layoutParams);
+
+        // Show the keyboard and focus on the EditText
+        editTextFolderName.requestFocus();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     private void initRecyclerView() {
@@ -62,6 +104,7 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
         binding.foldersRecyclerView.setLayoutManager(manager);
         binding.foldersRecyclerView.setAdapter(filesAdapter);
     }
+
     private void initViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
     }
@@ -75,6 +118,6 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
 
     @Override
     public void onFolderClickListener(Folder folder) {
-
+        Log.d(TAG, "initUI: onFolderClickListener folder------>" + folder.toString());
     }
 }
