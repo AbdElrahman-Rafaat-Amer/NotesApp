@@ -1,11 +1,15 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
+import android.content.Context;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdelrahman.rafaat.notesapp.R;
@@ -20,6 +24,7 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<Folder> folders = new ArrayList<>();
     private final OnFolderClickListener onClickListener;
     private final ViewTypes viewType;
+    private Context context;
 
     public FilesAdapter(OnFolderClickListener onClickListener, ViewTypes viewType) {
         this.onClickListener = onClickListener;
@@ -34,6 +39,7 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         if (viewType == ViewTypes.VIEW_TYPE_ITEM_1.getValue()) {
             CustomRowFileBinding binding =
                     CustomRowFileBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
@@ -101,9 +107,9 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
             if (folder.isChecked()){
-                binding.folderCardView.setCardBackgroundColor(android.R.color.colorSecondary);
+                binding.folderCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.selected_card_view_color));
             }else{
-
+                binding.folderCardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.card_view_color));
             }
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
         }

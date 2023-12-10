@@ -34,4 +34,6 @@ public interface NotesDAO {
     void addFolder(Folder folder);
     @Update
     void updateFolder(Folder folder);
+    @Query("DELETE FROM folders where id = :folderID")
+    void deleteFolder(int folderID);
 }

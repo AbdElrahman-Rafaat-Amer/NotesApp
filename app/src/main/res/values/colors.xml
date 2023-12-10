@@ -24,6 +24,8 @@
     <color name="color8">#D5ABFF</color>
     <color name="alto">#DAD7D7</color>
     <color name="tundora">#4A4A4A</color>
+    <color name="card_view_color">#DAD7D7</color>
+    <color name="selected_card_view_color">#4A4A4A</color>
     <color name="curious_blue">#3498DB</color>
     <color name="gray">#808080</color>
 
