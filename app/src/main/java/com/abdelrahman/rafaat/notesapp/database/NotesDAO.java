@@ -17,6 +17,9 @@ public interface NotesDAO {
 
     @Query("SELECT * FROM notes ORDER BY isPinned DESC")
     LiveData<List<Note>> getAllNotes();
+
+    @Query("SELECT * FROM notes WHERE folderID = :folderID ORDER BY isPinned DESC")
+    LiveData<List<Note>> getAllNotes(int folderID);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Note note);
     @Update
@@ -29,5 +32,6 @@ public interface NotesDAO {
     LiveData<List<Folder>> getAllFolders();
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addFolder(Folder folder);
-
+    @Update
+    void updateFolder(Folder folder);
 }

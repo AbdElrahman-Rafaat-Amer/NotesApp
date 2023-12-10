@@ -43,6 +43,9 @@ public class Repository implements RepositoryInterface {
     public LiveData<List<Note>> getAllNotes() {
         return localSource.getAllNotes();
     }
+    public LiveData<List<Note>> getAllNotes(int folderID) {
+        return localSource.getAllNotes(folderID);
+    }
 
     @Override
     public void updateNote(Note note) {
@@ -80,7 +83,10 @@ public class Repository implements RepositoryInterface {
             allFolder.setChecked(true);
             allFolder.setNumberOfNotes(getNotesCount());
             modifiedList.add(0, allFolder);
-            modifiedList.add(new Folder(context.getString(R.string.folder)));
+
+            Folder showAllFolders = new Folder(context.getString(R.string.folder));
+            showAllFolders.setId(-1);
+            modifiedList.add(showAllFolders);
             Log.i("AllFoldersFragment", "getAllFolders: Repo modifiedList--------> " + modifiedList);
             return modifiedList;
         });
@@ -91,7 +97,11 @@ public class Repository implements RepositoryInterface {
         localSource.addFolder(folder);
     }
 
-    private void updateNotesCount(int delta){
+    @Override
+    public void updateFolder(Folder folder){
+        localSource.updateFolder(folder);
+    }
+    private void updateNotesCount(int delta) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int notesCount = getNotesCount() + delta;
         notesCount = Math.max(0, notesCount);
@@ -99,7 +109,7 @@ public class Repository implements RepositoryInterface {
         editor.apply();
     }
 
-    private int getNotesCount(){
+    private int getNotesCount() {
         return sharedPreferences.getInt("NOTES_COUNT", 0);
     }
 }

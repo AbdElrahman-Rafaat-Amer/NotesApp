@@ -15,8 +15,8 @@ public class Note {
     private String password;
     private int textSize;
     private int textAlignment;
-
     private boolean isArchived;
+    private int folderID;
 
     public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
         this.title = title;
@@ -28,6 +28,7 @@ public class Note {
         this.textSize = textSize;
         this.textAlignment = textAlignment;
         this.isArchived = false;
+        this.folderID = -1;
     }
 
     public int getId() {
@@ -108,5 +109,13 @@ public class Note {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
+    }
+
+    public int getFolderID() {
+        return folderID;
+    }
+
+    public void setFolderID(int id) {
+        this.folderID = id;
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/folderCardView"
     android:layout_width="wrap_content"
    android:minWidth="45dp"
     android:layout_height="40dp"
@@ -21,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@id/note_imageView" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/showAllFolders"
+        android:id="@+id/showAllFoldersImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

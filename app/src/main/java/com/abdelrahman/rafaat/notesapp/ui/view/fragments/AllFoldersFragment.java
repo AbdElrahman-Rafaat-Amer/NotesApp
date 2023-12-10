@@ -38,10 +38,11 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
 
     private FragmentAllFoldersBinding binding;
     private FilesAdapter filesAdapter;
-    private String TAG = "AllFoldersFragment";
+    public static String TAG = "AllFoldersFragment";
     private NoteViewModel noteViewModel;
 
     private List<Folder> folders;
+    private Folder currentSelectedFolder;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -132,11 +133,34 @@ public class AllFoldersFragment extends Fragment implements OnFolderClickListene
         noteViewModel.folders.observe(getViewLifecycleOwner(), folders -> {
             filesAdapter.setList(folders);
             this.folders = folders;
+            getCurrentSelectedFolder();
         });
+    }
+
+    private void getCurrentSelectedFolder() {
+        for (Folder folder: folders){
+            if (folder.isChecked()){
+                currentSelectedFolder = folder;
+                break;
+            }
+        }
     }
 
     @Override
     public void onFolderClickListener(Folder folder) {
-        Log.d(TAG, "initUI: onFolderClickListener folder------>" + folder.toString());
+        Log.d(TAG, "initUI: onFolderClickListener folder------>" + folder);
+        if (folder.getId() != currentSelectedFolder.getId()){
+            //un check the current
+            currentSelectedFolder.setChecked(false);
+            noteViewModel.updateFolder(currentSelectedFolder);
+
+            //check the new folder
+            folder.setChecked(true);
+            noteViewModel.updateFolder(folder);
+        }
+        noteViewModel.getAllNotes(folder.getId());
+        Navigation.findNavController(binding.getRoot()).popBackStack();
+
+
     }
 }

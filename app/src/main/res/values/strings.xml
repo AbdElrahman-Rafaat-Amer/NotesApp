@@ -68,6 +68,7 @@
 
     <string name="all">All</string>
     <string name="folder">Folder</string>
+    <string name="uncategorised_folder">Uncategorized</string>
     <string name="dummy_title" translatable="false">What is Lorem Ipsum?</string>
     <string name="dummy_date" translatable="false">19/06/2015 17:35:50, Utc</string>
     <string name="dummy_body" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry.

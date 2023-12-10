@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowFileBinding;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowFolderBinding;
 import com.abdelrahman.rafaat.notesapp.model.Folder;
@@ -91,12 +92,18 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         void bind(Folder folder, int position) {
             boolean isLastItem = position == folders.size() - 1;
             if (isLastItem) {
-                binding.showAllFolders.setVisibility(View.VISIBLE);
-                binding.noteTitleTextView.setVisibility(View.GONE);
+                binding.showAllFoldersImage.setVisibility(View.VISIBLE);
+                binding.noteTitleTextView.setVisibility(View.INVISIBLE);
             } else {
-                binding.showAllFolders.setVisibility(View.GONE);
+                binding.showAllFoldersImage.setVisibility(View.INVISIBLE);
                 binding.noteTitleTextView.setVisibility(View.VISIBLE);
                 binding.noteTitleTextView.setText(folder.getName());
+            }
+
+            if (folder.isChecked()){
+                binding.folderCardView.setCardBackgroundColor(android.R.color.colorSecondary);
+            }else{
+
             }
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
         }
@@ -113,8 +120,14 @@ public class FilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         void bind(Folder folder) {
             Log.i("AllFoldersFragment", "bind: folder--------> " + folder.toString());
             binding.getRoot().setOnClickListener(view -> onClickListener.onFolderClickListener(folder));
-            binding.folderNotesNumberTextView.setText(""+folder.getNumberOfNotes());
+            binding.folderNotesNumberTextView.setText("" + folder.getNumberOfNotes());
             binding.folderTitleTextView.setText(folder.getName());
+            if (folder.isChecked()) {
+                binding.checkedImageView.setVisibility(View.VISIBLE);
+            } else {
+                binding.checkedImageView.setVisibility(View.INVISIBLE);
+            }
+            //Handel case when it is pin
         }
     }
 

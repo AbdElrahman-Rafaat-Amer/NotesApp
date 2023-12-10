@@ -8,7 +8,6 @@ public class Folder {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-
     private String password;
     private boolean isPinned;
     private boolean isChecked;

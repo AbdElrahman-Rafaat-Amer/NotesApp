@@ -48,6 +48,10 @@ public class NoteViewModel extends AndroidViewModel {
         notes = repositoryInterface.getAllNotes();
     }
 
+    public void getAllNotes(int folderID) {
+        notes = repositoryInterface.getAllNotes(folderID);
+    }
+
     public void saveNote(Note note) {
         repositoryInterface.insertNote(note);
     }
@@ -82,5 +86,9 @@ public class NoteViewModel extends AndroidViewModel {
         Folder newFolder = new Folder(folderName);
         Log.i("AllFoldersFragment", "addFolder: folderName-------->" + folderName);
         addFolder(newFolder);
+    }
+
+    public void updateFolder(Folder folder) {
+        repositoryInterface.updateFolder(folder);
     }
 }

@@ -338,10 +338,11 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener, 
 
     @Override
     public void onFolderClickListener(Folder folder) {
-        if (folder.getName().equals(getString(R.string.folder))){
+        if (folder.getId() == -1){
+            Log.d(AllFoldersFragment.TAG, "Will navigate");
             Navigation.findNavController(requireView()).navigate(R.id.all_folders_fragment);
         }else{
-            Log.d("onFileClickListener", "Will show notes to this folder");
+            Log.d(AllFoldersFragment.TAG, "Will show notes to this folder");
         }
     }
 }
