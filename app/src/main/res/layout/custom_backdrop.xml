@@ -26,4 +26,13 @@
         tools:background="@color/red"
         tools:layout_marginVertical="190dp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/settingButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_setting"
+        android:drawableTint="@color/mainColor"
+        android:text="@string/setting"
+        tools:background="@color/red"
+        tools:layout_marginVertical="290dp" />
+
 </merge>

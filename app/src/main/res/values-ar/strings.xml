@@ -84,4 +84,7 @@
     <string name="biometric_authentication_failed">فشلت المصادقة، يرجى المحاولة مرة أخرى</string>
     <string name="biometric_title"> المصادقة</string>
     <string name="biometric_subtitle">استخدم بصمة إصبعك أو كلمة المرور للمصادقة</string>
+
+    <string name="enable_biometric">تفعيل المصادقة</string>
+    <string name="setting">الإعدادات</string>
 </resources>

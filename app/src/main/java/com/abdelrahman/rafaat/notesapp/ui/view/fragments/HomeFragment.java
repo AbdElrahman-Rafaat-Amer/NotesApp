@@ -120,6 +120,11 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             adapter.setList(archivedNotes);
             closeMenu();
         });
+
+        binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
+            Navigation.findNavController(binding.rootView).navigate(R.id.action_home_to_setting);
+            closeMenu();
+        });
     }
 
     private void closeMenu() {
