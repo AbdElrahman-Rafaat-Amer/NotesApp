@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,10 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.model.Repository;
+import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 import com.abdelrahman.rafaat.notesapp.utils.BiometricUtils;
 import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
@@ -120,7 +124,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void checkBiometricAuthenticationAvailability() {
 
         int result = BiometricUtils.checkBiometricAuthenticationAvailability(this);
-        if (result == BiometricManager.BIOMETRIC_SUCCESS) {
+        boolean isBiometricEnabled = Repository.getInstance(
+                LocalSource.getInstance(getApplicationContext()), getApplicationContext()).isBiometricEnabled();
+        if (result == BiometricManager.BIOMETRIC_SUCCESS && isBiometricEnabled) {
             showBiometricAuthentication();
         } else {
             initUI();

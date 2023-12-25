@@ -14,6 +14,11 @@
             android:id="@+id/action_home_to_addNote"
             app:destination="@id/add_note_fragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_home_to_setting"
+            app:destination="@id/setting_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -38,4 +43,9 @@
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.PasswordFragment"
         android:label="edit note fragment"
         tools:layout="@layout/fragment_password" />
+
+    <fragment
+        android:id="@+id/setting_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.SettingsFragment"
+        android:label="Setting Fragment" />
 </navigation>
