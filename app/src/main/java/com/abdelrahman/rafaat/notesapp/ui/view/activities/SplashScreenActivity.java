@@ -266,7 +266,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            initUI();
+            if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                System.exit(0);
+            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                initUI();
+            }
         });
 
     }
