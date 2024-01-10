@@ -17,6 +17,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/archived_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.ArchivedNotesFragment"
+        android:label="archived fragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
         android:id="@+id/add_note_fragment"
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.AddNoteFragment"
         android:label="add note fragment"

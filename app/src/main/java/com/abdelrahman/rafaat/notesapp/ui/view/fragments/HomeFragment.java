@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.SearchView;
@@ -61,7 +60,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-    private NavigationIconClickListener navigationClickListener;
+//    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -91,41 +90,41 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void setUpToolbar() {
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
-            activity.setSupportActionBar(binding.toolBar);
-        }
+//        AppCompatActivity activity = (AppCompatActivity) getActivity();
+//        if (activity != null) {
+//            activity.setSupportActionBar(binding.toolBar);
+//        }
+//
+//        navigationClickListener = new NavigationIconClickListener(
+//                getContext(), binding.productGrid,
+//                new AccelerateDecelerateInterpolator(),
+//                ContextCompat.getDrawable(requireContext(), R.drawable.ic_menu),
+//                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_menu));
+//        binding.toolBar.setNavigationOnClickListener(navigationClickListener); // Menu close icon
 
-        navigationClickListener = new NavigationIconClickListener(
-                getContext(), binding.productGrid,
-                new AccelerateDecelerateInterpolator(),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_menu),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_menu));
-        binding.toolBar.setNavigationOnClickListener(navigationClickListener); // Menu close icon
 
-
-        binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
-            List<Note> nonArchivedNotes = noteList.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
-            adapter.setList(nonArchivedNotes);
-            closeMenu();
-        });
-
-        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
-            showPinnedNotes();
-            closeMenu();
-        });
-
-        binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
-            List<Note> archivedNotes = noteList.stream().filter(Note::isArchived).collect(Collectors.toList());
-            adapter.setList(archivedNotes);
-            closeMenu();
-        });
+//        binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
+//            List<Note> nonArchivedNotes = noteList.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
+//            adapter.setList(nonArchivedNotes);
+//            closeMenu();
+//        });
+//
+//        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
+//            showPinnedNotes();
+//            closeMenu();
+//        });
+//
+//        binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
+//            List<Note> archivedNotes = noteList.stream().filter(Note::isArchived).collect(Collectors.toList());
+//            adapter.setList(archivedNotes);
+//            closeMenu();
+//        });
     }
 
-    private void closeMenu() {
-        navigationClickListener.startAnimation();
-        binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
-    }
+//    private void closeMenu() {
+//        navigationClickListener.startAnimation();
+//        binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
+//    }
 
     private void search() {
         binding.noteSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
