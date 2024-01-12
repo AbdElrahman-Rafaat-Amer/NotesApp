@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.ui.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,6 +14,11 @@ import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
@@ -38,6 +44,34 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void getAllNotes() {
         notes = repositoryInterface.getAllNotes();
+    }
+    public void getArchivedNotes() {
+        Observable<List<String>> observable = Observable.create(emitter -> {
+            // Simulate data generation or retrieval
+            List<Note> notes = repositoryInterface.getArchivedNotes();
+            Log.i("ARCHIVED_NOTES", "getArchivedNotes: " + notes);
+
+            // Emit the items to the subscribers
+//            emitter.onNext(notes);
+
+            // Complete the observable (optional)
+//            emitter.onComplete();
+        });
+
+        Disposable disposable = observable
+                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribe(
+                        items -> {
+                            // Handle emitted items on the main thread
+                            // items contains the list of items
+                            Log.d("ARCHIVED_NOTES", "Received items: " + items);
+                        },
+                        throwable -> {
+                            // Handle errors
+                            Log.e("ARCHIVED_NOTES", "Error: " + throwable.getMessage());
+                        }
+                );
     }
 
     public void saveNote(Note note) {

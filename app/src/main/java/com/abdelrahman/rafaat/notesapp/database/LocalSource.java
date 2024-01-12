@@ -35,6 +35,10 @@ public class LocalSource implements LocalSourceInterface {
     public LiveData<List<Note>> getAllNotes() {
         return notes;
     }
+    @Override
+    public List<Note> getArchivedNotes() {
+        return dao.getArchivedNotes();
+    }
 
     @Override
     public void updateNote(Note note) {

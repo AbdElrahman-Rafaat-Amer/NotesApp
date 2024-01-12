@@ -1,5 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityMainBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.fragments.HomeFragment;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -26,15 +28,18 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
     private ActivityMainBinding binding;
     private NavigationIconClickListener navigationClickListener;
     private NavController navController;
+    private NoteViewModel noteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,60 +47,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         initAds();
         setUpToolbar();
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
-        // Add a destination changed listener
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(NavController controller, androidx.navigation.NavDestination destination, Bundle arguments) {
-                // Check which fragment is the current destination
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: currentFragment " + currentFragment);
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: destination " + destination);
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: controller " + controller);
-
-                int destinationId = destination.getId();
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: destinationId " + destinationId);
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: getDisplayName " + destination.getDisplayName());
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: destination.toString " + destination.toString());
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: getNavigatorName " + destination.getNavigatorName());
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: getClass " + destination.getClass());
-                Log.i("FRAGMENT_TAG", "onDestinationChanged: getLabel " + destination.getLabel());
-//                boolean isHome = ((FragmentNavigator.Destination) destination)._className.equals(HomeFragment.class.getName());
-                if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment) {
-                    Log.i("FRAGMENT_TAG", "onDestinationChanged: HomeFragment");
-                    binding.toolBar.setVisibility(View.VISIBLE);
-                    binding.drawerLinearLayout.setVisibility(View.VISIBLE);
-                } else {
-                    Log.i("FRAGMENT_TAG", "onDestinationChanged: AnotherFragment");
-                    binding.toolBar.setVisibility(View.GONE);
-                    binding.drawerLinearLayout.setVisibility(View.GONE);
-                }
-//                if (isHome) {
-//                    Log.i("FRAGMENT_TAG", "onDestinationChanged: HomeFragment");
-//                    binding.toolBar.setVisibility(View.VISIBLE);
-//                    binding.drawerLinearLayout.setVisibility(View.VISIBLE);
-//                } else {
-//                    Log.i("FRAGMENT_TAG", "onDestinationChanged: AnotherFragment");
-//                    binding.toolBar.setVisibility(View.GONE);
-//                    binding.drawerLinearLayout.setVisibility(View.GONE);
-//                }
-
-//                if (currentFragment instanceof HomeFragment) {
-//                    Log.i("FRAGMENT_TAG", "onDestinationChanged: HomeFragment");
-//                    binding.toolBar.setVisibility(View.VISIBLE);
-//                    binding.drawerLinearLayout.setVisibility(View.VISIBLE);
-//                } else {
-//                    Log.i("FRAGMENT_TAG", "onDestinationChanged: AnotherFragment");
-//                    binding.toolBar.setVisibility(View.GONE);
-//                    binding.drawerLinearLayout.setVisibility(View.GONE);
-//                }
-            }
-        });
+        navController.addOnDestinationChangedListener(this);
     }
 
     private void initAds() {
@@ -152,5 +111,19 @@ public class MainActivity extends AppCompatActivity {
     private void closeMenu() {
         navigationClickListener.startAnimation();
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
+    }
+
+    @Override
+    public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+        int destinationId = navDestination.getId();
+        if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment) {
+            Log.i("FRAGMENT_TAG", "onDestinationChanged: HomeFragment");
+            binding.toolBar.setVisibility(View.VISIBLE);
+            binding.drawerLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            Log.i("FRAGMENT_TAG", "onDestinationChanged: AnotherFragment");
+            binding.toolBar.setVisibility(View.GONE);
+            binding.drawerLinearLayout.setVisibility(View.GONE);
+        }
     }
 }
