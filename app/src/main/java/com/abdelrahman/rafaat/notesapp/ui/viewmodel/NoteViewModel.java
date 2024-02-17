@@ -23,6 +23,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
     public LiveData<List<Note>> notes;
+    List<Note> lisarchivedNotes;
+    public MutableLiveData<List<Note>> _archivedNotes = new MutableLiveData<>();
+    public LiveData<List<Note>> archivedNotes = _archivedNotes;
     private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
     public LiveData<Boolean> isList = _isList;
     private Note currentNote;
@@ -46,16 +49,15 @@ public class NoteViewModel extends AndroidViewModel {
         notes = repositoryInterface.getAllNotes();
     }
     public void getArchivedNotes() {
-        Observable<List<String>> observable = Observable.create(emitter -> {
+        Observable<LiveData<List<Note>>> observable = Observable.create(emitter -> {
             // Simulate data generation or retrieval
-            List<Note> notes = repositoryInterface.getArchivedNotes();
-            Log.i("ARCHIVED_NOTES", "getArchivedNotes: " + notes);
-
+            lisarchivedNotes = repositoryInterface.getArchivedNotes();
+            Log.i("ARCHIVED_NOTES", "getArchivedNotes: " + archivedNotes);
             // Emit the items to the subscribers
-//            emitter.onNext(notes);
+            emitter.onNext(notes);
 
             // Complete the observable (optional)
-//            emitter.onComplete();
+            emitter.onComplete();
         });
 
         Disposable disposable = observable
@@ -65,11 +67,12 @@ public class NoteViewModel extends AndroidViewModel {
                         items -> {
                             // Handle emitted items on the main thread
                             // items contains the list of items
+                            _archivedNotes.setValue(lisarchivedNotes);
                             Log.d("ARCHIVED_NOTES", "Received items: " + items);
                         },
                         throwable -> {
                             // Handle errors
-                            Log.e("ARCHIVED_NOTES", "Error: " + throwable.getMessage());
+                            Log.e("ARCHIVED_NOTES", "Received items Error: " + throwable.getMessage());
                         }
                 );
     }
