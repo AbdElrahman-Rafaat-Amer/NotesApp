@@ -18,4 +18,5 @@ public interface RepositoryInterface {
     boolean getLayoutMangerStyle();
 
     void setLayoutMangerStyle(boolean isList);
+    boolean isBiometricEnabled();
 }
