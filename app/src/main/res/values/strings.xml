@@ -100,5 +100,7 @@
     <string name="t" translatable="false">T</string>
     <string name="biometric_title">Biometric Authentication</string>
     <string name="biometric_subtitle">Use your fingerprint or Password to authenticate</string>
+    <string name="enable_biometric">Enable Biometric</string>
+    <string name="setting">Settings</string>
 
 </resources>

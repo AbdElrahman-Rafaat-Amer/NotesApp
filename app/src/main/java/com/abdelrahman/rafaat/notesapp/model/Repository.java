@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.lifecycle.LiveData;
+import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.database.LocalSourceInterface;
 
@@ -14,14 +15,16 @@ public class Repository implements RepositoryInterface {
     private final LocalSourceInterface localSource;
     private final SharedPreferences sharedPrefs;
     private final SharedPreferences.Editor editor;
+    private final SharedPreferences dfaultSharedPreferences;
 
     private Repository(Context context, LocalSourceInterface localSource) {
         this.localSource = localSource;
         this.sharedPrefs = context.getSharedPreferences("LAYOUT_MANGER", Context.MODE_PRIVATE);
+        this.dfaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.editor = sharedPrefs.edit();
     }
 
-    public static Repository getInstance(LocalSourceInterface localSource, Context context) {
+    public static RepositoryInterface getInstance(LocalSourceInterface localSource, Context context) {
         if (repository == null) {
             repository = new Repository(context, localSource);
         }
@@ -38,7 +41,10 @@ public class Repository implements RepositoryInterface {
     public LiveData<List<Note>> getAllNotes() {
         return localSource.getAllNotes();
     }
-
+    @Override
+    public List<Note> getArchivedNotes() {
+        return localSource.getArchivedNotes();
+    }
     @Override
     public void updateNote(Note note) {
         localSource.updateNote(note);
@@ -58,6 +64,10 @@ public class Repository implements RepositoryInterface {
     public void setLayoutMangerStyle(boolean isList) {
         editor.putBoolean("IS_LIST", isList);
         editor.apply();
-        sharedPrefs.getBoolean("IS_LIST", false);
+    }
+
+    @Override
+    public boolean isBiometricEnabled() {
+        return dfaultSharedPreferences.getBoolean("IS_BIOMETRIC_ENABLED", true);
     }
 }
