@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +18,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.SearchView;
@@ -61,7 +61,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-    private NavigationIconClickListener navigationClickListener;
+//    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -78,7 +78,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 Navigation.findNavController(v).navigate(R.id.action_home_to_addNote)
         );
 
-        setUpToolbar();
         search();
         initRecyclerView();
         initViewModel();
@@ -87,49 +86,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
-    }
-
-    private void setUpToolbar() {
-
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
-            activity.setSupportActionBar(binding.toolBar);
-        }
-
-        navigationClickListener = new NavigationIconClickListener(
-                getContext(), binding.productGrid,
-                new AccelerateDecelerateInterpolator(),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_menu),
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_close_menu));
-        binding.toolBar.setNavigationOnClickListener(navigationClickListener); // Menu close icon
-
-
-        binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
-            List<Note> nonArchivedNotes = noteList.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
-            adapter.setList(nonArchivedNotes);
-            closeMenu();
-        });
-
-        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
-            showPinnedNotes();
-            closeMenu();
-        });
-
-        binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
-            List<Note> archivedNotes = noteList.stream().filter(Note::isArchived).collect(Collectors.toList());
-            adapter.setList(archivedNotes);
-            closeMenu();
-        });
-
-        binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
-            Navigation.findNavController(binding.rootView).navigate(R.id.action_home_to_setting);
-            closeMenu();
-        });
-    }
-
-    private void closeMenu() {
-        navigationClickListener.startAnimation();
-        binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
     }
 
     private void search() {
@@ -195,10 +151,11 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private void observeViewModel() {
         noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
             List<Note> nonArchivedNotes = notes;
+            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + + notes.size());
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
+//                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 

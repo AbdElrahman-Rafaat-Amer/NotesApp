@@ -41,7 +41,10 @@ public class Repository implements RepositoryInterface {
     public LiveData<List<Note>> getAllNotes() {
         return localSource.getAllNotes();
     }
-
+    @Override
+    public List<Note> getArchivedNotes() {
+        return localSource.getArchivedNotes();
+    }
     @Override
     public void updateNote(Note note) {
         localSource.updateNote(note);

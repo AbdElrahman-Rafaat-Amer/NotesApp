@@ -17,8 +17,11 @@ public interface NotesDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNote(Note note);
 
-    @Query("SELECT * FROM notes ORDER BY isPinned DESC")
+    @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY isPinned DESC")
     LiveData<List<Note>> getAllNotes();
+
+    @Query("SELECT * FROM notes WHERE isArchived = 1")
+    List<Note> getArchivedNotes();
 
     @Update
     void updateNote(Note note);
