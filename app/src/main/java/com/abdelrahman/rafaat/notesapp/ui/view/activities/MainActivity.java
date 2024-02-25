@@ -3,6 +3,7 @@ package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -104,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 navController.popBackStack(R.id.home_fragment, true);
                 navController.navigate(R.id.archived_fragment);
             }
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
+            startActivity(new Intent(this, SettingsActivity.class));
             closeMenu();
         });
     }

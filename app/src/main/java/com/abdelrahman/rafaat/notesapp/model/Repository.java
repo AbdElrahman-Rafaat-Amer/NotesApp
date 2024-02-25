@@ -56,17 +56,6 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public boolean getLayoutMangerStyle() {
-        return sharedPrefs.getBoolean("IS_LIST", false);
-    }
-
-    @Override
-    public void setLayoutMangerStyle(boolean isList) {
-        editor.putBoolean("IS_LIST", isList);
-        editor.apply();
-    }
-
-    @Override
     public boolean isBiometricEnabled() {
         return dfaultSharedPreferences.getBoolean("IS_BIOMETRIC_ENABLED", true);
     }

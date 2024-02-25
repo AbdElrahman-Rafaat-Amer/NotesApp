@@ -1,0 +1,18 @@
+<resources>
+
+    <string-array name="sort_entries">
+        <item>Pinned Notes</item>
+        <item>Creation Date</item>
+        <item>Modification Date</item>
+        <item>Title</item>
+        <item>Locked Notes</item>
+    </string-array>
+
+    <string-array name="sort_values">
+        <item>pinned_notes</item>
+        <item>creation_date</item>
+        <item>modification_date</item>
+        <item>title</item>
+        <item>locked_notes</item>
+    </string-array>
+</resources>

@@ -61,7 +61,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-//    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,7 +81,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         initRecyclerView();
         initViewModel();
         observeViewModel();
-        initMenu();
+//        initMenu();
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
@@ -144,7 +143,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void initViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getLayoutMangerStyle();
         noteViewModel.getAllNotes();
     }
 
@@ -155,7 +153,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-//                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 
@@ -164,35 +161,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             noteList = notes;
         });
 
-        noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
-            isList = aBoolean;
-            setupLayoutManger();
-        });
-    }
-
-    private void initMenu() {
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.setting_menu, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.list_note) {
-                    if (noteList.isEmpty()) {
-                        showSnackBar(binding.rootView, getString(R.string.no_notes));
-                    } else {
-                        isList = !isList;
-                        setupLayoutManger();
-                        adapter.notifyDataSetChanged();
-                        noteViewModel.setLayoutMangerStyle(isList);
-                    }
-                }
-                return false;
-            }
-        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     private void showPinnedNotes() {

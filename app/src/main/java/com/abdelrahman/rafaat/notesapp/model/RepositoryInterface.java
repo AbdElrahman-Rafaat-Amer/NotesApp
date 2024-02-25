@@ -15,8 +15,5 @@ public interface RepositoryInterface {
 
     void deleteNote(int id);
 
-    boolean getLayoutMangerStyle();
-
-    void setLayoutMangerStyle(boolean isList);
     boolean isBiometricEnabled();
 }

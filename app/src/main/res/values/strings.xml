@@ -103,4 +103,16 @@
     <string name="enable_biometric">Enable Biometric</string>
     <string name="setting">Settings</string>
 
+    <string name="view_notes_as">View Notes As</string>
+    <string name="note_view_mode_summary_on">View notes in a list for easier reading and more detailed information.</string>
+    <string name="note_view_mode_summary_off">Display notes in a grid layout for better visual organization and quick access.</string>
+    <string name="title_activity_settings2">SettingsActivity2</string>
+
+    <string name="sort_title">Default sort action</string>
+
+    <string name="sort">Sort</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="sort_order">Sort order</string>
+
 </resources>

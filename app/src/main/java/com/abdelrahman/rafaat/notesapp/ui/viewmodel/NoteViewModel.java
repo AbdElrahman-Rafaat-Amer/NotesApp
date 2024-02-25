@@ -26,23 +26,13 @@ public class NoteViewModel extends AndroidViewModel {
     List<Note> lisarchivedNotes;
     public MutableLiveData<List<Note>> _archivedNotes = new MutableLiveData<>();
     public LiveData<List<Note>> archivedNotes = _archivedNotes;
-    private final MutableLiveData<Boolean> _isList = new MutableLiveData<>();
-    public LiveData<Boolean> isList = _isList;
+
     private Note currentNote;
 
     public NoteViewModel(@NonNull Application application) {
         super(application);
         this.repositoryInterface = Repository.getInstance(
                 LocalSource.getInstance(application.getApplicationContext()), application.getApplicationContext());
-    }
-
-    public void getLayoutMangerStyle() {
-        boolean isList = repositoryInterface.getLayoutMangerStyle();
-        _isList.postValue(isList);
-    }
-
-    public void setLayoutMangerStyle(boolean isList) {
-        repositoryInterface.setLayoutMangerStyle(isList);
     }
 
     public void getAllNotes() {
