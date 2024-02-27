@@ -57,7 +57,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private NoteViewModel noteViewModel;
     private List<Note> noteList = new ArrayList<>();
     private Note selectedNote;
-    private boolean isList = false;
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
@@ -81,7 +80,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         initRecyclerView();
         initViewModel();
         observeViewModel();
-//        initMenu();
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
@@ -126,7 +124,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void initRecyclerView() {
         adapter = new NotesAdapter(this);
-        setupLayoutManger();
+        setupLayoutManger(true);
         binding.notesRecyclerview.setAdapter(adapter);
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
@@ -134,11 +132,12 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         swipeRecyclerView();
     }
 
-    private void setupLayoutManger() {
-        if (!isList)
-            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
-        else
+    private void setupLayoutManger(boolean isList) {
+        if (isList) {
             binding.notesRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
+        } else {
+            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
+        }
     }
 
     private void initViewModel() {
@@ -149,7 +148,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private void observeViewModel() {
         noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
             List<Note> nonArchivedNotes = notes;
-            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + + notes.size());
+            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + +notes.size());
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
@@ -161,6 +160,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             noteList = notes;
         });
 
+        noteViewModel.isListView.observe(getViewLifecycleOwner(), this::setupLayoutManger);
     }
 
     private void showPinnedNotes() {

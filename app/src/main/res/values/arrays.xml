@@ -9,10 +9,10 @@
     </string-array>
 
     <string-array name="sort_values">
-        <item>pinned_notes</item>
-        <item>creation_date</item>
-        <item>modification_date</item>
-        <item>title</item>
-        <item>locked_notes</item>
+        <item>PINNED_NOTES</item>
+        <item>CREATION_DATE</item>
+        <item>MODIFICATION_DATE</item>
+        <item>TITLE</item>
+        <item>LOCKED_NOTES</item>
     </string-array>
 </resources>

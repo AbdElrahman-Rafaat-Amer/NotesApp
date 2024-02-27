@@ -120,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        noteViewModel.refreshSettings();
+    }
+
+    @Override
     public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
         int destinationId = navDestination.getId();
         if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment) {
