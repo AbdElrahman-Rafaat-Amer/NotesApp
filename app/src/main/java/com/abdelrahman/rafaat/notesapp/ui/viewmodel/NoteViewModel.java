@@ -25,7 +25,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NoteViewModel extends AndroidViewModel {
     private final RepositoryInterface repositoryInterface;
-    public LiveData<List<Note>> notes;
+    List<Note> _notes;
+    private final MutableLiveData<List<Note>> notes = new MutableLiveData<>();
+
     List<Note> listArchivedNotes;
     public MutableLiveData<List<Note>> _archivedNotes = new MutableLiveData<>();
     public LiveData<List<Note>> archivedNotes = _archivedNotes;
@@ -35,6 +37,10 @@ public class NoteViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> _isListView = new MutableLiveData<>();
     public LiveData<Boolean> isListView = _isListView;
 
+
+    private Disposable notesDisposable;
+    private Disposable archivedNotesDisposable;
+
     public NoteViewModel(@NonNull Application application) {
         super(application);
         this.repositoryInterface = Repository.getInstance(
@@ -42,23 +48,43 @@ public class NoteViewModel extends AndroidViewModel {
         refreshSettings();
     }
 
-    public void getAllNotes() {
-        notes = repositoryInterface.getAllNotes(_sortAction);
+    public LiveData<List<Note>> getNotes() {
+        return notes;
     }
+
+    public void getAllNotes() {
+        notesDisposable = Observable.create(emitter -> {
+                    // Simulate data generation or retrieval
+                    _notes = repositoryInterface.getAllNotes(_sortAction);
+                    // Emit the items to the subscribers
+                    emitter.onNext(_notes);
+
+                    // Complete the observable (optional)
+                    emitter.onComplete();
+                }).subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribe(
+                        items -> {
+                            // Handle emitted items on the main thread
+                            // items contains the list of items
+                            notes.setValue(_notes);
+                        },
+                        throwable -> {
+                            Log.e("ARCHIVED_NOTES", "Received items Error: " + throwable.getMessage());
+                        }
+                );
+    }
+
     public void getArchivedNotes() {
-        Observable<LiveData<List<Note>>> observable = Observable.create(emitter -> {
-            // Simulate data generation or retrieval
-            listArchivedNotes = repositoryInterface.getArchivedNotes();
-            Log.i("ARCHIVED_NOTES", "getArchivedNotes: " + archivedNotes);
-            // Emit the items to the subscribers
-            emitter.onNext(notes);
+        archivedNotesDisposable = Observable.create(emitter -> {
+                    // Simulate data generation or retrieval
+                    listArchivedNotes = repositoryInterface.getArchivedNotes();
+                    // Emit the items to the subscribers
+                    emitter.onNext(listArchivedNotes);
 
-            // Complete the observable (optional)
-            emitter.onComplete();
-        });
-
-        Disposable disposable = observable
-                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                    // Complete the observable (optional)
+                    emitter.onComplete();
+                }).subscribeOn(Schedulers.io())  // Specify the background thread for data generation
                 .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
                 .subscribe(
                         items -> {
@@ -98,16 +124,24 @@ public class NoteViewModel extends AndroidViewModel {
         Pair<SortAction, Boolean> settings = repositoryInterface.refreshSettings();
         SortAction sortAction = settings.first;
         boolean isListView = settings.second;
-        if (!sortAction.equals(_sortAction)){
+        if (!sortAction.equals(_sortAction)) {
             _sortAction = sortAction;
-            Log.d("SETTING_TEST", "sort way changed");
             getAllNotes();
         }
 
-        if (!Objects.equals(_isListView.getValue(), isListView)){
+        if (!Objects.equals(_isListView.getValue(), isListView)) {
             _isListView.setValue(isListView);
-            //Will notify the fragment
-            Log.d("SETTING_TEST", "List view changed");
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (notesDisposable != null) {
+            notesDisposable.dispose();
+        }
+        if (archivedNotesDisposable != null) {
+            archivedNotesDisposable.dispose();
         }
     }
 }

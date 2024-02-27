@@ -40,7 +40,7 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public LiveData<List<Note>> getAllNotes(SortAction sortAction) {
+    public List<Note> getAllNotes(SortAction sortAction) {
         return localSource.getAllNotes(sortAction);
     }
 

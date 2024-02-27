@@ -23,42 +23,42 @@ public interface NotesDAO {
 
     //Pinned Notes
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY isPinned DESC")
-    LiveData<List<Note>> getAllPinnedNotesDescending();
+    List<Note> getAllPinnedNotesDescending();
 
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY isPinned ASC")
-    LiveData<List<Note>> getAllPinnedNotesAscending();
+    List<Note> getAllPinnedNotesAscending();
 
 
     //Locked Notes
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY isLocked DESC")
-    LiveData<List<Note>> getAllLockedNotesDescending();
+    List<Note> getAllLockedNotesDescending();
 
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY isLocked ASC")
-    LiveData<List<Note>> getAllLockedNotesAscending();
+    List<Note> getAllLockedNotesAscending();
 
 
     //TITLE
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY title DESC")
-    LiveData<List<Note>> getAllDescendingByTitle();
+    List<Note> getAllDescendingByTitle();
 
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY title ASC")
-    LiveData<List<Note>> getAllNotesAscendingByTitle();
+    List<Note> getAllNotesAscendingByTitle();
 
 
     //CREATION_DATE
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY date DESC")
-    LiveData<List<Note>> getAllNotesDescendingByCreationData();
+    List<Note> getAllNotesDescendingByCreationData();
 
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY date ASC")
-    LiveData<List<Note>> getAllNotesAscendingByCreationData();
+    List<Note> getAllNotesAscendingByCreationData();
 
 
     //MODIFICATION_DATE
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY modificationDate DESC")
-    LiveData<List<Note>> getAllDescendingByModificationDate();
+    List<Note> getAllDescendingByModificationDate();
 
     @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY modificationDate ASC")
-    LiveData<List<Note>> getAllNotesAscendingByModificationDate();
+    List<Note> getAllNotesAscendingByModificationDate();
 
 
     @Query("SELECT * FROM notes WHERE isArchived = 1")

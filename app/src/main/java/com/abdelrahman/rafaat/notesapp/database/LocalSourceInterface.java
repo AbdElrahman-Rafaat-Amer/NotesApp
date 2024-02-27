@@ -11,7 +11,7 @@ public interface LocalSourceInterface {
 
     void insertNote(Note note);
     LiveData<List<Note>> getAllNotes();
-    LiveData<List<Note>> getAllNotes(SortAction sortAction);
+    List<Note> getAllNotes(SortAction sortAction);
     List<Note> getArchivedNotes();
     void updateNote(Note note);
     void deleteNote(int id);

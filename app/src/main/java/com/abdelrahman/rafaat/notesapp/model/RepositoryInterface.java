@@ -10,7 +10,7 @@ public interface RepositoryInterface {
     void insertNote(Note note);
 
     LiveData<List<Note>> getAllNotes();
-    LiveData<List<Note>> getAllNotes(SortAction sortAction);
+    List<Note> getAllNotes(SortAction sortAction);
 
     List<Note> getArchivedNotes();
 

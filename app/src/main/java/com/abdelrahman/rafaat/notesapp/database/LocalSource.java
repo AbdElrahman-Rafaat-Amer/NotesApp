@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
 import com.abdelrahman.rafaat.notesapp.model.SortOrder;
-import com.abdelrahman.rafaat.notesapp.model.SortType;
 
 import java.util.List;
 
@@ -39,8 +38,8 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
-    public LiveData<List<Note>> getAllNotes(SortAction sortAction) {
-        LiveData<List<Note>> notes = null;
+    public List<Note> getAllNotes(SortAction sortAction) {
+        List<Note> notes = null;
         SortOrder sortOrder = sortAction.getSortOrder();
 
         switch (sortAction.getSortType()) {
