@@ -116,5 +116,14 @@
     <string name="sort_order">Sort order</string>
     <string name="theme">Theme</string>
     <string name="select_app_theme">Select app theme</string>
+    <string name="contact_us">Contact us</string>
+    <string name="our_apps">Our Apps</string>
+    <string name="get_in_touch">Get in Touch</string>
+    <string name="get_in_touch_desc">if u have any inquires get in touch with us.\nWe\'ll be happy to help you.</string>
+    <string name="telegram_user_name">abdelrahman_raafat</string>
+    <string name="gmail_name">Abdelrahman Raafat</string>
+    <string name="email">abdelrahman.raafaat@gmail.com</string>
+    <string name="email_title" translatable="false">Colorized notes</string>
+    <string name="social_media">Social Media</string>
 
 </resources>

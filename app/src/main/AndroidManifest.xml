@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.view.activities.ContactUsActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.view.activities.SettingsActivity"
             android:exported="false" />
