@@ -131,8 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     }
 
     private void openGooglePlay(){
-        String url = "https://play.google.com/store/apps/developer?id=Abdelrahman+Rafaat";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_link)));
         startActivity(intent);
     }
 

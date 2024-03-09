@@ -26,7 +26,7 @@ public class ContactUsActivity extends AppCompatActivity {
         binding.telegramTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openTelegram();
+                openLink(getString(R.string.telegram_link));
             }
         });
 
@@ -40,34 +40,38 @@ public class ContactUsActivity extends AppCompatActivity {
         binding.facebookImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openLink("https://www.facebook.com/abdo.raafat.amer/");
+                openLink(getString(R.string.facebook_link));
             }
         });
 
         binding.instagramImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openLink("https://www.instagram.com/abdo.raafat.amer/");
+                openLink(getString(R.string.instagram_link));
+            }
+        });
+
+        binding.twitterImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLink(getString(R.string.twitter_link));
             }
         });
 
         binding.linkedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openLink("https://www.linkedin.com/in/abdelrahman-raafat-anwer-amer/");
+                openLink(getString(R.string.linkedin_link));
             }
         });
 
-    }
+        binding.mediumImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLink(getString(R.string.medium_link));
+            }
+        });
 
-    private void openTelegram() {
-        Intent telegramIntent = new Intent(Intent.ACTION_VIEW);
-        telegramIntent.setData(Uri.parse("tg://user?username=" + getString(R.string.telegram_user_name)));
-        try {
-            startActivity(telegramIntent);
-        } catch (ActivityNotFoundException exception) {
-            showSnackBar(binding.getRoot(), exception.getLocalizedMessage());
-        }
     }
 
     private void showSnackBar(View view, String message) {
@@ -80,18 +84,17 @@ public class ContactUsActivity extends AppCompatActivity {
     private void openGmail() {
         String recipientEmail = getString(R.string.email);
         String emailSubject = getString(R.string.email_title);
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        Uri uri = Uri.parse("mailto:" + recipientEmail);
-        intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
-        intent.setData(uri);
+        emailIntent.setType("message/rfc822");
 
-        // Check if there's an app to handle the intent
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            // Start the activity with the intent
-            startActivity(intent);
-        } else {
-            showSnackBar(binding.getRoot(), "No email app found");
+        Uri uri = Uri.parse("mailto:" + recipientEmail + "?subject=" + Uri.encode(emailSubject));
+        emailIntent.setData(uri);
+
+        try {
+            startActivity(emailIntent);
+        } catch (ActivityNotFoundException exception) {
+            showSnackBar(binding.getRoot(), exception.getLocalizedMessage());
         }
     }
 

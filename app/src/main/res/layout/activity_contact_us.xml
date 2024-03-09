@@ -107,20 +107,38 @@
             android:id="@+id/instagramImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/twitterImageView"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_instagram" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/twitterImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/facebookImageView"
-            app:srcCompat="@drawable/ic_instagram" />
+            app:srcCompat="@drawable/ic_twitter" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/linkedImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="15dp"
-            app:layout_constraintStart_toEndOf="@+id/instagramImageView"
+            app:layout_constraintStart_toEndOf="@+id/twitterImageView"
             app:layout_constraintTop_toTopOf="@+id/facebookImageView"
             app:srcCompat="@drawable/ic_linkedin" />
-        
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediumImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@+id/linkedImageView"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_medium" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
