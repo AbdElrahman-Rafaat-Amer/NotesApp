@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.activities.ContactUsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/contactUsAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintHeight_percent="0.35"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/contact_us" />
+
+        <TextView
+            android:id="@+id/getInTouchTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/get_in_touch"
+            android:textColor="?colorOnSecondary"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contactUsAnimation" />
+
+        <TextView
+            android:id="@+id/getInTouchDescTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/get_in_touch_desc"
+            android:textAlignment="center"
+            android:textColor="?colorOnSecondary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/getInTouchTextView" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/telegramTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_contact_us_row"
+            android:drawableStart="@drawable/ic_telegram"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/telegram_user_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/getInTouchDescTextView"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gmailTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_contact_us_row"
+            android:drawableStart="@drawable/ic_gmail"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/gmail_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/telegramTextView"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <TextView
+            android:id="@+id/socialMediaTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/social_media"
+            android:textColor="?colorOnSecondary"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gmailTextView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/facebookImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/instagramImageView"
+            app:layout_constraintTop_toBottomOf="@+id/socialMediaTextView"
+            app:srcCompat="@drawable/ic_facebook" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/instagramImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/twitterImageView"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_instagram" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/twitterImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_twitter" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/linkedImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@+id/twitterImageView"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_linkedin" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mediumImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@+id/linkedImageView"
+            app:layout_constraintTop_toTopOf="@+id/facebookImageView"
+            app:srcCompat="@drawable/ic_medium" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

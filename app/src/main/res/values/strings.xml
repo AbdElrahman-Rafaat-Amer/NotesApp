@@ -116,5 +116,23 @@
     <string name="sort_order">Sort order</string>
     <string name="theme">Theme</string>
     <string name="select_app_theme">Select app theme</string>
+    <string name="contact_us">Contact us</string>
+    <string name="our_apps">Our Apps</string>
+    <string name="get_in_touch">Get in Touch</string>
+    <string name="get_in_touch_desc">if u have any inquires get in touch with us.\nWe\'ll be happy to help you.</string>
+    <string name="social_media">Social Media</string>
+
+    <string name="gmail_name" translatable="false">Abdelrahman Raafat</string>
+    <string name="email" translatable="false">abdelrahman.raafaat@gmail.com</string>
+    <string name="email_title" translatable="false">Colorized notes</string>
+    <string name="telegram_user_name" translatable="false">abdelrahman_raafat</string>
+    <string name="telegram_link" translatable="false">https://t.me/abdelrahman_raafat</string>
+    <string name="facebook_link" translatable="false">https://www.facebook.com/abdo.raafat.amer/</string>
+    <string name="instagram_link" translatable="false">https://www.instagram.com/abdo.raafat.amer/</string>
+    <string name="twitter_link" translatable="false">https://twitter.com/Abdo_Rafat_Amer</string>
+    <string name="linkedin_link" translatable="false">https://www.linkedin.com/in/abdelrahman-raafat-anwer-amer/</string>
+    <string name="medium_link" translatable="false">https://medium.com/@abdelrahman.raafaat</string>
+    <string name="google_play_link" translatable="false">https://play.google.com/store/apps/developer?id=Abdelrahman+Rafaat</string>
+
 
 </resources>

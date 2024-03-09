@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -112,11 +113,26 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             startActivity(new Intent(this, SettingsActivity.class));
             closeMenu();
         });
+
+        binding.rootView.findViewById(R.id.contactUsButton).setOnClickListener(view -> {
+            startActivity(new Intent(this, ContactUsActivity.class));
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.ourAppsButton).setOnClickListener(view -> {
+            openGooglePlay();
+            closeMenu();
+        });
     }
 
     private void closeMenu() {
         navigationClickListener.startAnimation();
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
+    }
+
+    private void openGooglePlay(){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_link)));
+        startActivity(intent);
     }
 
     @Override

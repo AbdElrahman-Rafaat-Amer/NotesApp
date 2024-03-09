@@ -24,7 +24,7 @@
         android:drawableTint="@color/mainColor"
         android:text="@string/archived"
         tools:background="@color/red"
-        tools:layout_marginVertical="190dp" />
+        tools:layout_marginVertical="150dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/settingButton"
@@ -33,6 +33,21 @@
         android:drawableTint="@color/mainColor"
         android:text="@string/setting"
         tools:background="@color/red"
-        tools:layout_marginVertical="290dp" />
+        tools:layout_marginVertical="210dp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/contactUsButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_contact_us"
+        android:text="@string/contact_us"
+        tools:background="@color/red"
+        tools:layout_marginVertical="270dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ourAppsButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_google_play"
+        android:text="@string/our_apps"
+        tools:background="@color/red"
+        tools:layout_marginVertical="330dp" />
 </merge>
