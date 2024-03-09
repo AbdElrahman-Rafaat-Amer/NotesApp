@@ -21,7 +21,7 @@
     <PreferenceCategory app:title="@string/sort">
 
         <ListPreference
-            app:defaultValue="pinned_notes"
+            app:defaultValue="PINNED_NOTES"
             app:entries="@array/sort_entries"
             app:entryValues="@array/sort_values"
             app:key="SORT_KEY"

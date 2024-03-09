@@ -2,18 +2,19 @@ package com.abdelrahman.rafaat.notesapp.database;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
 import com.abdelrahman.rafaat.notesapp.model.SortOrder;
+import com.abdelrahman.rafaat.notesapp.model.SortType;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class LocalSource implements LocalSourceInterface {
     private static LocalSource localSource = null;
-    private NotesDAO dao;
-    private LiveData<List<Note>> notes;
+    private final NotesDAO dao;
 
     public LocalSource(Context context) {
         AppDatabase db = AppDatabase.getInstance(context.getApplicationContext());
@@ -33,50 +34,27 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
-    public LiveData<List<Note>> getAllNotes() {
-        return notes;
-    }
-
-    @Override
     public List<Note> getAllNotes(SortAction sortAction) {
-        List<Note> notes = null;
+
+        List<Note> notes = new ArrayList<>();
+        SortType sortType = sortAction.getSortType();
         SortOrder sortOrder = sortAction.getSortOrder();
 
-        switch (sortAction.getSortType()) {
+        switch (sortType) {
             case PINNED_NOTES:
-                if (sortOrder == SortOrder.ASC) {
-                    notes = dao.getAllPinnedNotesAscending();
-                } else {
-                    notes = dao.getAllPinnedNotesDescending();
-                }
+                notes = (sortOrder == SortOrder.ASCENDING) ? dao.getAllNotesPinnedAscending() : dao.getAllNotesPinnedDescending();
                 break;
             case CREATION_DATE:
-                if (sortOrder == SortOrder.ASC) {
-                    notes = dao.getAllNotesAscendingByCreationData();
-                } else {
-                    notes = dao.getAllNotesDescendingByCreationData();
-                }
+                notes = (sortOrder == SortOrder.ASCENDING) ? dao.getAllNotesAscendingByCreationDate() : dao.getAllNotesDescendingByCreationDate();
                 break;
             case MODIFICATION_DATE:
-                if (sortOrder == SortOrder.ASC) {
-                    notes = dao.getAllNotesAscendingByModificationDate();
-                } else {
-                    notes = dao.getAllDescendingByModificationDate();
-                }
+                notes = (sortOrder == SortOrder.ASCENDING) ? dao.getAllNotesAscendingByModificationDate() : dao.getAllNotesDescendingByModificationDate();
                 break;
             case TITLE:
-                if (sortOrder == SortOrder.ASC) {
-                    notes = dao.getAllNotesAscendingByTitle();
-                } else {
-                    notes = dao.getAllDescendingByTitle();
-                }
+                notes = (sortOrder == SortOrder.ASCENDING) ? dao.getAllNotesAscendingByTitle() : dao.getAllNotesDescendingByTitle();
                 break;
             case LOCKED_NOTES:
-                if (sortOrder == SortOrder.ASC) {
-                    notes = dao.getAllLockedNotesAscending();
-                } else {
-                    notes = dao.getAllLockedNotesDescending();
-                }
+                notes = (sortOrder == SortOrder.ASCENDING) ? dao.getAllNotesLockedNotesAscending() : dao.getAllNotesLockedNotesDescending();
                 break;
         }
 
@@ -89,12 +67,12 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
-    public void updateNote(Note note) {
-        new Thread(() -> dao.updateNote(note)).start();
+    public Single<Integer> updateNote(Note note) {
+        return dao.updateNote(note);
     }
 
     @Override
-    public void deleteNote(int id) {
-        new Thread(() -> dao.deleteNote(id)).start();
+    public Single<Integer> deleteNote(int id) {
+        return dao.deleteNote(id);
     }
 }

@@ -3,7 +3,7 @@ package com.abdelrahman.rafaat.notesapp.model;
 import androidx.annotation.Nullable;
 
 public class SortAction {
-    private SortOrder sortOrder = SortOrder.DESC;
+    private SortOrder sortOrder = SortOrder.DESCENDING;
     private SortType sortType = SortType.PINNED_NOTES;
 
     public SortOrder getSortOrder() {
@@ -12,9 +12,9 @@ public class SortAction {
 
     public void setSortOrder(boolean isDescending) {
         if (isDescending) {
-            this.sortOrder = SortOrder.DESC;
+            this.sortOrder = SortOrder.DESCENDING;
         } else {
-            this.sortOrder = SortOrder.ASC;
+            this.sortOrder = SortOrder.ASCENDING;
         }
     }
 

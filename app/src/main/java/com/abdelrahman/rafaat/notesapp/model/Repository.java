@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 
-import androidx.lifecycle.LiveData;
 import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.database.LocalSourceInterface;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class Repository implements RepositoryInterface {
     private static Repository repository = null;
@@ -35,11 +36,6 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public LiveData<List<Note>> getAllNotes() {
-        return localSource.getAllNotes();
-    }
-
-    @Override
     public List<Note> getAllNotes(SortAction sortAction) {
         return localSource.getAllNotes(sortAction);
     }
@@ -50,13 +46,13 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void updateNote(Note note) {
-        localSource.updateNote(note);
+    public Single<Integer> updateNote(Note note) {
+        return localSource.updateNote(note);
     }
 
     @Override
-    public void deleteNote(int id) {
-        localSource.deleteNote(id);
+    public Single<Integer> deleteNote(int id) {
+        return localSource.deleteNote(id);
     }
 
     @Override
@@ -73,7 +69,7 @@ public class Repository implements RepositoryInterface {
 
     private SortAction getSortOrder() {
         SortAction sortAction = new SortAction();
-        boolean sortOrder = getBoolean("SORT_ORDER");
+        boolean sortOrder = getBoolean("SORT_ORDER", true);
         String sortType = getString("SORT_KEY", SortType.PINNED_NOTES.toString());
         sortAction.setSortOrder(sortOrder);
         sortAction.setSortType(SortType.valueOf(sortType));
@@ -81,11 +77,11 @@ public class Repository implements RepositoryInterface {
     }
 
     private boolean getBoolean(String key) {
-        return dfaultSharedPreferences.getBoolean(key, true);
+        return dfaultSharedPreferences.getBoolean(key, false);
     }
 
-    private String getString(String key) {
-        return dfaultSharedPreferences.getString(key, "");
+    private boolean getBoolean(String key, boolean defValue) {
+        return dfaultSharedPreferences.getBoolean(key, defValue);
     }
 
     private String getString(String key, String defValue) {
