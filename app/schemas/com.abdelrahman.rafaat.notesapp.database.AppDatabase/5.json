@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 4,
-    "identityHash": "d0ee61eb3b8b6c0f3f52e216645824e1",
+    "version": 5,
+    "identityHash": "2ba7e1a19c6d23e12fcba1014a1e2aab",
     "entities": [
       {
         "tableName": "notes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `body` TEXT, `date` TEXT, `modificationDate` INTEGER, `color` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `password` TEXT, `isLocked` INTEGER NOT NULL, `textSize` INTEGER NOT NULL, `textAlignment` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `body` TEXT, `date` TEXT, `modificationDate` INTEGER NOT NULL, `color` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `password` TEXT, `isLocked` INTEGER NOT NULL, `textSize` INTEGER NOT NULL, `textAlignment` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -36,7 +36,7 @@
             "fieldPath": "modificationDate",
             "columnName": "modificationDate",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "color",
@@ -94,7 +94,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd0ee61eb3b8b6c0f3f52e216645824e1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2ba7e1a19c6d23e12fcba1014a1e2aab')"
     ]
   }
 }

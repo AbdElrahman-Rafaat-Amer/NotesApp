@@ -8,4 +8,33 @@
             app:title="@string/enable_biometric" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/view_notes_as">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="IS_LIST"
+            app:summaryOff="@string/note_view_mode_summary_off"
+            app:summaryOn="@string/note_view_mode_summary_on"
+            app:title="@string/view_notes_as" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sort">
+
+        <ListPreference
+            app:defaultValue="PINNED_NOTES"
+            app:entries="@array/sort_entries"
+            app:entryValues="@array/sort_values"
+            app:key="SORT_KEY"
+            app:title="@string/sort_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="SORT_ORDER"
+            app:summaryOff="@string/ascending"
+            app:summaryOn="@string/descending"
+            app:title="@string/sort_order" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

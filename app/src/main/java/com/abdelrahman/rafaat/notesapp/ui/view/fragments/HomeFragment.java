@@ -57,11 +57,9 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private NoteViewModel noteViewModel;
     private List<Note> noteList = new ArrayList<>();
     private Note selectedNote;
-    private boolean isList = false;
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-//    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,7 +80,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         initRecyclerView();
         initViewModel();
         observeViewModel();
-        initMenu();
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
@@ -127,7 +124,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void initRecyclerView() {
         adapter = new NotesAdapter(this);
-        setupLayoutManger();
+        setupLayoutManger(true);
         binding.notesRecyclerview.setAdapter(adapter);
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
@@ -135,64 +132,33 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         swipeRecyclerView();
     }
 
-    private void setupLayoutManger() {
-        if (!isList)
-            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
-        else
+    private void setupLayoutManger(boolean isList) {
+        if (isList) {
             binding.notesRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
+        } else {
+            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
+        }
     }
 
     private void initViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getLayoutMangerStyle();
         noteViewModel.getAllNotes();
     }
 
     private void observeViewModel() {
-        noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
-            List<Note> nonArchivedNotes = notes;
-            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + + notes.size());
+        noteViewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-//                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(nonArchivedNotes);
+            adapter.setList(notes);
             noteList = notes;
         });
 
-        noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
-            isList = aBoolean;
-            setupLayoutManger();
-        });
-    }
-
-    private void initMenu() {
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.setting_menu, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.list_note) {
-                    if (noteList.isEmpty()) {
-                        showSnackBar(binding.rootView, getString(R.string.no_notes));
-                    } else {
-                        isList = !isList;
-                        setupLayoutManger();
-                        adapter.notifyDataSetChanged();
-                        noteViewModel.setLayoutMangerStyle(isList);
-                    }
-                }
-                return false;
-            }
-        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        noteViewModel.isListView.observe(getViewLifecycleOwner(), this::setupLayoutManger);
     }
 
     private void showPinnedNotes() {

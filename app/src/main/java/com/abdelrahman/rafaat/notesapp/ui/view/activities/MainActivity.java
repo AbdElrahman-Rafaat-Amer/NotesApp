@@ -3,6 +3,7 @@ package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -106,11 +107,22 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             }
             closeMenu();
         });
+
+        binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
+            startActivity(new Intent(this, SettingsActivity.class));
+            closeMenu();
+        });
     }
 
     private void closeMenu() {
         navigationClickListener.startAnimation();
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        noteViewModel.refreshSettings();
     }
 
     @Override

@@ -30,8 +30,8 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
     private FragmentHomeBinding binding;
     private NoteViewModel noteViewModel;
     private NotesAdapter adapter;
-    private List<Note> noteList = new ArrayList<>();
     private boolean isList = false;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,34 +56,23 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         binding.notesRecyclerview.setLayoutAnimation(animation);
-//        swipeRecyclerView();
     }
 
     private void initViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getLayoutMangerStyle();
         noteViewModel.getArchivedNotes();
     }
 
     private void observeViewModel() {
         noteViewModel.archivedNotes.observe(getViewLifecycleOwner(), notes -> {
-            List<Note> nonArchivedNotes = notes;
-            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + + notes.size());
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-//                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(nonArchivedNotes);
-            noteList = notes;
-        });
-
-        noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
-            isList = aBoolean;
-            setupLayoutManger();
+            adapter.setList(notes);
         });
     }
 
@@ -98,18 +87,8 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-//                if (isSearching) {
-//                    binding.noteSearchView.setIconified(true);
-//                    binding.noteSearchView.clearFocus();
-//                    binding.addNoteFloatingActionButton.setVisibility(View.VISIBLE);
-//                    isSearching = false;
-//                } else if (isPinned) {
-//                    isPinned = false;
-//                    adapter.setList(noteList);
-//                } else {
-                    setEnabled(false);
-                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
-//                }
+                setEnabled(false);
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }
