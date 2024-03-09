@@ -15,4 +15,16 @@
         <item>TITLE</item>
         <item>LOCKED_NOTES</item>
     </string-array>
+
+    <string-array name="theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Follow System</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>1</item>
+        <item>2</item>
+        <item>-1</item>
+    </string-array>
 </resources>

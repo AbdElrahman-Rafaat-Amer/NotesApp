@@ -52,6 +52,9 @@ public class NoteViewModel extends AndroidViewModel {
         refreshSettings();
     }
 
+    public int getTheme(){
+        return repositoryInterface.getTheme();
+    }
     public LiveData<List<Note>> getNotes() {
         return notes;
     }

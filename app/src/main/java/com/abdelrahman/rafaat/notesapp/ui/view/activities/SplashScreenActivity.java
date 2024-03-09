@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,11 @@ import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
@@ -29,6 +30,7 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.BiometricUtils;
 import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
@@ -71,9 +73,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     };
 
+    private NoteViewModel noteViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        updateTheme();
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.getRoot().setVisibility(View.INVISIBLE);
@@ -90,6 +96,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
+    private void updateTheme(){
+        int theme = noteViewModel.getTheme();
+        switch (theme) {
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
+    }
     private void checkForAppUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();

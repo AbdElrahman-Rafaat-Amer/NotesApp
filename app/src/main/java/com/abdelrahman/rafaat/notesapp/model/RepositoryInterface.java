@@ -19,5 +19,6 @@ public interface RepositoryInterface {
 
     boolean isBiometricEnabled();
 
+    int getTheme();
     Pair<SortAction, Boolean> refreshSettings();
 }

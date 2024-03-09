@@ -61,6 +61,12 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public int getTheme() {
+        String themeMode = getString("THEME_MODE", "-1");
+        return Integer.parseInt(themeMode);
+    }
+
+    @Override
     public Pair<SortAction, Boolean> refreshSettings() {
         SortAction sortAction = getSortOrder();
         boolean isListView = getBoolean("IS_LIST");
