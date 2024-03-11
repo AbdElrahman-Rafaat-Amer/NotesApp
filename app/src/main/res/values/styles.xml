@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Notes.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/mainColor</item>
+        <item name="android:theme">@style/Theme.NotesApp</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Notes.Toolbar</item>
+    </style>
+
+    <style name="TextAppearance.Notes.Toolbar" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Widget.Notes.Backdrop" parent="">
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="Widget.Notes.Button.AppCompatButton" parent="">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_marginHorizontal">10dp</item>
+        <item name="android:layout_marginVertical">30dp</item>
+    </style>
+
+</resources>

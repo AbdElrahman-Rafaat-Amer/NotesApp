@@ -1,0 +1,53 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/theme">
+
+        <ListPreference
+            app:defaultValue="-1"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="THEME_MODE"
+            app:title="@string/select_app_theme"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/biometric_title">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="IS_BIOMETRIC_ENABLED"
+            app:title="@string/enable_biometric" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/view_notes_as">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="IS_LIST"
+            app:summaryOff="@string/note_view_mode_summary_off"
+            app:summaryOn="@string/note_view_mode_summary_on"
+            app:title="@string/view_notes_as" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sort">
+
+        <ListPreference
+            app:defaultValue="PINNED_NOTES"
+            app:entries="@array/sort_entries"
+            app:entryValues="@array/sort_values"
+            app:key="SORT_KEY"
+            app:title="@string/sort_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="SORT_ORDER"
+            app:summaryOff="@string/ascending"
+            app:summaryOn="@string/descending"
+            app:title="@string/sort_order" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

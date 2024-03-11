@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import androidx.preference.PreferenceManager;
-
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +18,21 @@ import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
+import com.abdelrahman.rafaat.notesapp.model.Repository;
+import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.BiometricUtils;
+import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
@@ -36,11 +44,15 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
+import java.util.concurrent.Executor;
+
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
     private AppUpdateManager appUpdateManager;
     private final int appUpdateType = AppUpdateType.IMMEDIATE;
 
+    private boolean isDeviceRooted = false;
+    private boolean isEmulator = false;
     private final ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
             result -> {
@@ -57,22 +69,47 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private final InstallStateUpdatedListener stateUpdatedListener = installState -> {
         if (installState.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate();
+            showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
         }
     };
+
+    private NoteViewModel noteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        updateTheme();
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.getRoot().setVisibility(View.INVISIBLE);
-        if (appUpdateType == AppUpdateType.FLEXIBLE) {
-            appUpdateManager.registerListener(stateUpdatedListener);
+
+        isDeviceRooted = RootUtil.isDeviceRooted(this);
+        isEmulator = RootUtil.isEmulator(this);
+        if (isDeviceRooted || isEmulator) {
+            checkBiometricAuthenticationAvailability();
+        } else {
+            if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                appUpdateManager.registerListener(stateUpdatedListener);
+            }
+            checkForAppUpdate();
         }
-        checkForAppUpdate();
     }
 
+    private void updateTheme(){
+        int theme = noteViewModel.getTheme();
+        switch (theme) {
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
+    }
     private void checkForAppUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
         Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
@@ -84,10 +121,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 })
                 .addOnCompleteListener(task -> {
-                    boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
-                    if (!isUpdateAvailable && task.isComplete()) {
-                        initUI();
+                    boolean isTaskSuccessful = task.isSuccessful();
+                    if (isTaskSuccessful) {
+                        boolean isUpdateAvailable = task.getResult().updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE;
+                        if (!isUpdateAvailable && task.isComplete()) {
+                            checkBiometricAuthenticationAvailability();
+                        }
                     }
+                })
+                .addOnFailureListener(exception -> {
+                    showSnackBar(exception.getLocalizedMessage(), Snackbar.LENGTH_LONG, false);
+                    checkBiometricAuthenticationAvailability();
                 });
     }
 
@@ -95,6 +139,56 @@ public class SplashScreenActivity extends AppCompatActivity {
         appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(appUpdateType)
                 .setAllowAssetPackDeletion(true)
                 .build());
+    }
+
+    private void checkBiometricAuthenticationAvailability() {
+
+        int result = BiometricUtils.checkBiometricAuthenticationAvailability(this);
+        boolean isBiometricEnabled = Repository.getInstance(
+                LocalSource.getInstance(getApplicationContext()), getApplicationContext()).isBiometricEnabled();
+        if (result == BiometricManager.BIOMETRIC_SUCCESS && isBiometricEnabled) {
+            showBiometricAuthentication();
+        } else {
+            initUI();
+        }
+    }
+
+    private void showBiometricAuthentication() {
+
+        Executor executor = ContextCompat.getMainExecutor(this);
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                if (errorCode == 10) {
+                    finish();
+                } else {
+                    showSnackBar(errString.toString(), Snackbar.LENGTH_LONG, false);
+                }
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                initUI();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getString(R.string.biometric_title))
+                .setSubtitle(getString(R.string.biometric_subtitle))
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                .setConfirmationRequired(false)
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+
     }
 
     private void initUI() {
@@ -132,17 +226,19 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateType == AppUpdateType.IMMEDIATE) {
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    startUpdate(appUpdateInfo);
+        if (!isDeviceRooted && !isEmulator) {
+            appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+                if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                        startUpdate(appUpdateInfo);
+                    }
+                } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                        showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
+                    }
                 }
-            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
-                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    popupSnackbarForCompleteUpdate();
-                }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -153,13 +249,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void popupSnackbarForCompleteUpdate() {
-        Snackbar snackbar =
-                Snackbar.make(binding.getRoot(),
-                        getString(R.string.update_complete_message),
-                        Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
-        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+    private void showSnackBar(String message, int length, boolean isActionNeeded) {
+        Snackbar snackbar = Snackbar.make(binding.getRoot(), message, length);
+        if (isActionNeeded) {
+            snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.red));
+        }
         snackbar.show();
     }
 
@@ -191,7 +286,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            System.exit(0);
+            if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                System.exit(0);
+            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                initUI();
+            }
         });
 
     }

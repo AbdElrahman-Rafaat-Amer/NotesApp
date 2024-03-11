@@ -33,30 +33,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
 
+    <!-- Guideline at the center of the screen -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <Button
         android:id="@+id/save_button"
-        android:layout_width="110sp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50sp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_background_save_button"
         android:text="@string/keep"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_message_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_message_textView"
+        app:layout_constraintWidth_percent="0.4" />
 
     <Button
         android:id="@+id/discard_button"
-        android:layout_width="110sp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="50sp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/ic_background_discard_button"
         android:text="@string/discard"
         android:textAllCaps="false"
@@ -64,6 +69,8 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_message_textView" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_message_textView"
+        app:layout_constraintWidth_percent="0.4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

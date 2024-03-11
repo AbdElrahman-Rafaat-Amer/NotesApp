@@ -45,8 +45,12 @@
     <string name="error_in_save">Error in save image</string>
     <string name="tips">Tips</string>
     <string name="delete_note">Delete note</string>
+    <string name="delete">Delete</string>
     <string name="swipe_left">you can swipe left to delete note</string>
     <string name="pin_note">Pin note</string>
+    <string name="pin">Pin</string>
+    <string name="archive">Archive</string>
+    <string name="archived">Archived</string>
     <string name="swipe_right">you can swipe right to pin note</string>
     <string name="show_details">show details</string>
     <string name="click_on_note">you can click on note to show details</string>
@@ -91,6 +95,44 @@
     <string name="update">Update</string>
     <string name="exit">Exit</string>
     <string name="update_complete_message">An update has just been downloaded</string>
-    <string name="t">T</string>
+    <string name="biometric_authentication_failed">Biometric Authentication Failed please try again</string>
+
+    <string name="t" translatable="false">T</string>
+    <string name="biometric_title">Biometric Authentication</string>
+    <string name="biometric_subtitle">Use your fingerprint or Password to authenticate</string>
+    <string name="enable_biometric">Enable Biometric</string>
+    <string name="setting">Settings</string>
+
+    <string name="view_notes_as">View Notes As</string>
+    <string name="note_view_mode_summary_on">View notes in a list for easier reading and more detailed information.</string>
+    <string name="note_view_mode_summary_off">Display notes in a grid layout for better visual organization and quick access.</string>
+    <string name="title_activity_settings2">SettingsActivity2</string>
+
+    <string name="sort_title">Default sort action</string>
+
+    <string name="sort">Sort</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="sort_order">Sort order</string>
+    <string name="theme">Theme</string>
+    <string name="select_app_theme">Select app theme</string>
+    <string name="contact_us">Contact us</string>
+    <string name="our_apps">Our Apps</string>
+    <string name="get_in_touch">Get in Touch</string>
+    <string name="get_in_touch_desc">if u have any inquires get in touch with us.\nWe\'ll be happy to help you.</string>
+    <string name="social_media">Social Media</string>
+
+    <string name="gmail_name" translatable="false">Abdelrahman Raafat</string>
+    <string name="email" translatable="false">abdelrahman.raafaat@gmail.com</string>
+    <string name="email_title" translatable="false">Colorized notes</string>
+    <string name="telegram_user_name" translatable="false">abdelrahman_raafat</string>
+    <string name="telegram_link" translatable="false">https://t.me/abdelrahman_raafat</string>
+    <string name="facebook_link" translatable="false">https://www.facebook.com/abdo.raafat.amer/</string>
+    <string name="instagram_link" translatable="false">https://www.instagram.com/abdo.raafat.amer/</string>
+    <string name="twitter_link" translatable="false">https://twitter.com/Abdo_Rafat_Amer</string>
+    <string name="linkedin_link" translatable="false">https://www.linkedin.com/in/abdelrahman-raafat-anwer-amer/</string>
+    <string name="medium_link" translatable="false">https://medium.com/@abdelrahman.raafaat</string>
+    <string name="google_play_link" translatable="false">https://play.google.com/store/apps/developer?id=Abdelrahman+Rafaat</string>
+
 
 </resources>

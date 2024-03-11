@@ -10,21 +10,29 @@ public class Note {
     private String title;
     private String body;
     private String date;
+
+    private long modificationDate;
     private int color;
     private boolean isPinned;
     private String password;
+    private boolean isLocked;
     private int textSize;
     private int textAlignment;
+
+    private boolean isArchived;
 
     public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
         this.title = title;
         this.body = body;
         this.date = date;
+        this.modificationDate = -1;
         this.color = color;
         this.password = "";
+        this.isLocked = false;
         this.isPinned = false;
         this.textSize = textSize;
         this.textAlignment = textAlignment;
+        this.isArchived = false;
     }
 
     public int getId() {
@@ -81,6 +89,7 @@ public class Note {
 
     public void setPassword(String password) {
         this.password = password;
+        isLocked = !password.trim().isEmpty();
     }
 
     public int getTextSize() {
@@ -97,5 +106,29 @@ public class Note {
 
     public void setTextAlignment(int textAlignment) {
         this.textAlignment = textAlignment;
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public long getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(long modificationDate) {
+        this.modificationDate = modificationDate;
     }
 }

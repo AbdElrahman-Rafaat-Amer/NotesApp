@@ -1,14 +1,24 @@
 package com.abdelrahman.rafaat.notesapp.model;
 
-import androidx.lifecycle.LiveData;
+import android.util.Pair;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
+
 public interface RepositoryInterface {
     void insertNote(Note note);
-    LiveData<List<Note>> getAllNotes();
-    void updateNote(Note note);
-    void deleteNote(int id);
-    boolean getLayoutMangerStyle();
-    void setLayoutMangerStyle(boolean isList);
+
+    List<Note> getAllNotes(SortAction sortAction);
+
+    List<Note> getArchivedNotes();
+
+    Single<Integer> updateNote(Note note);
+
+    Single<Integer> deleteNote(int id);
+
+    boolean isBiometricEnabled();
+
+    int getTheme();
+    Pair<SortAction, Boolean> refreshSettings();
 }

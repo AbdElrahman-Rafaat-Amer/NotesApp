@@ -1,18 +1,21 @@
 package com.abdelrahman.rafaat.notesapp.database;
 
-import androidx.lifecycle.LiveData;
-
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.SortAction;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public interface LocalSourceInterface {
 
     void insertNote(Note note);
 
-    LiveData<List<Note>> getAllNotes();
+    List<Note> getAllNotes(SortAction sortAction);
 
-    void updateNote(Note note);
+    List<Note> getArchivedNotes();
 
-    void deleteNote(int id);
+    Single<Integer> updateNote(Note note);
+
+    Single<Integer> deleteNote(int id);
 }
