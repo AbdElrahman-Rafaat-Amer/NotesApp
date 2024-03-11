@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             closeMenu();
         });
 
-        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
-            closeMenu();
-        });
+        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view ->
+                closeMenu()
+        );
 
         binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
             if (navController.getCurrentDestination().getId() != R.id.archived_fragment) {
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
     }
 
-    private void openGooglePlay(){
+    private void openGooglePlay() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_link)));
         startActivity(intent);
     }

@@ -50,6 +50,7 @@
     <string name="swipe_left">يمكنك التمرير إلى اليسار لحذف الملاحظة</string>
     <string name="pin_note">تثبيت الملاحظة</string>
     <string name="pin">تثبيت</string>
+    <string name="unpin">إلغاء التثبيت</string>
     <string name="archive">أرشف</string>
     <string name="archived">المؤرشفة</string>
     <string name="swipe_right">يمكنك التمرير لليمين لتثبيت الملاحظة</string>
@@ -87,4 +88,22 @@
 
     <string name="enable_biometric">تفعيل المصادقة</string>
     <string name="setting">الإعدادات</string>
+
+    <string name="view_notes_as">عرض الملاحظات ك</string>
+    <string name="note_view_mode_summary_on">عرض الملاحظات في قائمة لتسهيل القراءة والحصول على معلومات أكثر تفصيلاً.</string>
+    <string name="note_view_mode_summary_off">اعرض الملاحظات في مخطط شبكي لتحسين التنظيم البصري والوصول السريع.</string>
+
+    <string name="sort_title">الترتيب الافتراضي</string>
+
+    <string name="sort">ألترتيب</string>
+    <string name="ascending">تصاعدي</string>
+    <string name="descending">تنازلي</string>
+    <string name="sort_order"> ترتيب</string>
+    <string name="theme">السمة</string>
+    <string name="select_app_theme">اختر سمة التطبيق</string>
+    <string name="contact_us">تواصل معنا</string>
+    <string name="our_apps">تطبيقاتنا</string>
+    <string name="get_in_touch">ابقى على تواصل</string>
+    <string name="get_in_touch_desc">إذا كان لديك أي استفسارات، تواصل معنا.\nسنكون سعداء بمساعدتك.</string>
+    <string name="social_media">وسائل التواصل الاجتماعي</string>
 </resources>

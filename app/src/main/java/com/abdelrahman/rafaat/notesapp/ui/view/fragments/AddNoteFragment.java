@@ -55,8 +55,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AddNoteFragment extends BaseFragment {
-
-//    private static final int PICK_IMAGE = 1;
     private FragmentAddNoteBinding binding;
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
@@ -106,7 +104,9 @@ public class AddNoteFragment extends BaseFragment {
         initViewModel();
         initUI();
         checkIsEdit();
-        checkRTL();
+        if (Utils.isRTL()) {
+            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
+        }
         watchText();
         watchKeyboard();
         onBackPressed();
@@ -314,14 +314,6 @@ public class AddNoteFragment extends BaseFragment {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-    }
-
-    private void checkRTL() {
-        String language = Locale.getDefault().getDisplayName();
-        int directionality = Character.getDirectionality(language.charAt(0));
-        boolean isRTL = directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
-        if (isRTL)
-            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
 
     private void chooseColor() {

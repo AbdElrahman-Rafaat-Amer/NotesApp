@@ -23,62 +23,32 @@ public class ContactUsActivity extends AppCompatActivity {
         binding = ActivityContactUsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.telegramTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.telegram_link));
-            }
-        });
+        binding.gmailTextView.setOnClickListener(v -> openGmail());
 
-        binding.gmailTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGmail();
-            }
-        });
+        binding.telegramTextView.setOnClickListener(v ->
+                openLink(getString(R.string.telegram_link))
+        );
 
-        binding.facebookImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.facebook_link));
-            }
-        });
+        binding.facebookImageView.setOnClickListener(v ->
+                openLink(getString(R.string.facebook_link))
+        );
 
-        binding.instagramImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.instagram_link));
-            }
-        });
+        binding.instagramImageView.setOnClickListener(v ->
+                openLink(getString(R.string.instagram_link))
+        );
 
-        binding.twitterImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.twitter_link));
-            }
-        });
+        binding.twitterImageView.setOnClickListener(v ->
+                openLink(getString(R.string.twitter_link))
+        );
 
-        binding.linkedImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.linkedin_link));
-            }
-        });
+        binding.linkedImageView.setOnClickListener(v ->
+                openLink(getString(R.string.linkedin_link))
+        );
 
-        binding.mediumImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLink(getString(R.string.medium_link));
-            }
-        });
+        binding.mediumImageView.setOnClickListener(v ->
+                openLink(getString(R.string.medium_link))
+        );
 
-    }
-
-    private void showSnackBar(View view, String message) {
-        Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-                .setActionTextColor(Color.WHITE);
-        snackBar.getView().setBackgroundColor(Color.RED);
-        snackBar.show();
     }
 
     private void openGmail() {
@@ -96,6 +66,13 @@ public class ContactUsActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException exception) {
             showSnackBar(binding.getRoot(), exception.getLocalizedMessage());
         }
+    }
+
+    private void showSnackBar(View view, String message) {
+        Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+                .setActionTextColor(Color.WHITE);
+        snackBar.getView().setBackgroundColor(Color.RED);
+        snackBar.show();
     }
 
     private void openLink(String url) {

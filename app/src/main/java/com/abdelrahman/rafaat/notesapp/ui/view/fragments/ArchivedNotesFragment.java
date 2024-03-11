@@ -94,7 +94,7 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
     }
 
     @Override
-    public void onClickListener(Note note) {
+    public void onNoteClickListener(Note note) {
 
     }
 }

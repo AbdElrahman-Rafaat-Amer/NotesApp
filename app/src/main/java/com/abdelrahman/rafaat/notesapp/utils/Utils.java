@@ -8,7 +8,15 @@ import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.widget.EditText;
 
+import com.abdelrahman.rafaat.notesapp.R;
+
+import java.util.Locale;
+
 public class Utils {
+
+    private Utils() {
+    }
+
     public static void insertImageToCurrentSelection(Bitmap bitmap, EditText editText, String source) {
         BitmapDrawable drawable = setUpImage(bitmap);
         int selectionCursor = editText.getSelectionStart();
@@ -18,7 +26,7 @@ public class Utils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             editText.getText().setSpan(new ImageSpan(drawable, source, ImageSpan.ALIGN_CENTER),
                     selectionCursor - 1, selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }else{
+        } else {
             editText.getText().setSpan(new ImageSpan(drawable, source, ImageSpan.ALIGN_BASELINE),
                     selectionCursor - 1, selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -30,5 +38,11 @@ public class Utils {
         BitmapDrawable drawable = new BitmapDrawable(Resources.getSystem(), bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         return drawable;
+    }
+
+    public static boolean isRTL() {
+        String language = Locale.getDefault().getDisplayName();
+        int directionality = Character.getDirectionality(language.charAt(0));
+        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
 }
