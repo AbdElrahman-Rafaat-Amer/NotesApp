@@ -25,6 +25,7 @@ import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentShowBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 
@@ -50,7 +51,9 @@ public class ShowNoteFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initFacebookAds();
         initViewModel();
-        checkRTL();
+        if (Utils.isRTL()) {
+            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
+        }
         initUi();
         showNoteDetails();
         binding.showNoteBodyTextView.setMovementMethod(new LinkMovementMethod());
@@ -107,15 +110,6 @@ public class ShowNoteFragment extends BaseFragment {
 
         binding.goBackImageView.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
     }
-
-    private void checkRTL() {
-        String language = Locale.getDefault().getDisplayName();
-        int directionality = Character.getDirectionality(language.charAt(0));
-        boolean isRTL = directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
-        if (isRTL)
-            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
-    }
-
     private void updatePassword() {
         if (isUnLock) {
             updateNote();

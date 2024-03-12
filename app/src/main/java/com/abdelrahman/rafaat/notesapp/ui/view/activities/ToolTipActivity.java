@@ -1,17 +1,15 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import androidx.preference.PreferenceManager;
-
 import android.view.Gravity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityToolTipBinding;
@@ -83,63 +81,48 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
             case 1:
                 Rect rect = new Rect();
                 binding.noteSearchView.getGlobalVisibleRect(rect);
-                int top = (rect.top + rect.bottom) / 2;
-                builder.setTarget((float) rect.left, (float) top)
-                        .setPrimaryText(getString(R.string.search_note))
-                        .setSecondaryText(getString(R.string.tooltip_search))
-                        .show();
+                showTip(getString(R.string.search_note), getString(R.string.tooltip_search), rect.centerX(), rect.centerY());
                 break;
             case 2:
-                binding.notesRecyclerview.scrollToPosition(0);
-                CardView card = (CardView) linerLayoutManager.findViewByPosition(0);
-                if (card != null) {
-                    Rect rect1 = new Rect();
-                    card.getGlobalVisibleRect(rect1);
-                    int top1 = (rect1.top + rect1.bottom) / 2;
-                    builder
-                            .setTarget((float) rect1.left, (float) top1)
-                            .setPrimaryText(R.string.pin_note)
-                            .setSecondaryText(R.string.swipe_right)
-                            .setClipToView(card.getChildAt(2))
-                            .show();
-                }
+                showTip(getString(R.string.pin_note), getString(R.string.swipe_right), 0);
                 break;
             case 3:
-                binding.notesRecyclerview.scrollToPosition(1);
-                CardView card1 = (CardView) linerLayoutManager.findViewByPosition(1);
-                if (card1 != null) {
-                    Rect rect2 = new Rect();
-                    card1.getGlobalVisibleRect(rect2);
-                    int top2 = (rect2.top + rect2.bottom) / 2;
-                    builder
-                            .setTarget((float) rect2.right, (float) top2)
-                            .setPrimaryText(R.string.delete_note)
-                            .setSecondaryText(R.string.swipe_left)
-                            .setClipToView(card1.getChildAt(2))
-                            .show();
-                }
+                showTip(getString(R.string.delete_note), getString(R.string.swipe_left), 1);
                 break;
             case 4:
-                binding.notesRecyclerview.scrollToPosition(2);
-                CardView card2 = (CardView) linerLayoutManager.findViewByPosition(2);
-                if (card2 != null) {
-                    NotesAdapter.ViewHolder viewHolder = (NotesAdapter.ViewHolder) binding.notesRecyclerview.getChildViewHolder(card2);
-                    builder
-                            .setTarget(viewHolder.binding.noteBodyTextView)
-                            .setPrimaryText(R.string.show_details)
-                            .setSecondaryText(R.string.click_on_note)
-                            .setClipToView(card2.getChildAt(2))
-                            .show();
-
-                }
+                showTip(getString(R.string.show_details), getString(R.string.click_on_note), 2);
                 binding.checkbox.setVisibility(View.VISIBLE);
                 binding.continueButton.setVisibility(View.VISIBLE);
                 break;
         }
     }
 
+    private void showTip(String primaryText, String secondaryText, int position) {
+        binding.notesRecyclerview.scrollToPosition(position);
+        CardView card = (CardView) linerLayoutManager.findViewByPosition(position);
+        if (card != null) {
+            Rect rect = new Rect();
+            card.getGlobalVisibleRect(rect);
+            float target = rect.left;
+            if (next == 3) {
+                target = rect.right;
+            } else if (next == 4) {
+                target = rect.centerX();
+            }
+            showTip(primaryText, secondaryText, target, rect.centerY());
+        }
+    }
+
+    private void showTip(String primaryText, String secondaryText, float targetLeftPoint, float targetTopPoint) {
+        builder.setTarget(targetLeftPoint, targetTopPoint)
+                .setPrimaryText(primaryText)
+                .setSecondaryText(secondaryText)
+                .show();
+
+    }
+
     @Override
-    public void onClickListener(Note note) {
+    public void onNoteClickListener(Note note) {
 
     }
 }

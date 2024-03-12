@@ -6,8 +6,11 @@ import androidx.biometric.BiometricManager;
 
 public class BiometricUtils {
 
+    private BiometricUtils() {
+    }
+
     public static int checkBiometricAuthenticationAvailability(Context context) {
-        int result = -10;
+        int result;
         BiometricManager biometricManager = BiometricManager.from(context);
         switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
             case BiometricManager.BIOMETRIC_SUCCESS:
@@ -35,6 +38,7 @@ public class BiometricUtils {
                 break;
 
             case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+            default:
                 result = BiometricManager.BIOMETRIC_STATUS_UNKNOWN;
                 break;
         }

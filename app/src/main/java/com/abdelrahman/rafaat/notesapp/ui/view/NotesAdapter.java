@@ -85,7 +85,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 binding.getRoot().setCardBackgroundColor(color);
             }
 
-            binding.getRoot().setOnClickListener(view -> onClickListener.onClickListener(currentNote));
+            binding.getRoot().setOnClickListener(view -> onClickListener.onNoteClickListener(currentNote));
         }
 
         private void setViewVisibility(int visibility) {
