@@ -43,10 +43,13 @@ public class SettingsActivity extends AppCompatActivity {
                         case AppCompatDelegate.MODE_NIGHT_YES:
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                             break;
+
                         case AppCompatDelegate.MODE_NIGHT_NO:
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                             break;
+
                         case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                        default:
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                             break;
                     }

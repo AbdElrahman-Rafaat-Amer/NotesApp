@@ -238,7 +238,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     }
 
     @Override
-    public void onClickListener(Note note) {
+    public void onNoteClickListener(Note note) {
         noteViewModel.setCurrentNote(note);
         if (note.getPassword().isEmpty())
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
