@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -33,7 +31,6 @@ import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 
 public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickListener {
 
-    private static final String TAG = "ArchivedNotesFragment";
     private FragmentHomeBinding binding;
     private NoteViewModel noteViewModel;
     private NotesAdapter adapter;
@@ -108,7 +105,8 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
 
     class ArchiveItemTouchHelper extends ItemTouchHelper.Callback {
 
-        private final int BUTTON_WIDTH = screenWidth / 4;
+        private int buttonWidth = 0;
+        private int buttonHeight = 0;
 
         @Override
         public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -123,17 +121,7 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            if (direction == ItemTouchHelper.LEFT) {
-                Log.d(TAG, "onSwiped: ItemTouchHelper.LEFT");
-            } else if (direction == ItemTouchHelper.RIGHT) {
-                Log.d(TAG, "onSwiped: ItemTouchHelper.RIGHT");
-            }
             swipedPosition = viewHolder.getAdapterPosition();
-        }
-
-        @Override
-        public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
-            return 0.4F;
         }
 
         @Override
@@ -142,21 +130,43 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
                                 float dY, int actionState, boolean isCurrentlyActive) {
             View itemView = viewHolder.itemView;
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                boolean isRightSideToDraw = false;
+                String text = "";
+                int textLeft = 0;
+                int backgroundColor = 0;
+                int itemViewHeight = itemView.getHeight() / 2;
+                int itemViewCenter = itemView.getTop() + itemViewHeight;
                 if (dX > 0) {
                     // Swipe left
-                    drawBackGround(itemView, c, getResources().getColor(R.color.red, null));
-                    drawLeftButtons(itemView, c);
+                    backgroundColor = getResources().getColor(R.color.mainColor, null);
+                    text = getString(R.string.unarchive);
+                    textLeft = itemView.getLeft();
                 } else if (dX < 0) {
                     // Swipe right
-                    drawBackGround(itemView, c, getResources().getColor(R.color.mainColor, null));
-                    drawRightButtons(itemView, c);
+                    isRightSideToDraw = true;
+                    backgroundColor = getResources().getColor(R.color.red, null);
+                    text = getString(R.string.delete);
+                    textLeft = itemView.getRight() - buttonWidth;
                 }
-                int maxDisplacement = screenWidth / 2;
-                if (Math.abs(dX) > maxDisplacement) {
-                    dX = Math.signum(dX) * maxDisplacement;
-                }
+                drawBackGround(itemView, c, backgroundColor);
+                drawButton(c, itemView.getLeft(), itemView.getRight(), itemViewCenter, isRightSideToDraw);
+                drawText(text, c, getResources().getColor(R.color.white, null), textLeft, itemViewCenter);
+                dX = dX * buttonWidth / itemView.getWidth();
             }
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+
+        private void drawText(String text, Canvas canvas, @ColorInt int color, int itemViewLeft, float itemViewCenter) {
+            Paint paint = new Paint();
+            paint.setColor(color);
+
+            paint.setTextSize(50);
+            paint.setAntiAlias(true);
+
+            float textX = itemViewLeft + buttonWidth / 2f - paint.measureText(text) / 2;
+            float textY = itemViewCenter + buttonHeight + getResources().getDimension(R.dimen.margin_between_image_text);
+
+            canvas.drawText(text, textX, textY, paint);
         }
 
         private void drawBackGround(View itemView, Canvas canvas, @ColorInt int color) {
@@ -166,37 +176,34 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
             canvas.drawRect(background, paint);
         }
 
-        private void drawRightButtons(View itemView, Canvas canvas) {
-            Drawable deleteIcon = ResourcesCompat.getDrawable(requireContext().getResources(),
-                    R.drawable.ic_delete, requireContext().getTheme());
-            if (deleteIcon != null) {
-                Log.d(TAG, "drawRightButtons: deleteIcon.getIntrinsicWidth() : " + deleteIcon.getIntrinsicWidth());
-                Log.d(TAG, "drawRightButtons: deleteIcon.getIntrinsicHeight(): " + deleteIcon.getIntrinsicHeight());
-                int itemViewHeight = itemView.getHeight() / 2;
-                int itemViewCenter = itemView.getTop() + itemViewHeight;
-                int iconHeight = deleteIcon.getIntrinsicHeight() / 2;
-                Rect rect = new Rect(itemView.getRight() - itemView.getWidth() / 4,
-                        itemViewCenter - iconHeight,
-                        itemView.getRight(),
-                        itemViewCenter + iconHeight);
-                deleteIcon.setBounds(rect);
-                deleteIcon.draw(canvas);
+        private void drawButton(Canvas canvas, int left, int right, int itemViewCenter, boolean isRightSideToDraw) {
+            Drawable icon;
+            if (isRightSideToDraw) {
+                icon = ResourcesCompat.getDrawable(requireContext().getResources(),
+                        R.drawable.ic_delete, requireContext().getTheme());
+            } else {
+                icon = ResourcesCompat.getDrawable(requireContext().getResources(),
+                        R.drawable.ic_unarchive, requireContext().getTheme());
             }
+            drawIcon(icon, canvas, left, right, itemViewCenter, isRightSideToDraw);
+
         }
 
-        private void drawLeftButtons(View itemView, Canvas canvas) {
-            Drawable unArchiveIcon = ResourcesCompat.getDrawable(requireContext().getResources(),
-                    R.drawable.ic_unarchive, requireContext().getTheme());
-            if (unArchiveIcon != null) {
-                int itemViewHeight = itemView.getHeight() / 2;
-                int itemViewCenter = itemView.getBottom() - itemViewHeight;
-                int iconHeight = unArchiveIcon.getIntrinsicHeight() / 2;
-                Rect rect = new Rect(itemView.getLeft(),
+        private void drawIcon(Drawable icon, Canvas canvas, int left, int right, int itemViewCenter, boolean isRightSideToDraw) {
+            if (icon != null) {
+                int iconHeight = icon.getIntrinsicHeight();
+                buttonHeight = iconHeight;
+                int iconWidth = icon.getIntrinsicWidth();
+                buttonWidth = iconWidth * 3;
+                int margin = iconWidth / 2;
+                int iconLeft = isRightSideToDraw ? right - (iconWidth * 2 + margin) : left + margin;
+                int iconRight = isRightSideToDraw ? right - margin : iconWidth * 2 + margin;
+                Rect rect = new Rect(iconLeft,
                         itemViewCenter - iconHeight,
-                        unArchiveIcon.getIntrinsicWidth(),
+                        iconRight,
                         itemViewCenter + iconHeight);
-                unArchiveIcon.setBounds(rect);
-                unArchiveIcon.draw(canvas);
+                icon.setBounds(rect);
+                icon.draw(canvas);
             }
         }
     }
