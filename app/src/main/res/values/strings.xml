@@ -16,6 +16,7 @@
     <string name="search_note">Enter note title.....</string>
     <string name="empty_search">File not found. Try searching again.</string>
     <string name="empty_notes">Create your first note !</string>
+    <string name="not_archived_notes">No archived notes founded</string>
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
@@ -49,7 +50,9 @@
     <string name="swipe_left">you can swipe left to delete note</string>
     <string name="pin_note">Pin note</string>
     <string name="pin">Pin</string>
+    <string name="unpin">UnPin</string>
     <string name="archive">Archive</string>
+    <string name="unarchive">UnArchive</string>
     <string name="archived">Archived</string>
     <string name="swipe_right">you can swipe right to pin note</string>
     <string name="show_details">show details</string>
@@ -106,7 +109,6 @@
     <string name="view_notes_as">View Notes As</string>
     <string name="note_view_mode_summary_on">View notes in a list for easier reading and more detailed information.</string>
     <string name="note_view_mode_summary_off">Display notes in a grid layout for better visual organization and quick access.</string>
-    <string name="title_activity_settings2">SettingsActivity2</string>
 
     <string name="sort_title">Default sort action</string>
 
@@ -119,7 +121,8 @@
     <string name="contact_us">Contact us</string>
     <string name="our_apps">Our Apps</string>
     <string name="get_in_touch">Get in Touch</string>
-    <string name="get_in_touch_desc">if u have any inquires get in touch with us.\nWe\'ll be happy to help you.</string>
+<!--    <string name="get_in_touch_desc">if u have any inquires get in touch with us.\nWe\'ll be happy to help you.</string>-->
+    <string name="get_in_touch_desc">if u have any inquiries get in touch with us.\nWe\'ll be happy to help you.</string>
     <string name="social_media">Social Media</string>
 
     <string name="gmail_name" translatable="false">Abdelrahman Raafat</string>

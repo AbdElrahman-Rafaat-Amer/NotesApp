@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="7sp"
+    android:layout_margin="@dimen/row_margin"
     app:cardCornerRadius="12sp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="7sp">
+        android:padding="@dimen/row_padding">
 
         <ImageView
             android:id="@+id/pinnedNote_imageView"
