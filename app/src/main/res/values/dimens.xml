@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="row_margin">7dp</dimen>
+    <dimen name="row_padding">7dp</dimen>
+    <dimen name="margin_between_image_text">14dp</dimen>
+</resources>
