@@ -16,6 +16,7 @@
     <string name="search_note">Enter note title.....</string>
     <string name="empty_search">File not found. Try searching again.</string>
     <string name="empty_notes">Create your first note !</string>
+    <string name="not_archived_notes">No archived notes founded</string>
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>

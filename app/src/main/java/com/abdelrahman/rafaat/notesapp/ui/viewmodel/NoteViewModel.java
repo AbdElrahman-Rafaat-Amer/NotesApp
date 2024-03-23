@@ -43,6 +43,7 @@ public class NoteViewModel extends AndroidViewModel {
     private Disposable updateNotesDisposable;
     private Disposable deleteNotesDisposable;
 
+    private boolean isArchivedNotes = false;
     private static final String TAG = "Note_ViewModel_TAG";
 
     public NoteViewModel(@NonNull Application application) {
@@ -52,14 +53,16 @@ public class NoteViewModel extends AndroidViewModel {
         refreshSettings();
     }
 
-    public int getTheme(){
+    public int getTheme() {
         return repositoryInterface.getTheme();
     }
+
     public LiveData<List<Note>> getNotes() {
         return notes;
     }
 
     public void getAllNotes() {
+        isArchivedNotes = false;
         notesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     _notes = repositoryInterface.getAllNotes(_sortAction);
@@ -78,6 +81,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getArchivedNotes() {
+        isArchivedNotes = true;
         archivedNotesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     listArchivedNotes = repositoryInterface.getArchivedNotes();
@@ -107,7 +111,11 @@ public class NoteViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(updatedRows -> {
                             if (updatedRows > 0) {
-                                getAllNotes();
+                                if (isArchivedNotes) {
+                                    getArchivedNotes();
+                                } else {
+                                    getAllNotes();
+                                }
                             } else {
                                 Log.w(TAG, "Failed to update note status");
                             }
@@ -124,7 +132,11 @@ public class NoteViewModel extends AndroidViewModel {
                 .subscribe(
                         deletedRows -> {
                             if (deletedRows > 0) {
-                                getAllNotes();
+                                if (isArchivedNotes) {
+                                    getArchivedNotes();
+                                } else {
+                                    getAllNotes();
+                                }
                             } else {
                                 Log.w(TAG, "Failed to delete note status");
                             }
