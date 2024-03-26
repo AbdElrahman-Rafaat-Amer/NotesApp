@@ -9,12 +9,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +21,8 @@ import android.widget.SearchView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuHost;
-import androidx.core.view.MenuProvider;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -44,7 +36,6 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -249,8 +240,8 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 }
 
 abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    public static final int BUTTON_WIDTH = 250;
-    public Context context;
+    private int buttonWidth;
+    private final Context context;
     private float deleteButtonLeft;
     private float deleteButtonRight;
     private float archiveButtonLeft;
@@ -349,12 +340,12 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX < 0) {
                 // swapLeft
-                translationX = dX * 2 * BUTTON_WIDTH / itemView.getWidth();
                 drawButtonsOnRight(canvas, itemView);
+                translationX = dX * 2 * buttonWidth / itemView.getWidth();
             } else if (dX > 0) {
                 // swapRight
-                translationX = dX * BUTTON_WIDTH / itemView.getWidth();
                 drawButtonsOnLeft(canvas, itemView);
+                translationX = dX * buttonWidth / itemView.getWidth();
             }
         }
         super.onChildDraw(canvas, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
@@ -364,7 +355,7 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // Calculate the button width based on your requirements
         this.itemView = itemView;
         pinButtonLeft = itemView.getLeft();
-        pinButtonRight = pinButtonLeft + BUTTON_WIDTH;
+        pinButtonRight = pinButtonLeft + buttonWidth;
         // Draw the first button
         drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_pin), context.getString(R.string.pin), pinButtonLeft, pinButtonRight, ContextCompat.getColor(context, R.color.mainColor));
     }
@@ -374,10 +365,10 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         this.itemView = itemView;
 
         deleteButtonRight = itemView.getRight();
-        deleteButtonLeft = deleteButtonRight - BUTTON_WIDTH;
+        deleteButtonLeft = deleteButtonRight - buttonWidth;
 
         archiveButtonRight = deleteButtonLeft;
-        archiveButtonLeft = archiveButtonRight - BUTTON_WIDTH;
+        archiveButtonLeft = archiveButtonRight - buttonWidth;
         // Calculate the positions of the buttons on the right side
 
         // Draw the first button
@@ -387,7 +378,7 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_delete), context.getString(R.string.delete), deleteButtonLeft, deleteButtonRight, ContextCompat.getColor(context, R.color.red));
     }
 
-    private void drawButton(Canvas canvas, View itemView, Drawable imageResId, String text, float left, float right, int color) {
+    private void drawButton(Canvas canvas, View itemView, Drawable icon, String text, float left, float right, int color) {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
@@ -403,16 +394,26 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         float textY = itemView.getTop() + itemView.getHeight() / 3f;
         canvas.drawText(text, textX, textY, paint);
 
-        float cHeight = background.height();
-        float cWidth = background.width() / 2;
         // Draw the button image
-        if (imageResId != null) {
-            int top = (int) (background.top + (cHeight / 2f));
-            int bottom = (int) (background.bottom - (cHeight / 10f));
-            int imageLeft = (int) (left + cWidth - 60);
-            int imageRight = (int) (right - cWidth + 60);
-            imageResId.setBounds(imageLeft, top, imageRight, bottom);
-            imageResId.draw(canvas);
+        drawIcon(icon, canvas, left, right, background);
+    }
+
+    private void drawIcon(Drawable icon, Canvas canvas, float left, float right, RectF background) {
+        if (icon != null) {
+            int iconHeight = icon.getIntrinsicHeight();
+            int iconWidth = icon.getIntrinsicWidth();
+            buttonWidth = iconWidth * 3;
+            int margin = iconWidth / 2;
+            int itemViewHeight = itemView.getHeight() / 2;
+            int itemViewCenter = itemView.getTop() + itemViewHeight;
+            int iconLeft = (int) (left + margin);
+            int iconRight = (int) (right - margin);
+            Rect rect = new Rect(iconLeft,
+                    itemViewCenter - iconHeight,
+                    iconRight,
+                    itemViewCenter + iconHeight);
+            icon.setBounds(rect);
+            icon.draw(canvas);
         }
     }
 
