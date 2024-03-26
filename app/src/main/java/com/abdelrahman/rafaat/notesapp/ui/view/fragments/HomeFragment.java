@@ -19,6 +19,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -241,6 +242,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
 abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private int buttonWidth;
+    private int buttonHeight;
     private final Context context;
     private float deleteButtonLeft;
     private float deleteButtonRight;
@@ -379,33 +381,47 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     private void drawButton(Canvas canvas, View itemView, Drawable icon, String text, float left, float right, int color) {
+
+        // Draw the button background
+        drawBackGround(itemView, canvas, color, left, right);
+
+        int itemViewHeight = itemView.getHeight() / 2;
+        int itemViewCenter = itemView.getTop() + itemViewHeight;
+
+        // Draw the button text
+        drawText(text, canvas, context.getResources().getColor(R.color.white, null), left, right, itemViewCenter);
+
+        // Draw the button image
+        drawIcon(icon, canvas, left, right, itemViewCenter);
+    }
+
+    private void drawBackGround(View itemView, Canvas canvas, @ColorInt int color, float left, float right) {
+        RectF background = new RectF(left, itemView.getTop(), right, itemView.getBottom());
+        Paint paint = new Paint();
+        paint.setColor(color);
+        canvas.drawRect(background, paint);
+    }
+
+    private void drawText(String text, Canvas canvas, @ColorInt int color,
+                          float itemViewLeft, float right, int itemViewCenter) {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setTextSize(50);
         paint.setAntiAlias(true);
 
-        // Draw the button background
-        RectF background = new RectF(left, itemView.getTop(), right, itemView.getBottom());
-        canvas.drawRect(background, paint);
-
-        // Draw the button text
         paint.setColor(ContextCompat.getColor(context, R.color.white));
-        float textX = left + (right - left) / 2f - paint.measureText(text) / 2f;
-        float textY = itemView.getTop() + itemView.getHeight() / 3f;
+        float textX = itemViewLeft + (right - itemViewLeft) / 2f - paint.measureText(text) / 2f;
+        float textY = itemViewCenter + buttonHeight + context.getResources().getDimension(R.dimen.margin_between_image_text);
         canvas.drawText(text, textX, textY, paint);
-
-        // Draw the button image
-        drawIcon(icon, canvas, left, right, background);
     }
 
-    private void drawIcon(Drawable icon, Canvas canvas, float left, float right, RectF background) {
+    private void drawIcon(Drawable icon, Canvas canvas, float left, float right, int itemViewCenter) {
         if (icon != null) {
             int iconHeight = icon.getIntrinsicHeight();
+            buttonHeight = iconHeight;
             int iconWidth = icon.getIntrinsicWidth();
             buttonWidth = iconWidth * 3;
             int margin = iconWidth / 2;
-            int itemViewHeight = itemView.getHeight() / 2;
-            int itemViewCenter = itemView.getTop() + itemViewHeight;
             int iconLeft = (int) (left + margin);
             int iconRight = (int) (right - margin);
             Rect rect = new Rect(iconLeft,
