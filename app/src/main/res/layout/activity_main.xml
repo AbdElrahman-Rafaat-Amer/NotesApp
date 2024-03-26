@@ -16,18 +16,23 @@
         ads:adUnitId="@string/banner_ad_unit_id"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/drawerLinearLayout"
-        style="@style/Widget.Notes.Backdrop"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="center|start"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottomAdView"
         app:layout_constraintTop_toBottomOf="@+id/topAdView">
 
-        <include layout="@layout/custom_backdrop" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/drawerLinearLayout"
+            style="@style/Widget.Notes.Backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+            android:orientation="vertical">
+
+            <include layout="@layout/custom_backdrop" />
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"

@@ -15,7 +15,7 @@ import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityToolTipBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
-import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
+import com.abdelrahman.rafaat.notesapp.interfaces.OnNotesClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

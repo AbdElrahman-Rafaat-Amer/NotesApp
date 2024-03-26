@@ -1,4 +1,4 @@
-package com.abdelrahman.rafaat.notesapp.ui.view;
+package com.abdelrahman.rafaat.notesapp.interfaces;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
