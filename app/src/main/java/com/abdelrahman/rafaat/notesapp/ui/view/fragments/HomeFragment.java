@@ -387,12 +387,11 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         int itemViewHeight = itemView.getHeight() / 2;
         int itemViewCenter = itemView.getTop() + itemViewHeight;
-
+        // Draw the button image
+        drawIcon(icon, canvas, left, right, itemViewCenter);
         // Draw the button text
         drawText(text, canvas, context.getResources().getColor(R.color.white, null), left, right, itemViewCenter);
 
-        // Draw the button image
-        drawIcon(icon, canvas, left, right, itemViewCenter);
     }
 
     private void drawBackGround(View itemView, Canvas canvas, @ColorInt int color, float left, float right) {
@@ -406,7 +405,8 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
                           float itemViewLeft, float right, int itemViewCenter) {
         Paint paint = new Paint();
         paint.setColor(color);
-        paint.setTextSize(50);
+        double textSize = buttonWidth * 0.25;
+        paint.setTextSize((float) textSize);
         paint.setAntiAlias(true);
 
         paint.setColor(ContextCompat.getColor(context, R.color.white));
