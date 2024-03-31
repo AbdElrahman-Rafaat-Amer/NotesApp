@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +18,18 @@ import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivitySplashScreenBinding;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
-import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.BiometricUtils;
 import com.abdelrahman.rafaat.notesapp.utils.RootUtil;
 import com.google.android.gms.tasks.Task;
@@ -47,7 +48,7 @@ import java.util.concurrent.Executor;
 public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
     private AppUpdateManager appUpdateManager;
-    private final int appUpdateType = AppUpdateType.IMMEDIATE;
+    private static final int APP_UPDATE_TYPE = AppUpdateType.IMMEDIATE;
 
     private boolean isDeviceRooted = false;
     private boolean isEmulator = false;
@@ -55,9 +56,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             new ActivityResultContracts.StartIntentSenderForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_CANCELED) {
-                    if (appUpdateType == AppUpdateType.IMMEDIATE) {
+                    if (APP_UPDATE_TYPE == AppUpdateType.IMMEDIATE) {
                         addDialogNote(getString(R.string.immediate_update_message));
-                    } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+                    } else if (APP_UPDATE_TYPE == AppUpdateType.FLEXIBLE) {
                         addDialogNote(getString(R.string.flexible_update_message));
                     }
                 } else if (result.getResultCode() != RESULT_OK) {
@@ -71,9 +72,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     };
 
+    private NoteViewModel noteViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        updateTheme();
         binding = ActivitySplashScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.getRoot().setVisibility(View.INVISIBLE);
@@ -83,10 +88,28 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (isDeviceRooted || isEmulator) {
             checkBiometricAuthenticationAvailability();
         } else {
-            if (appUpdateType == AppUpdateType.FLEXIBLE) {
+            if (APP_UPDATE_TYPE == AppUpdateType.FLEXIBLE) {
                 appUpdateManager.registerListener(stateUpdatedListener);
             }
             checkForAppUpdate();
+        }
+    }
+
+    private void updateTheme() {
+        int theme = noteViewModel.getTheme();
+        switch (theme) {
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
         }
     }
 
@@ -116,7 +139,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void startUpdate(AppUpdateInfo appUpdateInfo) {
-        appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(appUpdateType)
+        appUpdateManager.startUpdateFlowForResult(appUpdateInfo, someActivityResultLauncher, AppUpdateOptions.newBuilder(APP_UPDATE_TYPE)
                 .setAllowAssetPackDeletion(true)
                 .build());
     }
@@ -153,11 +176,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 initUI();
             }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-            }
         });
 
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
@@ -175,8 +193,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding.getRoot().setVisibility(View.VISIBLE);
         binding.splashAnimation.addAnimatorListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(@NonNull Animator animator) {
-            }
+            public void onAnimationStart(@NonNull Animator animator) {}
 
             @Override
             public void onAnimationEnd(@NonNull Animator animator) {
@@ -188,12 +205,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationCancel(@NonNull Animator animator) {
-            }
+            public void onAnimationCancel(@NonNull Animator animator) {}
 
             @Override
-            public void onAnimationRepeat(@NonNull Animator animator) {
-            }
+            public void onAnimationRepeat(@NonNull Animator animator) {}
         });
         binding.splashAnimation.playAnimation();
         Animation bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_screen_bottom_animation);
@@ -208,14 +223,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onResume();
         if (!isDeviceRooted && !isEmulator) {
             appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
-                if (appUpdateType == AppUpdateType.IMMEDIATE) {
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                        startUpdate(appUpdateInfo);
-                    }
-                } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
-                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                        showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
-                    }
+                if (APP_UPDATE_TYPE == AppUpdateType.IMMEDIATE && appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    startUpdate(appUpdateInfo);
+                } else if (APP_UPDATE_TYPE == AppUpdateType.FLEXIBLE && appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    showSnackBar(getString(R.string.update_complete_message), Snackbar.LENGTH_INDEFINITE, true);
                 }
             });
         }
@@ -224,7 +235,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (appUpdateType == AppUpdateType.FLEXIBLE) {
+        if (APP_UPDATE_TYPE == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(stateUpdatedListener);
         }
     }
@@ -266,9 +277,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             alertDialog.dismiss();
-            if (appUpdateType == AppUpdateType.IMMEDIATE) {
+            if (APP_UPDATE_TYPE == AppUpdateType.IMMEDIATE) {
                 System.exit(0);
-            } else if (appUpdateType == AppUpdateType.FLEXIBLE) {
+            } else if (APP_UPDATE_TYPE == AppUpdateType.FLEXIBLE) {
                 initUI();
             }
         });

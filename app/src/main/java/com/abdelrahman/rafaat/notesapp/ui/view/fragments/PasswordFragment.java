@@ -21,6 +21,7 @@ import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentPasswordBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 
 import java.util.Locale;
 
@@ -46,7 +47,9 @@ public class PasswordFragment extends BaseFragment {
         initUI();
         initViewModel();
         checkIsSetPassword();
-        checkRTL();
+        if (Utils.isRTL()) {
+            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
+        }
 
     }
 
@@ -65,9 +68,9 @@ public class PasswordFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 4) {
-                    if (isSetPassword){
+                    if (isSetPassword) {
                         updateNote();
-                    } else{
+                    } else {
                         checkPassword();
                     }
                 }
@@ -85,14 +88,6 @@ public class PasswordFragment extends BaseFragment {
             isSetPassword = true;
             binding.passwordTitleTextView.setText(R.string.enter_password);
         }
-    }
-
-    private void checkRTL() {
-        String language = Locale.getDefault().getDisplayName();
-        int directionality = Character.getDirectionality(language.charAt(0));
-        boolean isRTL = directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
-        if (isRTL)
-            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
     }
 
     private void checkPassword() {

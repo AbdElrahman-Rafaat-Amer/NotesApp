@@ -55,8 +55,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AddNoteFragment extends BaseFragment {
-
-//    private static final int PICK_IMAGE = 1;
     private FragmentAddNoteBinding binding;
     private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
@@ -106,7 +104,9 @@ public class AddNoteFragment extends BaseFragment {
         initViewModel();
         initUI();
         checkIsEdit();
-        checkRTL();
+        if (Utils.isRTL()) {
+            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
+        }
         watchText();
         watchKeyboard();
         onBackPressed();
@@ -316,14 +316,6 @@ public class AddNoteFragment extends BaseFragment {
         }
     }
 
-    private void checkRTL() {
-        String language = Locale.getDefault().getDisplayName();
-        int directionality = Character.getDirectionality(language.charAt(0));
-        boolean isRTL = directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
-        if (isRTL)
-            binding.goBackImageView.setImageResource(R.drawable.ic_arrow_right);
-    }
-
     private void chooseColor() {
         binding.colorPickerView.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedOption = binding.colorPickerView.getCheckedRadioButtonId();
@@ -464,7 +456,7 @@ public class AddNoteFragment extends BaseFragment {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
         note.setTitle(binding.noteTitleEditText.getText().toString());
         note.setBody(Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY));
-        note.setDate(formatter.format(new Date()));
+        note.setCreationDate(formatter.format(new Date()));
         note.setColor(noteColor);
         note.setTextSize(textSize);
         note.setTextAlignment(textAlignment);

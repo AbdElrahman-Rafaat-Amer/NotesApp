@@ -5,7 +5,9 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.hardware.display.DisplayManager;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
@@ -30,17 +32,18 @@ public class NavigationIconClickListener implements View.OnClickListener {
         this.openIcon = openIcon;
         this.closeIcon = closeIcon;
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        context.getDisplay().getRealMetrics(displayMetrics);
         width = displayMetrics.widthPixels;
+
     }
 
     @Override
     public void onClick(View view) {
-       startAnimation();
+        startAnimation();
         updateIcon(view);
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
         backdropShown = !backdropShown;
 
         // Cancel the existing animations
@@ -48,7 +51,10 @@ public class NavigationIconClickListener implements View.OnClickListener {
         animatorSet.end();
         animatorSet.cancel();
 
-        final int translateY = width / 2;
+        int translateY = width / 2;
+        if (Utils.isRTL()) {
+            translateY *= -1;
+        }
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(sheet, "translationX", backdropShown ? translateY : 0);
         animator.setDuration(500);

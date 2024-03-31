@@ -3,6 +3,8 @@ package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -95,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             closeMenu();
         });
 
-        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view -> {
-            closeMenu();
-        });
+        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view ->
+                closeMenu()
+        );
 
         binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
             if (navController.getCurrentDestination().getId() != R.id.archived_fragment) {
@@ -106,11 +108,37 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             }
             closeMenu();
         });
+
+        binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
+            startActivity(new Intent(this, SettingsActivity.class));
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.contactUsButton).setOnClickListener(view -> {
+            startActivity(new Intent(this, ContactUsActivity.class));
+            closeMenu();
+        });
+
+        binding.rootView.findViewById(R.id.ourAppsButton).setOnClickListener(view -> {
+            openGooglePlay();
+            closeMenu();
+        });
     }
 
     private void closeMenu() {
         navigationClickListener.startAnimation();
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
+    }
+
+    private void openGooglePlay() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.google_play_link)));
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        noteViewModel.refreshSettings();
     }
 
     @Override

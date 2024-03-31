@@ -9,12 +9,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +19,11 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuHost;
-import androidx.core.view.MenuProvider;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -44,7 +37,6 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
 import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
-import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +49,9 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     private NoteViewModel noteViewModel;
     private List<Note> noteList = new ArrayList<>();
     private Note selectedNote;
-    private boolean isList = false;
     private boolean isSearching = false;
     private boolean isPinned = false;
     private AlertDialog alertDialog;
-//    private NavigationIconClickListener navigationClickListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,7 +72,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         initRecyclerView();
         initViewModel();
         observeViewModel();
-        initMenu();
         onBackPressed();
         noteViewModel.setCurrentNote(null);
 
@@ -127,7 +116,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 
     private void initRecyclerView() {
         adapter = new NotesAdapter(this);
-        setupLayoutManger();
+        setupLayoutManger(true);
         binding.notesRecyclerview.setAdapter(adapter);
         int resId = R.anim.lat;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
@@ -135,64 +124,33 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
         swipeRecyclerView();
     }
 
-    private void setupLayoutManger() {
-        if (!isList)
-            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
-        else
+    private void setupLayoutManger(boolean isList) {
+        if (isList) {
             binding.notesRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
+        } else {
+            binding.notesRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
+        }
     }
 
     private void initViewModel() {
         noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getLayoutMangerStyle();
         noteViewModel.getAllNotes();
     }
 
     private void observeViewModel() {
-        noteViewModel.notes.observe(getViewLifecycleOwner(), notes -> {
-            List<Note> nonArchivedNotes = notes;
-            Log.i("ARCHIVED_NOTES", "observeViewModel:  HomeFragment.notes" + + notes.size());
+        noteViewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
             } else {
-//                nonArchivedNotes = notes.stream().filter(note -> !note.isArchived()).collect(Collectors.toList());
                 binding.noNotesLayout.noNotesView.setVisibility(View.GONE);
             }
 
             binding.noSearchLayout.noFilesView.setVisibility(View.GONE);
-            adapter.setList(nonArchivedNotes);
+            adapter.setList(notes);
             noteList = notes;
         });
 
-        noteViewModel.isList.observe(getViewLifecycleOwner(), aBoolean -> {
-            isList = aBoolean;
-            setupLayoutManger();
-        });
-    }
-
-    private void initMenu() {
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.setting_menu, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.list_note) {
-                    if (noteList.isEmpty()) {
-                        showSnackBar(binding.rootView, getString(R.string.no_notes));
-                    } else {
-                        isList = !isList;
-                        setupLayoutManger();
-                        adapter.notifyDataSetChanged();
-                        noteViewModel.setLayoutMangerStyle(isList);
-                    }
-                }
-                return false;
-            }
-        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        noteViewModel.isListView.observe(getViewLifecycleOwner(), this::setupLayoutManger);
     }
 
     private void showPinnedNotes() {
@@ -272,7 +230,7 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
     }
 
     @Override
-    public void onClickListener(Note note) {
+    public void onNoteClickListener(Note note) {
         noteViewModel.setCurrentNote(note);
         if (note.getPassword().isEmpty())
             Navigation.findNavController(requireView()).navigate(R.id.show_note_fragment);
@@ -283,8 +241,9 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
 }
 
 abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
-    public static final int BUTTON_WIDTH = 250;
-    public Context context;
+    private int buttonWidth;
+    private int buttonHeight;
+    private final Context context;
     private float deleteButtonLeft;
     private float deleteButtonRight;
     private float archiveButtonLeft;
@@ -383,12 +342,12 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX < 0) {
                 // swapLeft
-                translationX = dX * 2 * BUTTON_WIDTH / itemView.getWidth();
                 drawButtonsOnRight(canvas, itemView);
+                translationX = dX * 2 * buttonWidth / itemView.getWidth();
             } else if (dX > 0) {
                 // swapRight
-                translationX = dX * BUTTON_WIDTH / itemView.getWidth();
                 drawButtonsOnLeft(canvas, itemView);
+                translationX = dX * buttonWidth / itemView.getWidth();
             }
         }
         super.onChildDraw(canvas, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
@@ -398,7 +357,7 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // Calculate the button width based on your requirements
         this.itemView = itemView;
         pinButtonLeft = itemView.getLeft();
-        pinButtonRight = pinButtonLeft + BUTTON_WIDTH;
+        pinButtonRight = pinButtonLeft + buttonWidth;
         // Draw the first button
         drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_pin), context.getString(R.string.pin), pinButtonLeft, pinButtonRight, ContextCompat.getColor(context, R.color.mainColor));
     }
@@ -408,10 +367,10 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         this.itemView = itemView;
 
         deleteButtonRight = itemView.getRight();
-        deleteButtonLeft = deleteButtonRight - BUTTON_WIDTH;
+        deleteButtonLeft = deleteButtonRight - buttonWidth;
 
         archiveButtonRight = deleteButtonLeft;
-        archiveButtonLeft = archiveButtonRight - BUTTON_WIDTH;
+        archiveButtonLeft = archiveButtonRight - buttonWidth;
         // Calculate the positions of the buttons on the right side
 
         // Draw the first button
@@ -421,32 +380,56 @@ abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback {
         drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_delete), context.getString(R.string.delete), deleteButtonLeft, deleteButtonRight, ContextCompat.getColor(context, R.color.red));
     }
 
-    private void drawButton(Canvas canvas, View itemView, Drawable imageResId, String text, float left, float right, int color) {
-        Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setTextSize(50);
-        paint.setAntiAlias(true);
+    private void drawButton(Canvas canvas, View itemView, Drawable icon, String text, float left, float right, int color) {
 
         // Draw the button background
-        RectF background = new RectF(left, itemView.getTop(), right, itemView.getBottom());
-        canvas.drawRect(background, paint);
+        drawBackGround(itemView, canvas, color, left, right);
 
-        // Draw the button text
-        paint.setColor(ContextCompat.getColor(context, R.color.white));
-        float textX = left + (right - left) / 2f - paint.measureText(text) / 2f;
-        float textY = itemView.getTop() + itemView.getHeight() / 3f;
-        canvas.drawText(text, textX, textY, paint);
-
-        float cHeight = background.height();
-        float cWidth = background.width() / 2;
+        int itemViewHeight = itemView.getHeight() / 2;
+        int itemViewCenter = itemView.getTop() + itemViewHeight;
         // Draw the button image
-        if (imageResId != null) {
-            int top = (int) (background.top + (cHeight / 2f));
-            int bottom = (int) (background.bottom - (cHeight / 10f));
-            int imageLeft = (int) (left + cWidth - 60);
-            int imageRight = (int) (right - cWidth + 60);
-            imageResId.setBounds(imageLeft, top, imageRight, bottom);
-            imageResId.draw(canvas);
+        drawIcon(icon, canvas, left, right, itemViewCenter);
+        // Draw the button text
+        drawText(text, canvas, context.getResources().getColor(R.color.white, null), left, right, itemViewCenter);
+
+    }
+
+    private void drawBackGround(View itemView, Canvas canvas, @ColorInt int color, float left, float right) {
+        RectF background = new RectF(left, itemView.getTop(), right, itemView.getBottom());
+        Paint paint = new Paint();
+        paint.setColor(color);
+        canvas.drawRect(background, paint);
+    }
+
+    private void drawText(String text, Canvas canvas, @ColorInt int color,
+                          float itemViewLeft, float right, int itemViewCenter) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        double textSize = buttonWidth * 0.25;
+        paint.setTextSize((float) textSize);
+        paint.setAntiAlias(true);
+
+        paint.setColor(ContextCompat.getColor(context, R.color.white));
+        float textX = itemViewLeft + (right - itemViewLeft) / 2f - paint.measureText(text) / 2f;
+        float textY = itemViewCenter + buttonHeight + context.getResources().getDimension(R.dimen.margin_between_image_text);
+        canvas.drawText(text, textX, textY, paint);
+    }
+
+    private void drawIcon(Drawable icon, Canvas canvas, float left, float right, int itemViewCenter) {
+        if (icon != null) {
+            int iconHeight = icon.getIntrinsicHeight();
+            buttonHeight = iconHeight;
+            int iconWidth = icon.getIntrinsicWidth();
+            buttonWidth = iconWidth * 3;
+            int margin = iconWidth / 2;
+            int iconLeft = (int) (left + margin);
+            int iconRight = (int) (right - margin);
+            Rect rect = new Rect(iconLeft,
+                    itemViewCenter - iconHeight,
+                    iconRight,
+                    itemViewCenter + iconHeight);
+            icon.setBounds(rect);
+            icon.draw(canvas);
         }
     }
 

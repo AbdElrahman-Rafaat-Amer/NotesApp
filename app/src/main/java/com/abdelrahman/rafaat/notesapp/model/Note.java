@@ -9,21 +9,24 @@ public class Note {
     private int id;
     private String title;
     private String body;
-    private String date;
+    private String creationDate;
+    private long modificationDate;
     private int color;
     private boolean isPinned;
     private String password;
+    private boolean isLocked;
     private int textSize;
     private int textAlignment;
-
     private boolean isArchived;
 
-    public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
+    public Note(String title, String body, String creationDate, int color, int textSize, int textAlignment) {
         this.title = title;
         this.body = body;
-        this.date = date;
+        this.creationDate = creationDate;
+        this.modificationDate = -1;
         this.color = color;
         this.password = "";
+        this.isLocked = false;
         this.isPinned = false;
         this.textSize = textSize;
         this.textAlignment = textAlignment;
@@ -54,12 +57,12 @@ public class Note {
         this.body = body;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDate(String date) {
+        this.creationDate = date;
     }
 
     public int getColor() {
@@ -84,6 +87,7 @@ public class Note {
 
     public void setPassword(String password) {
         this.password = password;
+        isLocked = !password.trim().isEmpty();
     }
 
     public int getTextSize() {
@@ -108,5 +112,21 @@ public class Note {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public long getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(long modificationDate) {
+        this.modificationDate = modificationDate;
     }
 }
