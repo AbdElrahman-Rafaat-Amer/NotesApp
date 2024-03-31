@@ -49,7 +49,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
             // Copy data from the old table to the new one
             database.execSQL("INSERT INTO notes_new (id, title, body, creationDate, color, isPinned, password, textSize, textAlignment, isArchived) " +
-                    "SELECT id, title, body, creationDate, color, isPinned, password, textSize, textAlignment, isArchived FROM notes");
+                    "SELECT id, title, body, date, color, isPinned, password, textSize, textAlignment, isArchived FROM notes");
 
             // Drop the old table
             database.execSQL("DROP TABLE IF EXISTS `notes`");
