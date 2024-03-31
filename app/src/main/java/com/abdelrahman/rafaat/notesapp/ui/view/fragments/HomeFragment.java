@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
+import com.abdelrahman.rafaat.notesapp.interfaces.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
-import com.abdelrahman.rafaat.notesapp.interfaces.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.utils.MyItemTouchHelperCallback;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@
     android:viewportHeight="256">
 
     <path
-        android:fillColor="@color/mainColor"
+        android:fillColor="@color/white"
         android:fillType="nonZero"
         android:pathData="M127.86,127.86m-126.45,0a126.45,126.45 0,1 1,252.9 0a126.45,126.45 0,1 1,-252.9 0"
         android:strokeWidth="2.81"
@@ -13,7 +13,7 @@
         android:strokeLineCap="butt"
         android:strokeLineJoin="miter" />
     <path
-        android:fillColor="@color/white"
+        android:fillColor="@color/mainColor"
         android:fillType="nonZero"
         android:pathData="M189.69,187.9c-0.84,-1.92 -1.82,-3.73 -2.77,-5.47l-0.26,-0.48l-22.27,-22.35c-0.52,-0.53 -1.05,-1.05 -1.57,-1.57c-0.94,-0.94 -1.89,-1.87 -2.8,-2.84l-2.05,-2.02l32.76,-32.76L188.33,118.02c-12.8,-12.8 -32.21,-17.59 -49.67,-12.31l-8.94,-8.94c1.08,-10.97 -2.83,-22.04 -10.54,-29.75L116.79,64.63L64.63,116.79l2.4,2.39c7.71,7.71 18.78,11.62 29.75,10.54l8.94,8.94c-5.28,17.46 -0.5,36.87 12.3,49.67l2.39,2.39L153.17,157.97l2.02,2.05c0.95,0.92 1.89,1.85 2.82,2.8c0.52,0.53 1.05,1.05 1.57,1.57l22.06,22.06l0.8,0.49c1.74,0.95 3.54,1.92 5.47,2.77L191.08,191.08L189.69,187.9z"
         android:strokeWidth="2.81"

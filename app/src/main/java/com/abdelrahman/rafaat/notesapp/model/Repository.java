@@ -69,7 +69,7 @@ public class Repository implements RepositoryInterface {
     @Override
     public Pair<SortAction, Boolean> refreshSettings() {
         SortAction sortAction = getSortOrder();
-        boolean isListView = getBoolean("IS_LIST");
+        boolean isListView = getBoolean("IS_LIST", true);
         return new Pair<>(sortAction, isListView);
     }
 

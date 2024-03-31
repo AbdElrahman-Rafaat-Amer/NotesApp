@@ -40,9 +40,9 @@ public interface NotesDAO {
 
 
     //CREATION_DATE
-    @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY date DESC")
+    @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY creationDate DESC")
     List<Note> getAllNotesDescendingByCreationDate();
-    @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY date ASC")
+    @Query("SELECT * FROM notes WHERE isArchived = 0 ORDER BY creationDate ASC")
     List<Note> getAllNotesAscendingByCreationDate();
 
 

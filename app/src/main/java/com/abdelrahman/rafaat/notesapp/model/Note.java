@@ -9,8 +9,7 @@ public class Note {
     private int id;
     private String title;
     private String body;
-    private String date;
-
+    private String creationDate;
     private long modificationDate;
     private int color;
     private boolean isPinned;
@@ -18,13 +17,12 @@ public class Note {
     private boolean isLocked;
     private int textSize;
     private int textAlignment;
-
     private boolean isArchived;
 
-    public Note(String title, String body, String date, int color, int textSize, int textAlignment) {
+    public Note(String title, String body, String creationDate, int color, int textSize, int textAlignment) {
         this.title = title;
         this.body = body;
-        this.date = date;
+        this.creationDate = creationDate;
         this.modificationDate = -1;
         this.color = color;
         this.password = "";
@@ -59,12 +57,12 @@ public class Note {
         this.body = body;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDate(String date) {
+        this.creationDate = date;
     }
 
     public int getColor() {
