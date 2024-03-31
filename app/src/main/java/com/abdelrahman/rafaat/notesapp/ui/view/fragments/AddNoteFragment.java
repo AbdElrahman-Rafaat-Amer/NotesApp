@@ -456,7 +456,7 @@ public class AddNoteFragment extends BaseFragment {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MM yyy HH:mm a", Locale.getDefault());
         note.setTitle(binding.noteTitleEditText.getText().toString());
         note.setBody(Html.toHtml(binding.noteBodyEditText.getText(), Html.FROM_HTML_MODE_LEGACY));
-        note.setDate(formatter.format(new Date()));
+        note.setCreationDate(formatter.format(new Date()));
         note.setColor(noteColor);
         note.setTextSize(textSize);
         note.setTextAlignment(textAlignment);

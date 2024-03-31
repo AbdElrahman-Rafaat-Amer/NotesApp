@@ -64,7 +64,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             if (currentNote.getPassword().isEmpty()) {
                 binding.noteTitleTextView.setText(currentNote.getTitle());
                 binding.noteBodyTextView.setText(Html.fromHtml(currentNote.getBody(), Html.FROM_HTML_MODE_LEGACY));
-                binding.noteDateTextView.setText(currentNote.getDate());
+                binding.noteDateTextView.setText(currentNote.getCreationDate());
                 binding.noteDateTextView.setSelected(true);
                 binding.lockedNoteImageView.setVisibility(View.GONE);
                 setViewVisibility(View.VISIBLE);
