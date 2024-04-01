@@ -1,41 +1,27 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.activities;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.ActivityMainBinding;
-import com.abdelrahman.rafaat.notesapp.model.Note;
-import com.abdelrahman.rafaat.notesapp.ui.view.fragments.HomeFragment;
 import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.NavigationIconClickListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import android.util.Log;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.FragmentNavigator;
-import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
     private ActivityMainBinding binding;
@@ -94,11 +80,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 navController.popBackStack(R.id.archived_fragment, true);
                 navController.navigate(R.id.home_fragment);
             }
-            closeMenu();
+            closeMenu(true);
         });
 
         binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view ->
-                closeMenu()
+                closeMenu(true)
         );
 
         binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
@@ -106,27 +92,31 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 navController.popBackStack(R.id.home_fragment, true);
                 navController.navigate(R.id.archived_fragment);
             }
-            closeMenu();
+            closeMenu(true);
         });
 
         binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
             startActivity(new Intent(this, SettingsActivity.class));
-            closeMenu();
+            closeMenu(true);
         });
 
         binding.rootView.findViewById(R.id.contactUsButton).setOnClickListener(view -> {
             startActivity(new Intent(this, ContactUsActivity.class));
-            closeMenu();
+            closeMenu(true);
         });
 
         binding.rootView.findViewById(R.id.ourAppsButton).setOnClickListener(view -> {
             openGooglePlay();
-            closeMenu();
+            closeMenu(true);
         });
     }
 
-    private void closeMenu() {
-        navigationClickListener.startAnimation();
+    private void closeMenu(boolean isAnimated) {
+        if (isAnimated){
+            navigationClickListener.startAnimation();
+        }else {
+            navigationClickListener.close();
+        }
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
     }
 
@@ -143,13 +133,12 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     @Override
     public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+        closeMenu(false);
         int destinationId = navDestination.getId();
         if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment) {
-            Log.i("FRAGMENT_TAG", "onDestinationChanged: HomeFragment");
             binding.toolBar.setVisibility(View.VISIBLE);
             binding.drawerLinearLayout.setVisibility(View.VISIBLE);
         } else {
-            Log.i("FRAGMENT_TAG", "onDestinationChanged: AnotherFragment");
             binding.toolBar.setVisibility(View.GONE);
             binding.drawerLinearLayout.setVisibility(View.GONE);
         }

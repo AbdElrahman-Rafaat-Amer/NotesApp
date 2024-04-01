@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.abdelrahman.rafaat.notesapp"
-        minSdk 26
+        minSdk 24
         targetSdk 34
         versionCode 8
         versionName "1.1.8"

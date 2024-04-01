@@ -33,13 +33,11 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.FragmentAddNoteBinding;
 import com.abdelrahman.rafaat.notesapp.model.Note;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -56,7 +54,6 @@ import java.util.stream.Collectors;
 
 public class AddNoteFragment extends BaseFragment {
     private FragmentAddNoteBinding binding;
-    private NoteViewModel noteViewModel;
     private boolean isTextChanged = false;
     private Note note;
     private int noteColor = -1;
@@ -101,7 +98,6 @@ public class AddNoteFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViewModel();
         initUI();
         checkIsEdit();
         if (Utils.isRTL()) {
@@ -111,10 +107,6 @@ public class AddNoteFragment extends BaseFragment {
         watchKeyboard();
         onBackPressed();
 
-    }
-
-    private void initViewModel() {
-        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
     }
 
     private void initUI() {
@@ -369,7 +361,8 @@ public class AddNoteFragment extends BaseFragment {
         });
     }
 
-    private void onBackPressed() {
+    @Override
+    protected void onBackPressed() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

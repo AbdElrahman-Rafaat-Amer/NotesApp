@@ -1,6 +1,5 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.animation.LayoutAnimationController;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -20,8 +18,7 @@ import com.abdelrahman.rafaat.notesapp.databinding.FragmentHomeBinding;
 import com.abdelrahman.rafaat.notesapp.interfaces.OnItemSwipedListener;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
-import com.abdelrahman.rafaat.notesapp.ui.view.OnNotesClickListener;
-import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
+import com.abdelrahman.rafaat.notesapp.interfaces.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.utils.SwipeItemTouchHelper;
 
 import java.util.ArrayList;
@@ -29,11 +26,8 @@ import java.util.List;
 
 public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickListener, OnItemSwipedListener {
     private FragmentHomeBinding binding;
-    private NoteViewModel noteViewModel;
-    private NotesAdapter adapter;
     private List<Note> noteList = new ArrayList<>();
-    private Note selectedNote;
-    private AlertDialog alertDialog;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -49,7 +43,6 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
         binding.addNoteFloatingActionButton.setVisibility(View.GONE);
         binding.noNotesLayout.noNotesTextView.setText(R.string.not_archived_notes);
         initRecyclerView();
-        initViewModel();
         observeViewModel();
         onBackPressed();
     }
@@ -70,12 +63,8 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
         itemTouchHelper.attachToRecyclerView(binding.notesRecyclerview);
     }
 
-    private void initViewModel() {
-        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
-        noteViewModel.getArchivedNotes();
-    }
-
     private void observeViewModel() {
+        noteViewModel.getArchivedNotes();
         noteViewModel.archivedNotes.observe(getViewLifecycleOwner(), notes -> {
             if (notes.isEmpty()) {
                 binding.noNotesLayout.noNotesView.setVisibility(View.VISIBLE);
@@ -89,7 +78,8 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
         });
     }
 
-    public void onBackPressed() {
+    @Override
+    protected void onBackPressed() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -97,21 +87,6 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
                 requireActivity().getOnBackPressedDispatcher().onBackPressed();
             }
         });
-    }
-
-    private void showAlertDialog(int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
-
-        builder.setMessage(getString(R.string.remove_note))
-                .setPositiveButton(R.string.remove, (dialog, which) -> noteViewModel.deleteNote(selectedNote.getId()))
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    alertDialog.dismiss();
-                    adapter.notifyItemChanged(position);
-                });
-
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
     }
 
     @Override

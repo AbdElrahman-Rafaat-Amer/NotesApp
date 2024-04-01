@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abdelrahman.rafaat.notesapp.R;
 import com.abdelrahman.rafaat.notesapp.databinding.CustomRowNoteBinding;
+import com.abdelrahman.rafaat.notesapp.interfaces.OnNotesClickListener;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 
 import java.util.ArrayList;

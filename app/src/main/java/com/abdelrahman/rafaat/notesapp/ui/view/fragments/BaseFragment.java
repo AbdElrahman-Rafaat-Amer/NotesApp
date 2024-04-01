@@ -1,28 +1,44 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.abdelrahman.rafaat.notesapp.R;
+import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.ui.view.NotesAdapter;
+import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Objects;
 
 public class BaseFragment extends Fragment {
 
-    protected int screenWidth = 0;
-    protected int screenHeight = 0;
+    protected AlertDialog alertDialog;
+    protected NoteViewModel noteViewModel;
+    protected Note selectedNote;
+    protected NotesAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        calculateScreenWidth();
+        initViewModel();
+    }
+
+    private void initViewModel() {
+        noteViewModel = new ViewModelProvider(requireActivity()).get(NoteViewModel.class);
+        Log.i("BaseFragment", "initViewModel: " + this);
+        Log.i("BaseFragment", "initViewModel: " + this.getClass());
+        Log.i("BaseFragment", "initViewModel: " + this.getClass().getName());
+    }
+
+    protected void onBackPressed() {
+
     }
 
     protected void showSnackBar(View view, String message) {
@@ -32,11 +48,19 @@ public class BaseFragment extends Fragment {
         snackBar.show();
     }
 
-    protected void calculateScreenWidth() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) requireContext()).getWindowManager()
-                .getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
-        screenHeight = displayMetrics.heightPixels;
+    protected void showAlertDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
+
+        builder.setMessage(getString(R.string.remove_note))
+                .setPositiveButton(R.string.remove, (dialog, which) -> noteViewModel.deleteNote(selectedNote.getId()))
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    alertDialog.dismiss();
+                    adapter.notifyItemChanged(position);
+                });
+
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
+
 }
