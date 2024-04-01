@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -28,8 +27,6 @@ import com.abdelrahman.rafaat.notesapp.ui.viewmodel.NoteViewModel;
 import com.abdelrahman.rafaat.notesapp.utils.Utils;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
-
-import java.util.Locale;
 
 public class ShowNoteFragment extends BaseFragment {
     private FragmentShowBinding binding;

@@ -8,8 +8,6 @@ import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.widget.EditText;
 
-import com.abdelrahman.rafaat.notesapp.R;
-
 import java.util.Locale;
 
 public class Utils {

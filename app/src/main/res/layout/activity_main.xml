@@ -16,24 +16,6 @@
         ads:adUnitId="@string/banner_ad_unit_id"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomAdView"
-        app:layout_constraintTop_toBottomOf="@+id/topAdView">
-
-        <LinearLayout
-            android:id="@+id/drawerLinearLayout"
-            style="@style/Widget.Notes.Backdrop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|start"
-            android:orientation="vertical">
-
-            <include layout="@layout/custom_backdrop" />
-        </LinearLayout>
-    </ScrollView>
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -51,6 +33,24 @@
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomAdView"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+        <LinearLayout
+            android:id="@+id/drawerLinearLayout"
+            style="@style/Widget.Notes.Backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+            android:orientation="vertical">
+
+            <include layout="@layout/custom_backdrop" />
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
