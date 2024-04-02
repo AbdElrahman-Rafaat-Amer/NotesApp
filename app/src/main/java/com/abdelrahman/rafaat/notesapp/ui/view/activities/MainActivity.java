@@ -77,19 +77,23 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
         binding.rootView.findViewById(R.id.allNotesButton).setOnClickListener(view -> {
             if (navController.getCurrentDestination().getId() != R.id.home_fragment) {
-                navController.popBackStack(R.id.archived_fragment, true);
+                navController.popBackStack();
                 navController.navigate(R.id.home_fragment);
             }
             closeMenu(true);
         });
 
-        binding.rootView.findViewById(R.id.pinnedNotesButton).setOnClickListener(view ->
-                closeMenu(true)
-        );
+        binding.rootView.findViewById(R.id.favoritesNotesButton).setOnClickListener(view -> {
+            if (navController.getCurrentDestination().getId() != R.id.favorites_fragment) {
+                navController.popBackStack();
+                navController.navigate(R.id.favorites_fragment);
+            }
+            closeMenu(true);
+        });
 
         binding.rootView.findViewById(R.id.archivedNotesButton).setOnClickListener(view -> {
             if (navController.getCurrentDestination().getId() != R.id.archived_fragment) {
-                navController.popBackStack(R.id.home_fragment, true);
+                navController.popBackStack();
                 navController.navigate(R.id.archived_fragment);
             }
             closeMenu(true);
@@ -133,12 +137,12 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
     @Override
     public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-        closeMenu(false);
         int destinationId = navDestination.getId();
-        if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment) {
+        if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment || destinationId == R.id.favorites_fragment) {
             binding.toolBar.setVisibility(View.VISIBLE);
             binding.drawerLinearLayout.setVisibility(View.VISIBLE);
         } else {
+            closeMenu(false);
             binding.toolBar.setVisibility(View.GONE);
             binding.drawerLinearLayout.setVisibility(View.GONE);
         }

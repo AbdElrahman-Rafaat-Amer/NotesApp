@@ -10,12 +10,9 @@ import io.reactivex.rxjava3.core.Single;
 public interface LocalSourceInterface {
 
     void insertNote(Note note);
-
     List<Note> getAllNotes(SortAction sortAction);
-
     List<Note> getArchivedNotes();
-
+    List<Note> getFavoritesNotes();
     Single<Integer> updateNote(Note note);
-
     Single<Integer> deleteNote(int id);
 }

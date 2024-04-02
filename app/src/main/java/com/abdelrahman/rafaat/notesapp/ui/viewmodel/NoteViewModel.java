@@ -32,6 +32,10 @@ public class NoteViewModel extends AndroidViewModel {
     private List<Note> listArchivedNotes;
     private final MutableLiveData<List<Note>> _archivedNotes = new MutableLiveData<>();
     public LiveData<List<Note>> archivedNotes = _archivedNotes;
+
+    private List<Note> listFavoritesNotes;
+    private final MutableLiveData<List<Note>> _favoritesNotes = new MutableLiveData<>();
+    public LiveData<List<Note>> favoritesNotes = _favoritesNotes;
     private Note currentNote;
 
     private SortAction _sortAction = new SortAction();
@@ -40,6 +44,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     private Disposable notesDisposable;
     private Disposable archivedNotesDisposable;
+    private Disposable favoritesNotesDisposable;
     private Disposable updateNotesDisposable;
     private Disposable deleteNotesDisposable;
 
@@ -96,6 +101,27 @@ public class NoteViewModel extends AndroidViewModel {
                 .subscribe(
                         items ->
                                 _archivedNotes.setValue(listArchivedNotes),
+                        throwable ->
+                                Log.e(TAG, "Received items Error: " + throwable.getMessage())
+                );
+    }
+
+    public void getFavoritesNotes() {
+        isArchivedNotes = true;
+        favoritesNotesDisposable = Observable.create(emitter -> {
+                    // Simulate data generation or retrieval
+                    listFavoritesNotes = repositoryInterface.getFavoritesNotes();
+                    // Emit the items to the subscribers
+                    emitter.onNext(listFavoritesNotes);
+
+                    // Complete the observable (optional)
+                    emitter.onComplete();
+                })
+                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribe(
+                        items ->
+                                _favoritesNotes.setValue(listFavoritesNotes),
                         throwable ->
                                 Log.e(TAG, "Received items Error: " + throwable.getMessage())
                 );
@@ -173,6 +199,7 @@ public class NoteViewModel extends AndroidViewModel {
         super.onCleared();
         disposeDisposable(notesDisposable);
         disposeDisposable(archivedNotesDisposable);
+        disposeDisposable(favoritesNotesDisposable);
         disposeDisposable(updateNotesDisposable);
         disposeDisposable(deleteNotesDisposable);
     }
