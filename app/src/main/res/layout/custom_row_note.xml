@@ -23,6 +23,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/favorites_imageView"
+            android:layout_width="40sp"
+            android:layout_height="30sp"
+            android:layout_margin="7sp"
+            android:contentDescription="@string/pinned_note"
+            android:src="@drawable/ic_favorite"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/pinnedNote_imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/note_imageView"
             android:layout_width="wrap_content"
             android:layout_height="190sp"

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.NoteType;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
@@ -48,7 +49,7 @@ public class NoteViewModel extends AndroidViewModel {
     private Disposable updateNotesDisposable;
     private Disposable deleteNotesDisposable;
 
-    private boolean isArchivedNotes = false;
+    private NoteType noteType = NoteType.ALL;
     private static final String TAG = "Note_ViewModel_TAG";
 
     public NoteViewModel(@NonNull Application application) {
@@ -67,7 +68,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getAllNotes() {
-        isArchivedNotes = false;
+        noteType = NoteType.ALL;
         notesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     _notes = repositoryInterface.getAllNotes(_sortAction);
@@ -86,7 +87,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getArchivedNotes() {
-        isArchivedNotes = true;
+        noteType = NoteType.ARCHIVED;
         archivedNotesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     listArchivedNotes = repositoryInterface.getArchivedNotes();
@@ -107,7 +108,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getFavoritesNotes() {
-        isArchivedNotes = true;
+        noteType = NoteType.FAVORITE;
         favoritesNotesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     listFavoritesNotes = repositoryInterface.getFavoritesNotes();
@@ -137,10 +138,16 @@ public class NoteViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(updatedRows -> {
                             if (updatedRows > 0) {
-                                if (isArchivedNotes) {
-                                    getArchivedNotes();
-                                } else {
-                                    getAllNotes();
+                                switch (noteType) {
+                                    case ALL:
+                                        getAllNotes();
+                                        break;
+                                    case ARCHIVED:
+                                        getArchivedNotes();
+                                        break;
+                                    case FAVORITE:
+                                        getFavoritesNotes();
+                                        break;
                                 }
                             } else {
                                 Log.w(TAG, "Failed to update note status");
@@ -158,10 +165,16 @@ public class NoteViewModel extends AndroidViewModel {
                 .subscribe(
                         deletedRows -> {
                             if (deletedRows > 0) {
-                                if (isArchivedNotes) {
-                                    getArchivedNotes();
-                                } else {
-                                    getAllNotes();
+                                switch (noteType) {
+                                    case ALL:
+                                        getAllNotes();
+                                        break;
+                                    case ARCHIVED:
+                                        getArchivedNotes();
+                                        break;
+                                    case FAVORITE:
+                                        getFavoritesNotes();
+                                        break;
                                 }
                             } else {
                                 Log.w(TAG, "Failed to delete note status");

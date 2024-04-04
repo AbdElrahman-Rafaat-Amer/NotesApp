@@ -22,7 +22,7 @@ public class FavoritesFragment extends BaseFragment implements OnNotesClickListe
     private FragmentHomeBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(getLayoutInflater(), container, false);
@@ -76,6 +76,11 @@ public class FavoritesFragment extends BaseFragment implements OnNotesClickListe
 
     @Override
     public void onNoteClickListener(Note note) {
+    }
 
+    @Override
+    public void onFavoriteButtonClickListener(Note note, int position) {
+        note.setFavorite(!note.isFavorite());
+        noteViewModel.updateNote(note);
     }
 }

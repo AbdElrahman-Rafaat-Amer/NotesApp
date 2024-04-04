@@ -96,6 +96,11 @@ public class ArchivedNotesFragment extends BaseFragment implements OnNotesClickL
     }
 
     @Override
+    public void onFavoriteButtonClickListener(Note note, int position) {
+
+    }
+
+    @Override
     public void onSwiped(int swipedPosition, int direction) {
         selectedNote = noteList.get(swipedPosition);
         if (direction == ItemTouchHelper.LEFT) {

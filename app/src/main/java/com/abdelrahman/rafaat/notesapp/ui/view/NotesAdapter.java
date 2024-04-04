@@ -76,9 +76,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
             if (currentNote.isPinned()) {
                 binding.pinnedNoteImageView.setVisibility(View.VISIBLE);
-            } else
+            } else{
                 binding.pinnedNoteImageView.setVisibility(View.GONE);
-
+            }
+            if (currentNote.isFavorite()) {
+                binding.favoritesImageView.setImageResource(R.drawable.ic_favorite);
+            } else{
+                binding.favoritesImageView.setImageResource(R.drawable.ic_add_favorite);
+            }
             if (currentNote.getColor() != -1) {
                 binding.getRoot().setCardBackgroundColor(currentNote.getColor());
             } else {
@@ -86,6 +91,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 binding.getRoot().setCardBackgroundColor(color);
             }
 
+            binding.favoritesImageView.setOnClickListener(v -> onClickListener.onFavoriteButtonClickListener(currentNote, getAdapterPosition()));
             binding.getRoot().setOnClickListener(view -> onClickListener.onNoteClickListener(currentNote));
         }
 

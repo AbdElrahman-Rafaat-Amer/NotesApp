@@ -54,8 +54,10 @@ public interface NotesDAO {
 
     @Query("SELECT * FROM notes WHERE isArchived = 1")
     List<Note> getArchivedNotes();
-    @Query("SELECT * FROM notes WHERE isFavorite = 1")
+
+    @Query("SELECT * FROM notes WHERE isFavorite = 1 And isArchived = 0")
     List<Note> getFavoritesNotes();
+
     @Update
     Single<Integer> updateNote(Note note);
 

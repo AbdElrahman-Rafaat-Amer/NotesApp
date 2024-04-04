@@ -4,4 +4,5 @@ import com.abdelrahman.rafaat.notesapp.model.Note;
 
 public interface OnNotesClickListener {
     void onNoteClickListener(Note note);
+    void onFavoriteButtonClickListener(Note note, int position);
 }

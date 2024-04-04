@@ -138,6 +138,7 @@
     <string name="medium_link" translatable="false">https://medium.com/@abdelrahman.raafaat</string>
     <string name="google_play_link" translatable="false">https://play.google.com/store/apps/developer?id=Abdelrahman+Rafaat</string>
     <string name="favorites">Favorites</string>
+    <string name="favorite">Favorite</string>
 
 
 </resources>

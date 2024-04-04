@@ -32,7 +32,7 @@ public class Note {
         this.textSize = textSize;
         this.textAlignment = textAlignment;
         this.isArchived = false;
-        this.isFavorite = true;
+        this.isFavorite = false;
     }
 
     public int getId() {

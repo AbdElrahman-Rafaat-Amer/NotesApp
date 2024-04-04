@@ -125,4 +125,9 @@ public class ToolTipActivity extends AppCompatActivity implements OnNotesClickLi
     public void onNoteClickListener(Note note) {
 
     }
+
+    @Override
+    public void onFavoriteButtonClickListener(Note note, int position) {
+
+    }
 }
