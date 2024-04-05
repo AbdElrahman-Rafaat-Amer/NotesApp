@@ -12,14 +12,25 @@
         android:padding="@dimen/row_padding">
 
         <ImageView
+            android:id="@+id/favorites_imageView"
+            android:layout_width="40sp"
+            android:layout_height="30sp"
+            android:layout_margin="7sp"
+            android:contentDescription="@string/pinned_note"
+            android:src="@drawable/ic_favorite"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/pinnedNote_imageView"
             android:layout_width="40sp"
             android:layout_height="30sp"
             android:layout_margin="7sp"
             android:contentDescription="@string/pinned_note"
-            android:src="@drawable/ic_pin"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_pin_green"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/favorites_imageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView

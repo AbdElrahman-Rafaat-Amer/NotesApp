@@ -10,10 +10,10 @@
         tools:background="@color/purple_200" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/pinnedNotesButton"
+        android:id="@+id/favoritesNotesButton"
         style="@style/Widget.Notes.Button.AppCompatButton"
-        android:drawableStart="@drawable/ic_pin"
-        android:text="@string/pinned_note"
+        android:drawableStart="@drawable/ic_favorite"
+        android:text="@string/favorites"
         tools:background="@color/color2"
         tools:layout_marginVertical="90dp" />
 

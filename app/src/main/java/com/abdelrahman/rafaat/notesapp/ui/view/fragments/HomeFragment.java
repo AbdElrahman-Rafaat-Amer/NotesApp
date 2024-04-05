@@ -180,4 +180,10 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.password_fragment);
     }
 
+    @Override
+    public void onFavoriteButtonClickListener(Note note, int position) {
+        note.setFavorite(!note.isFavorite());
+        noteViewModel.updateNote(note);
+    }
+
 }

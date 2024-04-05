@@ -17,6 +17,7 @@
     <string name="empty_search">File not found. Try searching again.</string>
     <string name="empty_notes">Create your first note !</string>
     <string name="not_archived_notes">No archived notes founded</string>
+    <string name="not_favorites_notes">No favorites notes founded</string>
     <string name="welcome">Welcome</string>
     <string name="discard">Discard</string>
     <string name="no_pinnedNotes">No pinned notes. Pin one and try again.</string>
@@ -136,6 +137,8 @@
     <string name="linkedin_link" translatable="false">https://www.linkedin.com/in/abdelrahman-raafat-anwer-amer/</string>
     <string name="medium_link" translatable="false">https://medium.com/@abdelrahman.raafaat</string>
     <string name="google_play_link" translatable="false">https://play.google.com/store/apps/developer?id=Abdelrahman+Rafaat</string>
+    <string name="favorites">Favorites</string>
+    <string name="favorite">Favorite</string>
 
 
 </resources>

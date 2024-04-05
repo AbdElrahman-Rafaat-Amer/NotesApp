@@ -23,6 +23,13 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/favorites_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.FavoritesFragment"
+        android:label="favorites fragment"
+        tools:layout="@layout/fragment_home" />
+
+
+    <fragment
         android:id="@+id/add_note_fragment"
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.AddNoteFragment"
         android:label="add note fragment"

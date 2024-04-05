@@ -18,6 +18,7 @@ public class Note {
     private int textSize;
     private int textAlignment;
     private boolean isArchived;
+    private boolean isFavorite;
 
     public Note(String title, String body, String creationDate, int color, int textSize, int textAlignment) {
         this.title = title;
@@ -31,6 +32,7 @@ public class Note {
         this.textSize = textSize;
         this.textAlignment = textAlignment;
         this.isArchived = false;
+        this.isFavorite = false;
     }
 
     public int getId() {
@@ -112,6 +114,14 @@ public class Note {
 
     public void setArchived(boolean archived) {
         isArchived = archived;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
     public boolean isLocked() {

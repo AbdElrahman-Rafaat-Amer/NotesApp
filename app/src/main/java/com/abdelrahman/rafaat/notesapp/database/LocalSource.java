@@ -67,6 +67,11 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
+    public List<Note> getFavoritesNotes() {
+        return dao.getFavoritesNotes();
+    }
+
+    @Override
     public Single<Integer> updateNote(Note note) {
         return dao.updateNote(note);
     }

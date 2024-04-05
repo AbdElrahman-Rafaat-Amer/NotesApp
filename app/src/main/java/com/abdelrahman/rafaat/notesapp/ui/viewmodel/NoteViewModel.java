@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.NoteType;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
@@ -32,6 +33,10 @@ public class NoteViewModel extends AndroidViewModel {
     private List<Note> listArchivedNotes;
     private final MutableLiveData<List<Note>> _archivedNotes = new MutableLiveData<>();
     public LiveData<List<Note>> archivedNotes = _archivedNotes;
+
+    private List<Note> listFavoritesNotes;
+    private final MutableLiveData<List<Note>> _favoritesNotes = new MutableLiveData<>();
+    public LiveData<List<Note>> favoritesNotes = _favoritesNotes;
     private Note currentNote;
 
     private SortAction _sortAction = new SortAction();
@@ -40,10 +45,11 @@ public class NoteViewModel extends AndroidViewModel {
 
     private Disposable notesDisposable;
     private Disposable archivedNotesDisposable;
+    private Disposable favoritesNotesDisposable;
     private Disposable updateNotesDisposable;
     private Disposable deleteNotesDisposable;
 
-    private boolean isArchivedNotes = false;
+    private NoteType noteType = NoteType.ALL;
     private static final String TAG = "Note_ViewModel_TAG";
 
     public NoteViewModel(@NonNull Application application) {
@@ -62,7 +68,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getAllNotes() {
-        isArchivedNotes = false;
+        noteType = NoteType.ALL;
         notesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     _notes = repositoryInterface.getAllNotes(_sortAction);
@@ -81,7 +87,7 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void getArchivedNotes() {
-        isArchivedNotes = true;
+        noteType = NoteType.ARCHIVED;
         archivedNotesDisposable = Observable.create(emitter -> {
                     // Simulate data generation or retrieval
                     listArchivedNotes = repositoryInterface.getArchivedNotes();
@@ -101,6 +107,27 @@ public class NoteViewModel extends AndroidViewModel {
                 );
     }
 
+    public void getFavoritesNotes() {
+        noteType = NoteType.FAVORITE;
+        favoritesNotesDisposable = Observable.create(emitter -> {
+                    // Simulate data generation or retrieval
+                    listFavoritesNotes = repositoryInterface.getFavoritesNotes();
+                    // Emit the items to the subscribers
+                    emitter.onNext(listFavoritesNotes);
+
+                    // Complete the observable (optional)
+                    emitter.onComplete();
+                })
+                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribe(
+                        items ->
+                                _favoritesNotes.setValue(listFavoritesNotes),
+                        throwable ->
+                                Log.e(TAG, "Received items Error: " + throwable.getMessage())
+                );
+    }
+
     public void saveNote(Note note) {
         repositoryInterface.insertNote(note);
     }
@@ -111,10 +138,16 @@ public class NoteViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(updatedRows -> {
                             if (updatedRows > 0) {
-                                if (isArchivedNotes) {
-                                    getArchivedNotes();
-                                } else {
-                                    getAllNotes();
+                                switch (noteType) {
+                                    case ALL:
+                                        getAllNotes();
+                                        break;
+                                    case ARCHIVED:
+                                        getArchivedNotes();
+                                        break;
+                                    case FAVORITE:
+                                        getFavoritesNotes();
+                                        break;
                                 }
                             } else {
                                 Log.w(TAG, "Failed to update note status");
@@ -132,10 +165,16 @@ public class NoteViewModel extends AndroidViewModel {
                 .subscribe(
                         deletedRows -> {
                             if (deletedRows > 0) {
-                                if (isArchivedNotes) {
-                                    getArchivedNotes();
-                                } else {
-                                    getAllNotes();
+                                switch (noteType) {
+                                    case ALL:
+                                        getAllNotes();
+                                        break;
+                                    case ARCHIVED:
+                                        getArchivedNotes();
+                                        break;
+                                    case FAVORITE:
+                                        getFavoritesNotes();
+                                        break;
                                 }
                             } else {
                                 Log.w(TAG, "Failed to delete note status");
@@ -173,6 +212,7 @@ public class NoteViewModel extends AndroidViewModel {
         super.onCleared();
         disposeDisposable(notesDisposable);
         disposeDisposable(archivedNotesDisposable);
+        disposeDisposable(favoritesNotesDisposable);
         disposeDisposable(updateNotesDisposable);
         disposeDisposable(deleteNotesDisposable);
     }

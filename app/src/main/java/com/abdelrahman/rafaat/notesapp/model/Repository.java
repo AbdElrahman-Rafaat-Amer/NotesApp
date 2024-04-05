@@ -46,6 +46,11 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public List<Note> getFavoritesNotes() {
+        return localSource.getFavoritesNotes();
+    }
+
+    @Override
     public Single<Integer> updateNote(Note note) {
         return localSource.updateNote(note);
     }

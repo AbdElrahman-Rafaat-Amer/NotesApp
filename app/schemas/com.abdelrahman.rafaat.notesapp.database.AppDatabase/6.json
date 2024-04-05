@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "88e624f3b1602ba7a7ca527d80622465",
+    "identityHash": "f45025990cf86b985a0cd793e182b3ab",
     "entities": [
       {
         "tableName": "notes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `body` TEXT, `creationDate` TEXT, `modificationDate` INTEGER NOT NULL, `color` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `password` TEXT, `isLocked` INTEGER NOT NULL, `textSize` INTEGER NOT NULL, `textAlignment` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `body` TEXT, `creationDate` TEXT, `modificationDate` INTEGER NOT NULL, `color` INTEGER NOT NULL, `isPinned` INTEGER NOT NULL, `password` TEXT, `isLocked` INTEGER NOT NULL, `textSize` INTEGER NOT NULL, `textAlignment` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -79,6 +79,12 @@
             "columnName": "isArchived",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -94,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '88e624f3b1602ba7a7ca527d80622465')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f45025990cf86b985a0cd793e182b3ab')"
     ]
   }
 }
