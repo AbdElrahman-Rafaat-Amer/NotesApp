@@ -28,8 +28,6 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
     private float archiveButtonRight;
     private float pinButtonRight;
     private float pinButtonLeft;
-    private float favoriteButtonRight;
-    private float favoriteButtonLeft;
     private View itemView;
     private int swipedPosition = -1;
     private final GestureDetector gestureDetector;
@@ -55,11 +53,6 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
                 return true;
             }
 
-            if (isTapOnFavoriteButton(x, y)) {
-                favoriteButtonPressed(swipedPosition);
-                return true;
-            }
-
             return false;
         }
 
@@ -73,10 +66,6 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
 
         private boolean isTapOnPinButton(float x, float y) {
             return x >= pinButtonLeft && x <= pinButtonRight && y >= itemView.getTop() && y <= itemView.getBottom();
-        }
-
-        private boolean isTapOnFavoriteButton(float x, float y) {
-            return x >= favoriteButtonLeft && x <= favoriteButtonRight && y >= itemView.getTop() && y <= itemView.getBottom();
         }
     };
 
@@ -135,7 +124,7 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
                 drawButtonsOnRight(canvas, itemView);
             } else if (dX > 0) {
                 // swapRight
-                translationX = dX * 2 * BUTTON_WIDTH / itemView.getWidth();
+                translationX = dX * BUTTON_WIDTH / itemView.getWidth();
                 drawButtonsOnLeft(canvas, itemView);
             }
         }
@@ -147,12 +136,8 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
         this.itemView = itemView;
         pinButtonLeft = itemView.getLeft();
         pinButtonRight = pinButtonLeft + BUTTON_WIDTH;
-        favoriteButtonLeft = pinButtonRight;
-        favoriteButtonRight = pinButtonRight + BUTTON_WIDTH;
         // Draw the first button
         drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_pin), context.getString(R.string.pin), pinButtonLeft, pinButtonRight, ContextCompat.getColor(context, R.color.mainColor));
-        // Draw the second button
-        drawButton(canvas, itemView, AppCompatResources.getDrawable(context, R.drawable.ic_favorite), context.getString(R.string.favorite), favoriteButtonLeft, favoriteButtonRight, ContextCompat.getColor(context, R.color.red));
     }
 
     private void drawButtonsOnRight(Canvas canvas, View itemView) {
@@ -207,5 +192,4 @@ public abstract class MyItemTouchHelperCallback extends ItemTouchHelper.Callback
     public abstract void archiveButtonPressed(int position);
 
     public abstract void pinButtonPressed(int position);
-    public abstract void favoriteButtonPressed(int position);
 }

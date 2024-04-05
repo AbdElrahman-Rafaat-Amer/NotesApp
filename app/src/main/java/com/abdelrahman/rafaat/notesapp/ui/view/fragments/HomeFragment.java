@@ -166,13 +166,6 @@ public class HomeFragment extends BaseFragment implements OnNotesClickListener {
                 selectedNote.setPinned(!selectedNote.isPinned());
                 noteViewModel.updateNote(selectedNote);
             }
-
-            @Override
-            public void favoriteButtonPressed(int position) {
-                selectedNote = noteList.get(position);
-                selectedNote.setFavorite(!selectedNote.isFavorite());
-                noteViewModel.updateNote(selectedNote);
-            }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(binding.notesRecyclerview);
