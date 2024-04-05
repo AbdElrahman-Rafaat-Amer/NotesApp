@@ -28,6 +28,12 @@
         android:label="favorites fragment"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/passwords_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.PasswordsFragment"
+        android:label="passwords fragment"
+        tools:layout="@layout/fragment_passwords" />
+
 
     <fragment
         android:id="@+id/add_note_fragment"

@@ -6,8 +6,8 @@
         android:id="@+id/allNotesButton"
         style="@style/Widget.Notes.Button.AppCompatButton"
         android:drawableStart="@drawable/ic_note"
-        android:text="@string/all_notes"
-        tools:background="@color/purple_200" />
+        android:text="@string/main"
+        tools:background="@color/color1" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/favoritesNotesButton"
@@ -15,7 +15,7 @@
         android:drawableStart="@drawable/ic_favorite"
         android:text="@string/favorites"
         tools:background="@color/color2"
-        tools:layout_marginVertical="90dp" />
+        tools:layout_marginVertical="70dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/archivedNotesButton"
@@ -23,8 +23,8 @@
         android:drawableStart="@drawable/ic_archive"
         android:drawableTint="@color/mainColor"
         android:text="@string/archived"
-        tools:background="@color/red"
-        tools:layout_marginVertical="150dp" />
+        tools:background="@color/color3"
+        tools:layout_marginVertical="120dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/settingButton"
@@ -33,14 +33,22 @@
         android:drawableTint="@color/mainColor"
         android:text="@string/setting"
         tools:background="@color/red"
-        tools:layout_marginVertical="210dp" />
+        tools:layout_marginVertical="170dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/passwordsButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_lock_green"
+        android:text="@string/passwords"
+        tools:background="@color/color4"
+        tools:layout_marginVertical="220dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/contactUsButton"
         style="@style/Widget.Notes.Button.AppCompatButton"
         android:drawableStart="@drawable/ic_contact_us"
         android:text="@string/contact_us"
-        tools:background="@color/red"
+        tools:background="@color/color5"
         tools:layout_marginVertical="270dp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -48,6 +56,6 @@
         style="@style/Widget.Notes.Button.AppCompatButton"
         android:drawableStart="@drawable/ic_google_play"
         android:text="@string/our_apps"
-        tools:background="@color/red"
-        tools:layout_marginVertical="330dp" />
+        tools:background="@color/color6"
+        tools:layout_marginVertical="320dp" />
 </merge>
