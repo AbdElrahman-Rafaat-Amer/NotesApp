@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         });
 
         binding.rootView.findViewById(R.id.passwordsButton).setOnClickListener(view -> {
-            if (navController.getCurrentDestination().getId() != R.id.passwords_fragment) {
+            if (navController.getCurrentDestination().getId() != R.id.unlock_my_passwords_fragment) {
                 navController.popBackStack();
-                navController.navigate(R.id.passwords_fragment);
+                navController.navigate(R.id.unlock_my_passwords_fragment);
             }
             closeMenu(true);
         });
@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     }
 
     private void closeMenu(boolean isAnimated) {
-        if (isAnimated){
+        if (isAnimated) {
             navigationClickListener.startAnimation();
-        }else {
+        } else {
             navigationClickListener.close();
         }
         binding.toolBar.setNavigationIcon(R.drawable.ic_menu);
@@ -146,7 +146,11 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     @Override
     public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
         int destinationId = navDestination.getId();
-        if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment || destinationId == R.id.favorites_fragment || destinationId == R.id.passwords_fragment) {
+        if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment
+                || destinationId == R.id.favorites_fragment
+                || destinationId == R.id.passwords_fragment
+                || destinationId == R.id.lock_my_passwords_fragment
+                || destinationId == R.id.unlock_my_passwords_fragment) {
             binding.toolBar.setVisibility(View.VISIBLE);
             binding.drawerLinearLayout.setVisibility(View.VISIBLE);
         } else {

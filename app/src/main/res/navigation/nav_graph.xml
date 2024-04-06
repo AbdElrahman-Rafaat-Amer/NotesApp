@@ -29,6 +29,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/lock_my_passwords_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.LockMyPasswordsFragment"
+        android:label="lock my passwords fragment"
+        tools:layout="@layout/fragment_lock_my_passwords" />
+
+    <fragment
+        android:id="@+id/unlock_my_passwords_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.UnLockMyPasswordsFragment"
+        android:label="unlock my passwords fragment"
+        tools:layout="@layout/fragment_un_lock_my_passwords" />
+
+
+    <fragment
         android:id="@+id/passwords_fragment"
         android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.PasswordsFragment"
         android:label="passwords fragment"

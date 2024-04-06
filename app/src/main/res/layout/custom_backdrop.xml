@@ -27,20 +27,20 @@
         tools:layout_marginVertical="120dp" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/passwordsButton"
+        style="@style/Widget.Notes.Button.AppCompatButton"
+        android:drawableStart="@drawable/ic_lock_green"
+        android:text="@string/passwords"
+        tools:background="@color/color4"
+        tools:layout_marginVertical="170dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/settingButton"
         style="@style/Widget.Notes.Button.AppCompatButton"
         android:drawableStart="@drawable/ic_setting"
         android:drawableTint="@color/mainColor"
         android:text="@string/setting"
         tools:background="@color/red"
-        tools:layout_marginVertical="170dp" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/passwordsButton"
-        style="@style/Widget.Notes.Button.AppCompatButton"
-        android:drawableStart="@drawable/ic_lock_green"
-        android:text="@string/passwords"
-        tools:background="@color/color4"
         tools:layout_marginVertical="220dp" />
 
     <androidx.appcompat.widget.AppCompatButton

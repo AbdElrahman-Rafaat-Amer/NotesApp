@@ -22,5 +22,9 @@ public interface RepositoryInterface {
     boolean isBiometricEnabled();
 
     int getTheme();
+
+    void savePassword(String password, String hint);
+
+    Pair<String, String> getPasswordAndHint();
     Pair<SortAction, Boolean> refreshSettings();
 }

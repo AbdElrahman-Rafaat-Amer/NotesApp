@@ -32,7 +32,7 @@
     <string name="splash_desc"> اكتب ما تريد ..... </string>
     <string name="no_notes"> لا توجد أية ملاحظات </string>
     <string name="locked_note"> هذه الملاحظة مؤمنة </string>
-    <string name="password_hint"> **** </string>
+    <string name="password_hint_star"> **** </string>
     <string name="wrong_password"> كلمة مرور خاطئة </string>
     <string name="enter_password"> أدخل كلمة المرور لملاحظتك… </string>
     <string name="cancel"> إلغاء </string>

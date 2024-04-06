@@ -222,4 +222,12 @@ public class NoteViewModel extends AndroidViewModel {
             disposable.dispose();
         }
     }
+
+    public void savePassword(String password, String hint) {
+        repositoryInterface.savePassword(password, hint);
+    }
+
+    public Pair<String, String> getPasswordAndHint() {
+        return repositoryInterface.getPasswordAndHint();
+    }
 }

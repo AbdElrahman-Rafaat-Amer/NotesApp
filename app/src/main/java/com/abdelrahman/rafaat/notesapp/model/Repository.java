@@ -72,6 +72,19 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public void savePassword(String password, String hint) {
+        setString("PASSWORD", password);
+        setString("HINT", hint);
+    }
+
+    @Override
+    public Pair<String, String> getPasswordAndHint() {
+        String password = getString("PASSWORD");
+        String hint = getString("HINT");
+        return new Pair<>(password, hint);
+    }
+
+    @Override
     public Pair<SortAction, Boolean> refreshSettings() {
         SortAction sortAction = getSortOrder();
         boolean isListView = getBoolean("IS_LIST", true);
@@ -97,5 +110,15 @@ public class Repository implements RepositoryInterface {
 
     private String getString(String key, String defValue) {
         return dfaultSharedPreferences.getString(key, defValue);
+    }
+
+    private String getString(String key) {
+        return dfaultSharedPreferences.getString(key, "");
+    }
+
+    private void setString(String key, String value) {
+        SharedPreferences.Editor editor = dfaultSharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
     }
 }
