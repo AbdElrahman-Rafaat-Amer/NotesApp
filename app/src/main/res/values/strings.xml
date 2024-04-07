@@ -152,5 +152,8 @@
     <string name="hint_password_warning">Remember: adding a hint to your password can save you from future headaches!</string>
     <string name="hint_password_empty_confirm">Please confirm: intentionally leaving the password hint empty?</string>
     <string name="your_password_hint_is">Your password hint is</string>
+    <string name="email_username">Email / Username</string>
+    <string name="password">Password</string>
+    <string name="website_name">Website Name</string>
 
 </resources>

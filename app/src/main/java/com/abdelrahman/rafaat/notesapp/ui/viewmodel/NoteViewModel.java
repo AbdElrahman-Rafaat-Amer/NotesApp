@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.NoteType;
+import com.abdelrahman.rafaat.notesapp.model.Passwords;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
@@ -223,11 +224,15 @@ public class NoteViewModel extends AndroidViewModel {
         }
     }
 
-    public void savePassword(String password, String hint) {
-        repositoryInterface.savePassword(password, hint);
+    public void savePasswordAndHint(String password, String hint) {
+        repositoryInterface.savePasswordAndHint(password, hint);
     }
 
     public Pair<String, String> getPasswordAndHint() {
         return repositoryInterface.getPasswordAndHint();
+    }
+
+    public void savePassword(Passwords password) {
+        repositoryInterface.savePassword(password);
     }
 }

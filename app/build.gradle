@@ -101,4 +101,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 
+    //Flexible layout
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 }

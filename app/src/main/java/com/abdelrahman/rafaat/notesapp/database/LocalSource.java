@@ -3,6 +3,7 @@ package com.abdelrahman.rafaat.notesapp.database;
 import android.content.Context;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.Passwords;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
 import com.abdelrahman.rafaat.notesapp.model.SortOrder;
 import com.abdelrahman.rafaat.notesapp.model.SortType;
@@ -79,5 +80,10 @@ public class LocalSource implements LocalSourceInterface {
     @Override
     public Single<Integer> deleteNote(int id) {
         return dao.deleteNote(id);
+    }
+
+    @Override
+    public void savePassword(Passwords password) {
+        new Thread(() -> dao.savePassword(password)).start();
     }
 }

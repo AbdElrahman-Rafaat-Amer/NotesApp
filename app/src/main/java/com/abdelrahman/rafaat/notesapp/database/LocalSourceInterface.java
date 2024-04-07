@@ -1,6 +1,7 @@
 package com.abdelrahman.rafaat.notesapp.database;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.Passwords;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface LocalSourceInterface {
     List<Note> getFavoritesNotes();
     Single<Integer> updateNote(Note note);
     Single<Integer> deleteNote(int id);
+    void savePassword(Passwords password);
 }

@@ -61,6 +61,11 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public void savePassword(Passwords password) {
+        localSource.savePassword(password);
+    }
+
+    @Override
     public boolean isBiometricEnabled() {
         return getBoolean("IS_BIOMETRIC_ENABLED");
     }
@@ -72,7 +77,7 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void savePassword(String password, String hint) {
+    public void savePasswordAndHint(String password, String hint) {
         setString("PASSWORD", password);
         setString("HINT", hint);
     }

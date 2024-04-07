@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.abdelrahman.rafaat.notesapp.model.Note;
+import com.abdelrahman.rafaat.notesapp.model.Passwords;
 
 import java.util.List;
 
@@ -64,4 +65,14 @@ public interface NotesDAO {
     @Query("DELETE FROM notes where id = :id")
     Single<Integer> deleteNote(int id);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void savePassword(Passwords password);
+
+    @Query("SELECT * FROM passwords ORDER BY id ASC")
+    List<Passwords> getAllPasswords();
+    @Update
+    void updatePassword(Passwords passwords);
+
+    @Query("DELETE FROM passwords where id = :id")
+    void deletePassword(int id);
 }

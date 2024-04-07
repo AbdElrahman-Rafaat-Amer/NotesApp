@@ -48,7 +48,7 @@ public class LockMyPasswordsFragment extends BaseFragment {
                 if (validateHintPassword()) {
                     String password = binding.passwordEditText.getText().toString();
                     String hint = binding.passwordHintEditText.getText().toString();
-                    noteViewModel.savePassword(password, hint);
+                    noteViewModel.savePasswordAndHint(password, hint);
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.unlock_my_passwords_fragment);
                 }
             }

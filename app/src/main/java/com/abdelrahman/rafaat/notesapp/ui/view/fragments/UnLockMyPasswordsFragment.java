@@ -1,6 +1,5 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -63,7 +62,7 @@ public class UnLockMyPasswordsFragment extends BaseFragment {
 
         binding.continueButton.setOnClickListener(v -> {
             if (validatePassword()) {
-                Log.d("TAG", "initUI: ALl success");
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.passwords_fragment);
             } else {
                 if (wrongPasswordCounter == 3) {
                     showHintView();

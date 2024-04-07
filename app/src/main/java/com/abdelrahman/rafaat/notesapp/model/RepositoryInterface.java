@@ -19,11 +19,13 @@ public interface RepositoryInterface {
 
     Single<Integer> deleteNote(int id);
 
+    void savePassword(Passwords password);
+
     boolean isBiometricEnabled();
 
     int getTheme();
 
-    void savePassword(String password, String hint);
+    void savePasswordAndHint(String password, String hint);
 
     Pair<String, String> getPasswordAndHint();
     Pair<SortAction, Boolean> refreshSettings();
