@@ -17,4 +17,10 @@ public interface LocalSourceInterface {
     Single<Integer> updateNote(Note note);
     Single<Integer> deleteNote(int id);
     void savePassword(Passwords password);
+
+    List<Passwords> getAllPasswords();
+
+    void updatePassword(Passwords password);
+
+    void deletePassword(int id) ;
 }

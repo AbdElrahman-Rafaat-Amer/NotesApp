@@ -56,7 +56,7 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
         void bind(Integer currentIcon) {
             binding.iconImageView.setImageResource(currentIcon);
             binding.getRoot().setOnClickListener(view ->
-                    onClickListener.onIconClickListener(currentIcon, getAdapterPosition())
+                    onClickListener.onIconClickListener(getAdapterPosition())
             );
         }
 

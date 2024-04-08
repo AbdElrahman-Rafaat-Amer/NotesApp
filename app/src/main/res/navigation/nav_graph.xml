@@ -47,6 +47,11 @@
         android:label="passwords fragment"
         tools:layout="@layout/fragment_passwords" />
 
+    <fragment
+        android:id="@+id/add_passwords_fragment"
+        android:name="com.abdelrahman.rafaat.notesapp.ui.view.fragments.AddPasswordsFragment"
+        android:label="add passwords fragment"
+        tools:layout="@layout/fragment_add_passwords" />
 
     <fragment
         android:id="@+id/add_note_fragment"

@@ -40,6 +40,9 @@ public class NoteViewModel extends AndroidViewModel {
     public LiveData<List<Note>> favoritesNotes = _favoritesNotes;
     private Note currentNote;
 
+    private List<Passwords> _passwords;
+    private final MutableLiveData<List<Passwords>> passwords = new MutableLiveData<>();
+
     private SortAction _sortAction = new SortAction();
     private final MutableLiveData<Boolean> _isListView = new MutableLiveData<>();
     public LiveData<Boolean> isListView = _isListView;
@@ -49,6 +52,7 @@ public class NoteViewModel extends AndroidViewModel {
     private Disposable favoritesNotesDisposable;
     private Disposable updateNotesDisposable;
     private Disposable deleteNotesDisposable;
+    private Disposable passwordsDisposable;
 
     private NoteType noteType = NoteType.ALL;
     private static final String TAG = "Note_ViewModel_TAG";
@@ -216,6 +220,7 @@ public class NoteViewModel extends AndroidViewModel {
         disposeDisposable(favoritesNotesDisposable);
         disposeDisposable(updateNotesDisposable);
         disposeDisposable(deleteNotesDisposable);
+        disposeDisposable(passwordsDisposable);
     }
 
     private void disposeDisposable(Disposable disposable) {
@@ -235,4 +240,37 @@ public class NoteViewModel extends AndroidViewModel {
     public void savePassword(Passwords password) {
         repositoryInterface.savePassword(password);
     }
+
+    public void getAllPasswords() {
+        passwordsDisposable = Observable.create(emitter -> {
+                    // Simulate data generation or retrieval
+                    _passwords = repositoryInterface.getAllPasswords();
+                    // Emit the items to the subscribers
+                    emitter.onNext(_passwords);
+
+                    // Complete the observable (optional)
+                    emitter.onComplete();
+                })
+                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
+                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribe(
+                        items ->
+                                passwords.setValue(_passwords),
+                        throwable ->
+                                Log.e(TAG, "Received items Error: " + throwable.getMessage())
+                );
+    }
+
+    public LiveData<List<Passwords>> getPasswords() {
+        return passwords;
+    }
+
+    public void updatePassword(Passwords password) {
+        repositoryInterface.updatePassword(password);
+    }
+
+    public void deletePassword(int passwordID) {
+        repositoryInterface.deletePassword(passwordID);
+    }
+
 }

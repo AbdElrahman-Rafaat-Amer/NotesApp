@@ -155,5 +155,5 @@
     <string name="email_username">Email / Username</string>
     <string name="password">Password</string>
     <string name="website_name">Website Name</string>
-
+    <string name="add_password">Add Password</string>
 </resources>

@@ -66,6 +66,21 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public List<Passwords> getAllPasswords() {
+        return localSource.getAllPasswords();
+    }
+
+    @Override
+    public void updatePassword(Passwords password) {
+        localSource.updatePassword(password);
+    }
+
+    @Override
+    public void deletePassword(int id) {
+        localSource.deletePassword(id);
+    }
+
+    @Override
     public boolean isBiometricEnabled() {
         return getBoolean("IS_BIOMETRIC_ENABLED");
     }

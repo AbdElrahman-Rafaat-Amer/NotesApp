@@ -86,4 +86,19 @@ public class LocalSource implements LocalSourceInterface {
     public void savePassword(Passwords password) {
         new Thread(() -> dao.savePassword(password)).start();
     }
+
+    @Override
+    public List<Passwords> getAllPasswords() {
+        return dao.getAllPasswords();
+    }
+
+    @Override
+    public void updatePassword(Passwords password) {
+        dao.updatePassword(password);
+    }
+
+    @Override
+    public void deletePassword(int id) {
+        dao.deletePassword(id);
+    }
 }

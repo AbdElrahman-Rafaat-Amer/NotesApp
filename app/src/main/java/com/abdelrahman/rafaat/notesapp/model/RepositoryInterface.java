@@ -21,6 +21,12 @@ public interface RepositoryInterface {
 
     void savePassword(Passwords password);
 
+    List<Passwords> getAllPasswords();
+
+    void updatePassword(Passwords password);
+
+    void deletePassword(int id) ;
+
     boolean isBiometricEnabled();
 
     int getTheme();
