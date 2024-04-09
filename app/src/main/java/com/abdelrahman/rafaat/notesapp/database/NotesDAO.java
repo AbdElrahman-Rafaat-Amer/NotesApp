@@ -71,8 +71,8 @@ public interface NotesDAO {
     @Query("SELECT * FROM passwords ORDER BY id ASC")
     List<Passwords> getAllPasswords();
     @Update
-    void updatePassword(Passwords passwords);
+    Single<Integer> updatePassword(Passwords passwords);
 
     @Query("DELETE FROM passwords where id = :id")
-    void deletePassword(int id);
+    Single<Integer> deletePassword(int id);
 }

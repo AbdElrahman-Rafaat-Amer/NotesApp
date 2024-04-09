@@ -156,4 +156,5 @@
     <string name="password">Password</string>
     <string name="website_name">Website Name</string>
     <string name="add_password">Add Password</string>
+    <string name="empty_password">You didn\'t add any passwords yet.</string>
 </resources>

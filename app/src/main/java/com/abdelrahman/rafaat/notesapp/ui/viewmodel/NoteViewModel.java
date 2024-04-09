@@ -243,16 +243,13 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void getAllPasswords() {
         passwordsDisposable = Observable.create(emitter -> {
-                    // Simulate data generation or retrieval
                     _passwords = repositoryInterface.getAllPasswords();
-                    // Emit the items to the subscribers
-                    emitter.onNext(_passwords);
 
-                    // Complete the observable (optional)
+                    emitter.onNext(_passwords);
                     emitter.onComplete();
                 })
-                .subscribeOn(Schedulers.io())  // Specify the background thread for data generation
-                .observeOn(AndroidSchedulers.mainThread())  // Specify the main thread for handling results
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         items ->
                                 passwords.setValue(_passwords),
@@ -266,11 +263,35 @@ public class NoteViewModel extends AndroidViewModel {
     }
 
     public void updatePassword(Passwords password) {
-        repositoryInterface.updatePassword(password);
+        updateNotesDisposable = repositoryInterface.updatePassword(password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(updatedRows -> {
+                            if (updatedRows > 0) {
+                                getAllPasswords();
+                            } else {
+                                Log.w(TAG, "Failed to update password status");
+                            }
+                        },
+                        throwable ->
+                                Log.e(TAG, "Error update password status", throwable)
+                );
     }
 
     public void deletePassword(int passwordID) {
-        repositoryInterface.deletePassword(passwordID);
+        updateNotesDisposable = repositoryInterface.deletePassword(passwordID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(updatedRows -> {
+                            if (updatedRows > 0) {
+                                getAllPasswords();
+                            } else {
+                                Log.w(TAG, "Failed to delete password status");
+                            }
+                        },
+                        throwable ->
+                                Log.e(TAG, "Error delete password status", throwable)
+                );
     }
 
 }

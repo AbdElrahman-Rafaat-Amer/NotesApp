@@ -23,9 +23,9 @@ public interface RepositoryInterface {
 
     List<Passwords> getAllPasswords();
 
-    void updatePassword(Passwords password);
+    Single<Integer> updatePassword(Passwords password);
 
-    void deletePassword(int id) ;
+    Single<Integer> deletePassword(int id) ;
 
     boolean isBiometricEnabled();
 

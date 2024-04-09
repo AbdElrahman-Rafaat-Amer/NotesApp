@@ -28,7 +28,10 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
 
     private FragmentAddPasswordsBinding binding;
     private List<Integer> icons = new ArrayList<>();
+    private IconsAdapter iconsAdapter;
     private int selectedIcon = 0;
+    private Passwords currentPassword = null;
+    public final static String EXTRA_PASSWORD = "EXTRA_PASSWORD";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -43,6 +46,7 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
 
         initUI();
         initRecyclerView();
+        loadPasswordFromBundle();
     }
 
     private void initUI() {
@@ -54,8 +58,16 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
                 String userName = binding.userNameEditText.getText().toString().trim();
                 String password = binding.passwordEditText.getText().toString().trim();
                 String website = binding.websiteNameEditText.getText().toString().trim();
-                Passwords passwords = new Passwords(userName, password, website, selectedIcon);
-                noteViewModel.savePassword(passwords);
+                if (currentPassword == null){
+                    Passwords passwords = new Passwords(userName, password, website, selectedIcon);
+                    noteViewModel.savePassword(passwords);
+                }else {
+                    currentPassword.setUserName(userName);
+                    currentPassword.setPassword(password);
+                    currentPassword.setWebsiteName(website);
+                    currentPassword.setIcon(selectedIcon);
+                    noteViewModel.updatePassword(currentPassword);
+                }
                 Navigation.findNavController(requireView()).popBackStack();
             }
         });
@@ -107,7 +119,8 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
         layoutManager.setFlexDirection(FlexDirection.ROW);
         binding.iconsRecyclerview.setLayoutManager(layoutManager);
         icons = getIconsList();
-        binding.iconsRecyclerview.setAdapter(new IconsAdapter(this, icons));
+        iconsAdapter = new IconsAdapter(this, icons);
+        binding.iconsRecyclerview.setAdapter(iconsAdapter);
     }
 
     private List<Integer> getIconsList() {
@@ -138,6 +151,19 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
         return icons;
     }
 
+    private void loadPasswordFromBundle() {
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(AddPasswordsFragment.EXTRA_PASSWORD)) {
+            currentPassword = (Passwords) bundle.getSerializable(AddPasswordsFragment.EXTRA_PASSWORD);
+            if (currentPassword != null) {
+                binding.userNameEditText.setText(currentPassword.getUserName());
+                binding.passwordEditText.setText(currentPassword.getPassword());
+                binding.websiteNameEditText.setText(currentPassword.getWebsiteName());
+                iconsAdapter.setIconSelected(currentPassword.getIcon());
+            }
+        }
+    }
+
     @Override
     public void onIconClickListener(int position) {
         selectedIcon = icons.get(position);
@@ -147,5 +173,10 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
             binding.websiteNameInputLayout.setVisibility(View.GONE);
             binding.websiteNameEditText.setText("");
         }
+    }
+
+    @Override
+    public void onDeleteClickListener(int position) {
+
     }
 }

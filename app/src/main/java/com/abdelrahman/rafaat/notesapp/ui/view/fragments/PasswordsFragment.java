@@ -1,7 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,11 +61,10 @@ public class PasswordsFragment extends BaseFragment implements OnIconClickListen
         noteViewModel.getAllPasswords();
         noteViewModel.getPasswords().observe(getViewLifecycleOwner(), passwords -> {
             if (passwords.isEmpty()) {
-                Log.d("TAG", "observeViewModel: passwords.isEmpty()");
+                binding.noPasswordsView.noPasswordsView.setVisibility(View.VISIBLE);
             } else {
-                Log.d("TAG", "observeViewModel: passwords.size() " + passwords.size());
+                binding.noPasswordsView.noPasswordsView.setVisibility(View.GONE);
             }
-
             passwordsAdapter.setList(passwords);
             this.passwords = passwords;
         });
@@ -85,7 +83,15 @@ public class PasswordsFragment extends BaseFragment implements OnIconClickListen
 
     @Override
     public void onIconClickListener(int position) {
-        Log.d("TAG", "onIconClickListener: " + passwords.get(position));
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.add_passwords_fragment);
+        Passwords currentPassword = passwords.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AddPasswordsFragment.EXTRA_PASSWORD, currentPassword);
+        navigate(R.id.add_passwords_fragment, bundle);
+    }
+
+    @Override
+    public void onDeleteClickListener(int position) {
+        Passwords currentPassword = passwords.get(position);
+        noteViewModel.deletePassword(currentPassword.getId());
     }
 }

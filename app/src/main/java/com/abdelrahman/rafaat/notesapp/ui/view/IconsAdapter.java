@@ -45,6 +45,10 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void setIconSelected(int icon) {
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final CustomRowIconBinding binding;
 

@@ -3,8 +3,10 @@ package com.abdelrahman.rafaat.notesapp.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "passwords")
-public class Passwords {
+public class Passwords implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;

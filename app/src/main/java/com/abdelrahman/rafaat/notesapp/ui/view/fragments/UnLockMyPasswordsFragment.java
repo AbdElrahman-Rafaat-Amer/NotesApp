@@ -45,8 +45,6 @@ public class UnLockMyPasswordsFragment extends BaseFragment {
         Pair<String, String> passwordAndHint = noteViewModel.getPasswordAndHint();
         password = passwordAndHint.first;
         hint = passwordAndHint.second;
-        Log.d("TAG", "onViewCreated: password---> " + password);
-        Log.d("TAG", "onViewCreated: hint-------> " + hint);
         if (password.isEmpty()) {
             Navigation.findNavController(binding.getRoot()).navigate(R.id.lock_my_passwords_fragment);
         }

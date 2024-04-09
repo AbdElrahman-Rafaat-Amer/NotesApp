@@ -93,12 +93,12 @@ public class LocalSource implements LocalSourceInterface {
     }
 
     @Override
-    public void updatePassword(Passwords password) {
-        dao.updatePassword(password);
+    public Single<Integer> updatePassword(Passwords password) {
+        return dao.updatePassword(password);
     }
 
     @Override
-    public void deletePassword(int id) {
-        dao.deletePassword(id);
+    public Single<Integer> deletePassword(int id) {
+        return dao.deletePassword(id);
     }
 }

@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         if (destinationId == R.id.home_fragment || destinationId == R.id.archived_fragment
                 || destinationId == R.id.favorites_fragment
                 || destinationId == R.id.passwords_fragment
-                || destinationId == R.id.add_passwords_fragment
                 || destinationId == R.id.lock_my_passwords_fragment
                 || destinationId == R.id.unlock_my_passwords_fragment) {
             binding.toolBar.setVisibility(View.VISIBLE);

@@ -71,13 +71,13 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
-    public void updatePassword(Passwords password) {
-        localSource.updatePassword(password);
+    public Single<Integer> updatePassword(Passwords password) {
+        return localSource.updatePassword(password);
     }
 
     @Override
-    public void deletePassword(int id) {
-        localSource.deletePassword(id);
+    public Single<Integer> deletePassword(int id) {
+        return localSource.deletePassword(id);
     }
 
     @Override
