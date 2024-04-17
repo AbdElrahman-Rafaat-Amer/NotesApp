@@ -1,5 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import com.abdelrahman.rafaat.notesapp.model.Passwords;
 import com.abdelrahman.rafaat.notesapp.ui.view.IconsAdapter;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -27,11 +29,11 @@ import java.util.List;
 public class AddPasswordsFragment extends BaseFragment implements OnIconClickListener {
 
     private FragmentAddPasswordsBinding binding;
-    private List<Integer> icons = new ArrayList<>();
+    private final List<Integer> icons = new ArrayList<>();
     private IconsAdapter iconsAdapter;
-    private int selectedIcon = 0;
+    private int selectedIcon = R.drawable.ic_more;
     private Passwords currentPassword = null;
-    public final static String EXTRA_PASSWORD = "EXTRA_PASSWORD";
+    public static final String EXTRA_PASSWORD = "EXTRA_PASSWORD";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -58,10 +60,10 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
                 String userName = binding.userNameEditText.getText().toString().trim();
                 String password = binding.passwordEditText.getText().toString().trim();
                 String website = binding.websiteNameEditText.getText().toString().trim();
-                if (currentPassword == null){
+                if (currentPassword == null) {
                     Passwords passwords = new Passwords(userName, password, website, selectedIcon);
                     noteViewModel.savePassword(passwords);
-                }else {
+                } else {
                     currentPassword.setUserName(userName);
                     currentPassword.setPassword(password);
                     currentPassword.setWebsiteName(website);
@@ -117,14 +119,14 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
     private void initRecyclerView() {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(requireContext());
         layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.CENTER);
         binding.iconsRecyclerview.setLayoutManager(layoutManager);
-        icons = getIconsList();
+        setupIconsList();
         iconsAdapter = new IconsAdapter(this, icons);
         binding.iconsRecyclerview.setAdapter(iconsAdapter);
     }
 
-    private List<Integer> getIconsList() {
-        ArrayList<Integer> icons = new ArrayList<>();
+    private void setupIconsList() {
         icons.add(R.drawable.ic_adobe_xd);
         icons.add(R.drawable.ic_apple);
         icons.add(R.drawable.ic_behance);
@@ -148,18 +150,23 @@ public class AddPasswordsFragment extends BaseFragment implements OnIconClickLis
         icons.add(R.drawable.ic_twitter);
         icons.add(R.drawable.ic_whatsapp);
         icons.add(R.drawable.ic_more);
-        return icons;
     }
 
     private void loadPasswordFromBundle() {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(AddPasswordsFragment.EXTRA_PASSWORD)) {
-            currentPassword = (Passwords) bundle.getSerializable(AddPasswordsFragment.EXTRA_PASSWORD);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                currentPassword = bundle.getSerializable(AddPasswordsFragment.EXTRA_PASSWORD, Passwords.class);
+            } else {
+                currentPassword = (Passwords) bundle.getSerializable(AddPasswordsFragment.EXTRA_PASSWORD);
+            }
+
             if (currentPassword != null) {
                 binding.userNameEditText.setText(currentPassword.getUserName());
                 binding.passwordEditText.setText(currentPassword.getPassword());
                 binding.websiteNameEditText.setText(currentPassword.getWebsiteName());
-                iconsAdapter.setIconSelected(currentPassword.getIcon());
+                selectedIcon = currentPassword.getIcon();
+                iconsAdapter.setIconSelected(selectedIcon);
             }
         }
     }

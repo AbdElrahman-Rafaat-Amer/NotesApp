@@ -14,10 +14,12 @@ import java.util.List;
 public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> {
     private List<Integer> icons;
     private final OnIconClickListener onClickListener;
+    private int selectedItemPosition;
 
     public IconsAdapter(OnIconClickListener onClickListener, List<Integer> icons) {
         this.icons = icons;
         this.onClickListener = onClickListener;
+        selectedItemPosition = icons.size() -1;
     }
 
     @NonNull
@@ -46,7 +48,8 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
     }
 
     public void setIconSelected(int icon) {
-
+        selectedItemPosition = icons.indexOf(icon);
+        notifyItemChanged(selectedItemPosition);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,11 +62,14 @@ public class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.ViewHolder> 
 
         void bind(Integer currentIcon) {
             binding.iconImageView.setImageResource(currentIcon);
-            binding.getRoot().setOnClickListener(view ->
-                    onClickListener.onIconClickListener(getAdapterPosition())
-            );
+            binding.iconImageView.setSelected(selectedItemPosition == getAdapterPosition());
+            binding.getRoot().setOnClickListener(view -> {
+                onClickListener.onIconClickListener(getAdapterPosition());
+                notifyItemChanged(selectedItemPosition); // Update previous selected item
+                selectedItemPosition = getAdapterPosition();
+                notifyItemChanged(selectedItemPosition);// Update currently selected item
+            });
         }
-
     }
 
 }

@@ -1,5 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +92,21 @@ public class PasswordsFragment extends BaseFragment implements OnIconClickListen
 
     @Override
     public void onDeleteClickListener(int position) {
-        Passwords currentPassword = passwords.get(position);
-        noteViewModel.deletePassword(currentPassword.getId());
+        showAlertDialog(position);
+    }
+
+    protected void showAlertDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
+
+        builder.setMessage(getString(R.string.remove_password))
+                .setPositiveButton(R.string.remove, (dialog, which) -> noteViewModel.deletePassword(passwords.get(position).getId()))
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    alertDialog.dismiss();
+                    adapter.notifyItemChanged(position);
+                });
+
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 }

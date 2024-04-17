@@ -1,5 +1,6 @@
 package com.abdelrahman.rafaat.notesapp.ui.view;
 
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class PasswordsAdapter extends RecyclerView.Adapter<PasswordsAdapter.View
         void bind(Passwords currentPassword) {
             binding.websiteImageView.setImageResource(currentPassword.getIcon());
             binding.userNameTextView.setText(currentPassword.getUserName());
+            binding.passwordTextView.setTransformationMethod(new PasswordTransformationMethod());
             binding.passwordTextView.setText(currentPassword.getPassword());
             if (currentPassword.getWebsiteName().isEmpty()) {
                 binding.websiteTextView.setVisibility(View.GONE);
@@ -66,12 +68,12 @@ public class PasswordsAdapter extends RecyclerView.Adapter<PasswordsAdapter.View
                 binding.websiteTextView.setVisibility(View.VISIBLE);
                 binding.websiteTextView.setText(currentPassword.getWebsiteName());
             }
-            binding.getRoot().setOnClickListener(view ->
-                    onClickListener.onIconClickListener(getAdapterPosition())
-            );
-
             binding.deleteImageView.setOnClickListener(view ->
                     onClickListener.onDeleteClickListener(getAdapterPosition())
+            );
+
+            binding.getRoot().setOnClickListener(view ->
+                    onClickListener.onIconClickListener(getAdapterPosition())
             );
         }
 
