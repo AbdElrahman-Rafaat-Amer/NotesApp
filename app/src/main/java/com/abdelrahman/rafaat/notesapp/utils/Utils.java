@@ -43,4 +43,8 @@ public class Utils {
         int directionality = Character.getDirectionality(language.charAt(0));
         return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT || directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
+
+    public static long convertMinutesToMilliseconds(int minutes) {
+        return minutes * 60 * 1000;
+    }
 }

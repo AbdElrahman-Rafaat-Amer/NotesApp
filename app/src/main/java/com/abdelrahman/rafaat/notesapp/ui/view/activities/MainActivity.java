@@ -100,11 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         });
 
         binding.rootView.findViewById(R.id.passwordsButton).setOnClickListener(view -> {
-            if (navController.getCurrentDestination().getId() != R.id.unlock_my_passwords_fragment) {
-                navController.popBackStack();
-                navController.navigate(R.id.unlock_my_passwords_fragment);
-            }
-            closeMenu(true);
+            navigateToPasswordsScreen();
         });
 
         binding.rootView.findViewById(R.id.settingButton).setOnClickListener(view -> {
@@ -121,6 +117,14 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             openGooglePlay();
             closeMenu(true);
         });
+    }
+
+    private void navigateToPasswordsScreen() {
+        if (navController.getCurrentDestination().getId() != R.id.unlock_my_passwords_fragment) {
+            navController.popBackStack();
+            navController.navigate(R.id.unlock_my_passwords_fragment);
+        }
+        closeMenu(true);
     }
 
     private void closeMenu(boolean isAnimated) {

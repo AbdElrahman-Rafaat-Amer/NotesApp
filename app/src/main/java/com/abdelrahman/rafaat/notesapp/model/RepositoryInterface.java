@@ -34,5 +34,10 @@ public interface RepositoryInterface {
     void savePasswordAndHint(String password, String hint);
 
     Pair<String, String> getPasswordAndHint();
+    PasswordsTime getPasswordsTime();
+    long getLastTimePasswordsScreenOpened();
+    void saveLastTimePasswordsScreenOpened(long currentTime);
+    int getTimeToOpenPasswordsScreen();
+    void saveTimeToOpenPasswordsScreen(int timeInMinutes);
     Pair<SortAction, Boolean> refreshSettings();
 }

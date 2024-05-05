@@ -13,9 +13,11 @@ import com.abdelrahman.rafaat.notesapp.database.LocalSource;
 import com.abdelrahman.rafaat.notesapp.model.Note;
 import com.abdelrahman.rafaat.notesapp.model.NoteType;
 import com.abdelrahman.rafaat.notesapp.model.Passwords;
+import com.abdelrahman.rafaat.notesapp.model.PasswordsTime;
 import com.abdelrahman.rafaat.notesapp.model.Repository;
 import com.abdelrahman.rafaat.notesapp.model.RepositoryInterface;
 import com.abdelrahman.rafaat.notesapp.model.SortAction;
+import com.abdelrahman.rafaat.notesapp.utils.Utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +58,8 @@ public class NoteViewModel extends AndroidViewModel {
 
     private NoteType noteType = NoteType.ALL;
     private static final String TAG = "Note_ViewModel_TAG";
+
+    private boolean willShowPassword = true;
 
     public NoteViewModel(@NonNull Application application) {
         super(application);
@@ -294,4 +298,60 @@ public class NoteViewModel extends AndroidViewModel {
                 );
     }
 
+    public boolean showPasswordScreen() {
+        PasswordsTime passwordsTime = repositoryInterface.getPasswordsTime();
+        boolean showPassword = false;
+
+        switch (passwordsTime) {
+            case ONCE_PER_APP:
+                if (willShowPassword) {
+                    showPassword = true;
+                    willShowPassword = false;
+                }
+                break;
+            case EVERY_TIME_OPEN_SCREEN:
+                showPassword = true;
+                willShowPassword = true;
+                break;
+            case EVERY_5_MINUTES:
+                showPassword = checkTimeDifference(5);
+                willShowPassword = showPassword;
+                break;
+            case EVERY_10_MINUTES:
+                showPassword = checkTimeDifference(10);
+                willShowPassword = showPassword;
+                break;
+            case CUSTOM_TIME:
+                int time = getTimeToOpenPasswordsScreen();
+                showPassword = checkTimeDifference(time);
+                willShowPassword = showPassword;
+                break;
+        }
+
+        return showPassword;
+    }
+
+    private long getLastTimePasswordsScreenOpened() {
+        return repositoryInterface.getLastTimePasswordsScreenOpened();
+    }
+
+    private int getTimeToOpenPasswordsScreen() {
+        return repositoryInterface.getTimeToOpenPasswordsScreen();
+    }
+
+    public void saveTimeToOpenPasswordsScreen(int timeInMinutes) {
+        repositoryInterface.saveTimeToOpenPasswordsScreen(timeInMinutes);
+    }
+
+    private boolean checkTimeDifference(int intervalInMinutes) {
+        long lastTimeInMillis = getLastTimePasswordsScreenOpened();
+        long currentTime = System.currentTimeMillis();
+        long intervalInMillis = Utils.convertMinutesToMilliseconds(intervalInMinutes);
+        return (currentTime - lastTimeInMillis >= intervalInMillis);
+    }
+
+    public void saveLastTimePasswordsScreenOpened() {
+        long currentTime = System.currentTimeMillis();
+        repositoryInterface.saveLastTimePasswordsScreenOpened(currentTime);
+    }
 }

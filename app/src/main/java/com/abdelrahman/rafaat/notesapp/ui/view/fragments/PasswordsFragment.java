@@ -41,7 +41,7 @@ public class PasswordsFragment extends BaseFragment implements OnIconClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        noteViewModel.saveLastTimePasswordsScreenOpened();
         binding.addPasswordFloatingActionButton.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.add_passwords_fragment)
         );

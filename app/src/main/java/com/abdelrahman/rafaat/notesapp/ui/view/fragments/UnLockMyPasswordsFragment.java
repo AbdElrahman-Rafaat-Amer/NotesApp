@@ -42,6 +42,7 @@ public class UnLockMyPasswordsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        checkPasswordsTime();
         Pair<String, String> passwordAndHint = noteViewModel.getPasswordAndHint();
         password = passwordAndHint.first;
         hint = passwordAndHint.second;
@@ -51,6 +52,13 @@ public class UnLockMyPasswordsFragment extends BaseFragment {
 
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initUI();
+    }
+
+    private void checkPasswordsTime() {
+        boolean showLockScreen = noteViewModel.showPasswordScreen();
+        if (!showLockScreen) {
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.passwords_fragment);
+        }
     }
 
     private void initUI() {

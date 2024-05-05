@@ -27,4 +27,20 @@
         <item>2</item>
         <item>-1</item>
     </string-array>
+
+    <string-array name="passwords_time_entries">
+        <item>One per app</item>
+        <item>Every time open the screen</item>
+        <item>Every 5 Min</item>
+        <item>Every 10 Min</item>
+        <item>Custom it</item>
+    </string-array>
+
+    <string-array name="passwords_time_values">
+        <item>-1</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>1</item>
+    </string-array>
 </resources>

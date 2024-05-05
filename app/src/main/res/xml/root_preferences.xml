@@ -50,4 +50,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/passwords">
+
+        <ListPreference
+            app:defaultValue="0"
+            app:entries="@array/passwords_time_entries"
+            app:entryValues="@array/passwords_time_values"
+            app:key="PASSWORDS_TIME"
+            app:singleLineTitle="false"
+            app:title="When should request the password when open passwords"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

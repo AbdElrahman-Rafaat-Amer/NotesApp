@@ -105,6 +105,36 @@ public class Repository implements RepositoryInterface {
     }
 
     @Override
+    public PasswordsTime getPasswordsTime() {
+        String value = getString("PASSWORDS_TIME", "0");
+        PasswordsTime passwordsTime = PasswordsTime.fromValue(value);
+        if (passwordsTime == null) {
+            passwordsTime = PasswordsTime.ONCE_PER_APP;
+        }
+        return passwordsTime;
+    }
+
+    @Override
+    public long getLastTimePasswordsScreenOpened() {
+        return getLong("LAST_TIME_PASSWORDS_SCREEN_OPENED", 0);
+    }
+
+    @Override
+    public void saveLastTimePasswordsScreenOpened(long currentTime) {
+        setLong("LAST_TIME_PASSWORDS_SCREEN_OPENED", currentTime);
+    }
+
+    @Override
+    public int getTimeToOpenPasswordsScreen() {
+        return getInt("TIME_TO_OPEN_PASSWORDS_SCREEN", 0);
+    }
+
+    @Override
+    public void saveTimeToOpenPasswordsScreen(int timeInMinutes) {
+        setInt("TIME_TO_OPEN_PASSWORDS_SCREEN", timeInMinutes);
+    }
+
+    @Override
     public Pair<SortAction, Boolean> refreshSettings() {
         SortAction sortAction = getSortOrder();
         boolean isListView = getBoolean("IS_LIST", true);
@@ -139,6 +169,26 @@ public class Repository implements RepositoryInterface {
     private void setString(String key, String value) {
         SharedPreferences.Editor editor = dfaultSharedPreferences.edit();
         editor.putString(key, value);
+        editor.apply();
+    }
+
+    private int getInt(String key, int defValue) {
+        return dfaultSharedPreferences.getInt(key, defValue);
+    }
+
+    private void setInt(String key, int value) {
+        SharedPreferences.Editor editor = dfaultSharedPreferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    private long getLong(String key, long defValue) {
+        return dfaultSharedPreferences.getLong(key, defValue);
+    }
+
+    private void setLong(String key, long value) {
+        SharedPreferences.Editor editor = dfaultSharedPreferences.edit();
+        editor.putLong(key, value);
         editor.apply();
     }
 }
